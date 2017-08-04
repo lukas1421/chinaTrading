@@ -38,37 +38,37 @@ getFTSEData <- function() {
   for(i in seq(7,24,1)) {
     lapply(str_split(str_trim(str_split(t1[[1]][i],"CHINA")[[1]],"right"), "\\s\\s+"),
 
-         function(x) {
+           function(x) {
 
-           if(str_trim(x, side="left")[[1]] !="") {
-              if(length(str_trim(x, side="left")) == 2) {
+             if(str_trim(x, side="left")[[1]] !="") {
+               if(length(str_trim(x, side="left")) == 2) {
 
-                #print(str_trim(x, side="left")[[1]])
-                #print(str_replace(str_trim(x, side="left")[[1]],"\\(.*\\)",""))
-                #print(str_trim(x, side="left")[[1]][1])
-                #print(str_trim(x, side="left")[[2]][1])
-                #print(i)
-                res$stock[j] <<- str_trim(toupper(str_replace(str_trim(x, side="left")[[1]],"\\(.*\\)","")))
-                res$weight[j] <<- as.numeric(str_trim(x, side="left")[[2]])
-                j <<- j+1
-              } else if (length(str_trim(x, side="left")) == 3) {
-                #print(str_trim(x, side="left"))
-                res$stock[j] <<- str_trim(toupper(str_replace(str_trim(x, side="left")[2],"\\(.*\\)","")))
-                res$weight[j] <<- as.numeric(str_trim(x, side="left")[3])
-                j <<- j+1
-              }
-              #res$stock[i-6] <- str_trim(x, side="left")[1]
-              #res$weight[i-6] <- str_trim(x, side="left")[2]
-            }
-         })
-    }
-    #print(res)
-    #return(res)
+                 #print(str_trim(x, side="left")[[1]])
+                 #print(str_replace(str_trim(x, side="left")[[1]],"\\(.*\\)",""))
+                 #print(str_trim(x, side="left")[[1]][1])
+                 #print(str_trim(x, side="left")[[2]][1])
+                 #print(i)
+                 res$stock[j] <<- str_trim(toupper(str_replace(str_trim(x, side="left")[[1]],"\\(.*\\)","")))
+                 res$weight[j] <<- as.numeric(str_trim(x, side="left")[[2]])
+                 j <<- j+1
+               } else if (length(str_trim(x, side="left")) == 3) {
+                 #print(str_trim(x, side="left"))
+                 res$stock[j] <<- str_trim(toupper(str_replace(str_trim(x, side="left")[2],"\\(.*\\)","")))
+                 res$weight[j] <<- as.numeric(str_trim(x, side="left")[3])
+                 j <<- j+1
+               }
+               #res$stock[i-6] <- str_trim(x, side="left")[1]
+               #res$weight[i-6] <- str_trim(x, side="left")[2]
+             }
+           })
+  }
+  #print(res)
+  #return(res)
 
-    wb <- loadWorkbook(paste0(tradingFolder,"new.xlsx"),create = TRUE)
-    createSheet(wb,"Sheet1")
-    writeWorksheet(wb,res,"Sheet1",startRow = 1,startCol = 1, header = T)
-    saveWorkbook(wb)
+  wb <- loadWorkbook(paste0(tradingFolder,"new.xlsx"),create = TRUE)
+  createSheet(wb,"Sheet1")
+  writeWorksheet(wb,res,"Sheet1",startRow = 1,startCol = 1, header = T)
+  saveWorkbook(wb)
 }
 
 updateFTSEWeights <- function() {
@@ -219,10 +219,10 @@ getBOCRmbRate<- function(){
   a <- html_text(a)
   a <-iconv(a,"utf-8","gb2312")
 
-  a<-str_split(str_trim(a[str_detect(a,"ÃÀÔª")]),"\\s+")
+  a<-str_split(str_trim(a[str_detect(a,"ç¾Žå…ƒ")]),"\\s+")
   a[[1]] <- NULL
   a <- data.table(matrix(unlist(a),nrow = length(a),byrow = T))
-  #names(a) <- c("»õ±ÒÃû³Æ","ÏÖ»ãÂòÈë¼Û"," ÏÖ³®ÂòÈë¼Û","ÏÖ»ãÂô³ö¼Û","ÏÖ³®Âô³ö¼Û","ÖÐÐÐÕÛËã¼Û","·¢²¼ÈÕÆÚ","·¢²¼Ê±¼ä")
+  #names(a) <- c("è´§å¸åç§°","çŽ°æ±‡ä¹°å…¥ä»·"," çŽ°é’žä¹°å…¥ä»·","çŽ°æ±‡å–å‡ºä»·","çŽ°é’žå–å‡ºä»·","ä¸­è¡ŒæŠ˜ç®—ä»·","å‘å¸ƒæ—¥æœŸ","å‘å¸ƒæ—¶é—´")
   names(a) <- c("currency","Buy wire"," Buy cash","Sell wire","Sell Cash","BOC","Date","Time")
   #a[, BOC:=as.numeric(BOC)/100]
   print(as.numeric(a$BOC)/100)
