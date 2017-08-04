@@ -32,7 +32,7 @@ getFTSEData <- function() {
   download.file("https://www.ftse.com/analytics/factsheets/Home/DownloadConstituentsWeights/?indexdetails=XINA50"
                 , destfile = paste0(tradingFolder,"res.pdf"), mode="wb")
 
-  toc <- pdftools::pdf_text(paste0(tradingFolder,"res.pdf"))
+  toc <- pdf_text(paste0(tradingFolder,"res.pdf"))
 
   #print(toc)
   t1<-str_split(toc[1],"\n")
