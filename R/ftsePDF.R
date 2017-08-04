@@ -19,7 +19,7 @@ require("XLConnect")
 userName <- Sys.getenv("USERNAME")
 #tradingFolder <- "c:"
 
-
+#' download FTSE index constituents sheet
 getFTSEData <- function() {
 
   download.file("https://www.ftse.com/analytics/factsheets/Home/DownloadConstituentsWeights/?indexdetails=XINA50"
@@ -147,7 +147,7 @@ getIndicies <- function() {
 #getIndicies()
 ##########################################################################################################################################
 
-#daily shcomp
+#' daily shcomp
 
 getSHCOMP <- function() {
 
@@ -212,7 +212,7 @@ getSHCOMP <- function() {
 
 
 ###########################################################################################################################################
-
+#' get BOC rmb rate
 getBOCRmbRate<- function(){
   a <- read_html("http://www.boc.cn/sourcedb/whpj")
   a <- html_nodes(a, "tr")

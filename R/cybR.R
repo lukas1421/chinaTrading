@@ -9,7 +9,7 @@ require(PerformanceAnalytics)
 require(quantmod)
 require(httr)
 
-
+#' generate cyb day file
 generateCYB <- function() {
   cybDay <- fread( paste0(dataFolder,"SZ#399006.txt"),header = TRUE,skip = 1,fill = T,
                    showProgress = TRUE,col.names = c("D","O","H","L","C","V","A"))
@@ -18,6 +18,7 @@ generateCYB <- function() {
   cybDay[, D:=ymd(D)]
 }
 
+#' fill the destination cyb with raw data
 fillData399006<- function() {
   dest <- paste0(cybDir,"SZ399006_2017.csv")
   #source <- "J:\\TDX\\T0002\\export_1m\\SZ#399006.txt"
