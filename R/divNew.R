@@ -5,10 +5,8 @@ require(stringr)
 require(lubridate)
 require(plyr)
 
-
 #' get divs
 getDivs <- function() {
-
   url <- getDivURLNew()
   a<-read_html(url)
   l<-html_nodes(a,"table")
@@ -51,18 +49,19 @@ getDivs <- function() {
 
 
 ####################################################### CODE ENDS HERE ###############################################################
+
+#' extract info from divs
 extractDiv1 <- function(tickerFull,x) {
   date <- Sys.Date()
-  cashDiv = ifelse(is.na(as.numeric(str_match(x,"??(.*)(?:\\s+)?元")[2])),0,as.numeric(str_match(x,"??(.*)(?:\\s+)?元")[2]))
-  #cashDivDate = (str_match(x, "??息??(\\d{4}-\\d{2}-\\d{2})")[2])
-  stockDiv1 = ifelse(is.na(as.numeric(str_match(x,"[??](.*?)(?:\\s+)???" )[2])),0,as.numeric(str_match(x,"[??](.*?)(?:\\s+)???" )[2]))
-  stockDiv2 = ifelse(is.na(as.numeric(str_match(x,"[转](.*?)(?:\\s+)???" )[2])),0,as.numeric(str_match(x,"[转](.*?)(?:\\s+)???" )[2]))
-  dateOff <- ifelse(weekdays(date)=="????一", 3,1)
+  cashDiv = ifelse(is.na(as.numeric(str_match(x,"派(.*)(?:\\s+)?元")[2])),0,as.numeric(str_match(x,"派(.*)(?:\\s+)?元")[2]))
+  #cashDivDate = (str_match(x, "派息日(\\d{4}-\\d{2}-\\d{2})")[2])
+  stockDiv1 = ifelse(is.na(as.numeric(str_match(x,"[送](.*?)(?:\\s+)?股" )[2])),0,as.numeric(str_match(x,"[送](.*?)(?:\\s+)?股" )[2]))
+  stockDiv2 = ifelse(is.na(as.numeric(str_match(x,"[转](.*?)(?:\\s+)?股" )[2])),0,as.numeric(str_match(x,"[转](.*?)(?:\\s+)?股" )[2]))
+  dateOff <- ifelse(weekdays(date)=="星期一", 3,1)
   lastPrice <- as.numeric(getLastCloseV3(tickerFull,date-dateOff))
   return(list(cashDiv=cashDiv, cashDivDate=date,  stockDiv=stockDiv1+stockDiv2, stockDivDate = date, lastPrice=lastPrice ))
 }
 
-#' get close of the stock in question
 getLastCloseV3 <- function(symb,dat) {
   ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
   stock <- data.table()
@@ -80,13 +79,12 @@ getLastCloseV3 <- function(symb,dat) {
     })
 }
 
-#' get dividend URL
 getDivURLNew <-function() {
   url<-"http://stock.10jqka.com.cn/jyts_list/"
   a<-read_html(url,encoding = "gbk")
   l<-html_nodes(a,"a")
   l1<-xml2::xml_attrs(l)
-  return((l1[which(lapply(l1,function(x) grep("???????薪?????示",x))>0)[1]])[[1]] %>%
+  return((l1[which(lapply(l1,function(x) grep("沪深股市交易提示",x))>0)[1]])[[1]] %>%
            (function(x) x[which(names(x)=="href")]))
 }
 
@@ -96,4 +94,5 @@ isInStockList <- function(symb) {
   tickerList<- fread(paste0(tradingFolder,"tickerListDiv",".txt"), header=F)
   sum(tickerList==symb)>0
 }
+
 

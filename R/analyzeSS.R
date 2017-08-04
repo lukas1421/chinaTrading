@@ -1,12 +1,12 @@
-
-library(Rserve)
-library(stringr)
-library(zoo)
-library(data.table)
-library(lubridate)
-library(PerformanceAnalytics)
-require(xts)
-require(quantmod)
+#
+# library(Rserve)
+# library(stringr)
+# library(zoo)
+# library(data.table)
+# library(lubridate)
+# library(PerformanceAnalytics)
+# require(xts)
+# require(quantmod)
 
 
 
@@ -189,7 +189,7 @@ getCorrel<- function(symb1, index) {
   #return(dt3)
 }
 
-
+#' correl between one stock and all benches
 getCorrelGen<-function(symb) {
   benchList<- c("sh000001","sz399006","sz399001","sh000300","sh000016","sh000905")
   dt <- data.table(benchList)
@@ -232,7 +232,7 @@ graphD <- function(symb,dateStr) {
   #return(g)
 }
 
-
+#' general method to get stocks
 getDataPure<- function(symb) {
   print(paste0(" getting ",symb))
   ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
@@ -434,6 +434,7 @@ getWeekdayCL <- function() {
   return(d)
 }
 
+#' get bench of a stock and output to folder
 getBenchMark <- function() {
   d<- fread("C:\\Users\\LUke\\Desktop\\Trading\\test.txt",header = FALSE)
   d<- d[, c(V2,getCorrelGen(V1)), keyby=list(V1)]
@@ -515,8 +516,6 @@ getWtdPercentileAll<- function(){
 }
 
 # get wtd percentile
-
-
 
 getWtdMaxMin <- function(symb) {
   m<-getMondayOfWeek(Sys.Date()-1)

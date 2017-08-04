@@ -1,20 +1,20 @@
-require(data.table)
-require(stringr)
-require(pdftools)
-require(XLConnect)
-require(rvest)
-require(httr)
-library(plyr)
-library(lubridate)
-library(ggplot2)
-library(reshape2)
-library(Rcpp)
-library(lubridate)
-library(PerformanceAnalytics)
-library(quantmod)
-library(xts)
-require(TTR)
-require("XLConnect")
+# require(data.table)
+# require(stringr)
+# require(pdftools)
+# require(XLConnect)
+# require(rvest)
+# require(httr)
+# library(plyr)
+# library(lubridate)
+# library(ggplot2)
+# library(reshape2)
+# library(Rcpp)
+# library(lubridate)
+# library(PerformanceAnalytics)
+# library(quantmod)
+# library(xts)
+# require(TTR)
+# require("XLConnect")
 
 userName <- Sys.getenv("USERNAME")
 #tradingFolder <- "c:"
@@ -102,7 +102,7 @@ getNAV <- function() {
 }
 ########################################################################################################################################################################
 
-#getting ftse A50 index
+#' getting ftse A50 index
 getFTSE50Index <- function (){
   a <- read_html("https://hk.investing.com/indices/ftse-china-a50")
   a<- (html_nodes(a,"td") %>% (function(x) {x[str_detect(x,".*28930.*")]}) %>% html_text())
@@ -115,7 +115,7 @@ getFTSE50Index <- function (){
 
 ########################################################################################################################################################################
 
-#XIN0U
+#' XIN0U
 getXIN0UIndex <- function() {
   a <- read_html("http://finance.yahoo.com/quote/XIN0UN.FGI?ltr=1")
   price <-  html_nodes(a,"span") %>% (function(x) {x[str_detect(x,"36px.*4px")]}) %>% html_text()
@@ -130,7 +130,7 @@ getXIN0UIndex <- function() {
 
 ########################################################################################################################################################################
 
-#get Index
+#' get Index
 
 getIndicies <- function() {
   indices <- c("sh000001","sz399006","sh000300","sh000905",'sh000016')
@@ -151,7 +151,6 @@ getIndicies <- function() {
 
 getSHCOMP <- function() {
 
-  require(XLConnect)
   #minuteData <- fread("C:\\Users\\Administrator\\Desktop\\Trading\\minuteData.csv")
 
   AMOPENT = 931
@@ -234,24 +233,23 @@ getBOCRmbRate<- function(){
 
 ###########################################################################################################################################
 #Packages
-require(data.table)
-require(stringr)
-require(pdftools)
-require(XLConnect)
-require(rvest)
-require(httr)
-library(plyr)
-library(lubridate)
-library(ggplot2)
-library(reshape2)
-library(Rcpp)
-library(lubridate)
-library(PerformanceAnalytics)
-library(quantmod)
-library(xts)
-require(TTR)
-require("XLConnect")
-
+# require(data.table)
+# require(stringr)
+# require(pdftools)
+# require(XLConnect)
+# require(rvest)
+# require(httr)
+# library(plyr)
+# library(lubridate)
+# library(ggplot2)
+# library(reshape2)
+# library(Rcpp)
+# library(lubridate)
+# library(PerformanceAnalytics)
+# library(quantmod)
+# library(xts)
+# require(TTR)
+# require("XLConnect")
 #Methods only:
 #getFTSEData()
 #getFTSE50Index()
