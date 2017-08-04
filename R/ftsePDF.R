@@ -20,12 +20,18 @@ userName <- Sys.getenv("USERNAME")
 #tradingFolder <- "c:"
 
 #' download FTSE index constituents sheet
+#' @importFrom pdftools pdf_text
+#' @import data.table
+#' @import stringr
+#' @import XLConnect
+#' @import rvest
+#' @export
 getFTSEData <- function() {
 
   download.file("https://www.ftse.com/analytics/factsheets/Home/DownloadConstituentsWeights/?indexdetails=XINA50"
                 , destfile = paste0(tradingFolder,"res.pdf"), mode="wb")
 
-  toc <- pdf_text(paste0(tradingFolder,"res.pdf"))
+  toc <- pdftools::pdf_text(paste0(tradingFolder,"res.pdf"))
 
   #print(toc)
   t1<-str_split(toc[1],"\n")
@@ -65,10 +71,10 @@ getFTSEData <- function() {
   #print(res)
   #return(res)
 
-  wb <- loadWorkbook(paste0(tradingFolder,"new.xlsx"),create = TRUE)
-  createSheet(wb,"Sheet1")
-  writeWorksheet(wb,res,"Sheet1",startRow = 1,startCol = 1, header = T)
-  saveWorkbook(wb)
+  wb <- XLConnect::loadWorkbook(paste0(tradingFolder,"new.xlsx"),create = TRUE)
+  XLConnect::createSheet(wb,"Sheet1")
+  XLConnect::writeWorksheet(wb,res,"Sheet1",startRow = 1,startCol = 1, header = T)
+  XLConnect::saveWorkbook(wb)
 }
 
 updateFTSEWeights <- function() {
@@ -81,21 +87,21 @@ updateFTSEWeights <- function() {
 
 #################################################################################################################################################################################
 
-# getting NAVs
+#' getting NAVs
+#' @export
+#' @import xml2
 
 getNAV <- function() {
 
   stocks <- c("2823:HK","2822:HK", "3147:HK", "3188:HK", "FXI:US","CNXT:US","ASHR:US","ASHS:US")
-  require(rvest)
-  require(stringr)
 
   for(i in stocks) {
     print(i)
     #a <- read_html(httr::GET(paste("https://www.bloomberg.com/quote/",i, sep=""),use_proxy("127.0.0.1",1080)))
     a <- read_html(httr::GET(paste("https://www.bloomberg.com/quote/",i, sep="")))
-    b<-html_nodes(a,"div") %>% html_text() %>% (function(x) {x[str_sub(str_trim(x),1,3) == "NAV"]})
+    b <- html_nodes(a,"div") %>% html_text() %>% (function(x) {x[str_sub(str_trim(x),1,3) == "NAV"]})
     b<-(stringr::str_split(b[[1]],"\\s\\s+"))
-    c<-as.numeric(str_match(html_nodes(a,"meta")[str_detect(html_nodes(a,"meta"),"price")][1],"[[:digit:].]+"))
+    c<-as.numeric(str_match(html_nodes(a,"meta")[str_detect(rvest::html_nodes(a,"meta"),"price")][1],"[[:digit:].]+"))
     d<-as.numeric(b[[1]][3])
     print(paste('price',c,'NAV',d,'prem/disc',sprintf("%.2f%%", 100*round(10000*(c/d-1))/10000)))
   }
@@ -103,6 +109,7 @@ getNAV <- function() {
 ########################################################################################################################################################################
 
 #' getting ftse A50 index
+#' @export
 getFTSE50Index <- function (){
   a <- read_html("https://hk.investing.com/indices/ftse-china-a50")
   a<- (html_nodes(a,"td") %>% (function(x) {x[str_detect(x,".*28930.*")]}) %>% html_text())
@@ -116,6 +123,7 @@ getFTSE50Index <- function (){
 ########################################################################################################################################################################
 
 #' XIN0U
+#' @export
 getXIN0UIndex <- function() {
   a <- read_html("http://finance.yahoo.com/quote/XIN0UN.FGI?ltr=1")
   price <-  html_nodes(a,"span") %>% (function(x) {x[str_detect(x,"36px.*4px")]}) %>% html_text()
@@ -131,6 +139,8 @@ getXIN0UIndex <- function() {
 ########################################################################################################################################################################
 
 #' get Index
+#' @export
+#' @importFrom  xml2 read_xml
 
 getIndicies <- function() {
   indices <- c("sh000001","sz399006","sh000300","sh000905",'sh000016')
@@ -148,7 +158,7 @@ getIndicies <- function() {
 ##########################################################################################################################################
 
 #' daily shcomp
-
+#' @export
 getSHCOMP <- function() {
 
   #minuteData <- fread("C:\\Users\\Administrator\\Desktop\\Trading\\minuteData.csv")
@@ -212,6 +222,7 @@ getSHCOMP <- function() {
 
 ###########################################################################################################################################
 #' get BOC rmb rate
+#' @export
 getBOCRmbRate<- function(){
   a <- read_html("http://www.boc.cn/sourcedb/whpj")
   a <- html_nodes(a, "tr")
@@ -231,25 +242,6 @@ getBOCRmbRate<- function(){
 #getBOCRmbRate()
 
 
-###########################################################################################################################################
-#Packages
-# require(data.table)
-# require(stringr)
-# require(pdftools)
-# require(XLConnect)
-# require(rvest)
-# require(httr)
-# library(plyr)
-# library(lubridate)
-# library(ggplot2)
-# library(reshape2)
-# library(Rcpp)
-# library(lubridate)
-# library(PerformanceAnalytics)
-# library(quantmod)
-# library(xts)
-# require(TTR)
-# require("XLConnect")
 #Methods only:
 #getFTSEData()
 #getFTSE50Index()

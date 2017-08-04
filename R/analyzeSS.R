@@ -1,20 +1,9 @@
-#
-# library(Rserve)
-# library(stringr)
-# library(zoo)
-# library(data.table)
-# library(lubridate)
-# library(PerformanceAnalytics)
-# require(xts)
-# require(quantmod)
-
-
 #' analyze SS
+#' @export
+#' @import rvest
+#' @import data.table
+#' @importFrom lubridate ymd
 analyzeSS <- function(symb) {
-
-  require(rvest)
-  require(data.table)
-  require(lubridate)
 
   dt<- getData(symb)
 
@@ -73,7 +62,7 @@ analyzeMin <- function(data) {
 }
 
 
-
+#' @export
 createIndex <- function() {
   benchList<- c("sh000001","sz399006","sz399001","sh000300","sh000016","sh000905")
   for(i in benchList) {
@@ -141,6 +130,7 @@ calcAlpha <- function(symb1) {
   return(res)
 }
 
+#' @export
 calcGen <- function(f) {
   d<- fread(paste0(dataFolder,"test.txt"),header = FALSE)
   d<- d[1:10,c(V2,f(V1)),keyby=list(V1)]
@@ -167,7 +157,7 @@ getCrashReturnAll <- function() {
   return(d)
 }
 
-
+#' @export
 getCorrel<- function(symb1, index) {
   dt1<-getDataPure(symb1)
   dt1[, eval(symb1):= C/shift(C,1)-1 ]
@@ -228,6 +218,8 @@ graphD <- function(symb,dateStr) {
 }
 
 #' general method to get stocks
+#' @export
+#' @import data.table
 getDataPure<- function(symb) {
   print(paste0(" getting ",symb))
   ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))

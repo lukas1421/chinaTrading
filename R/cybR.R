@@ -1,15 +1,5 @@
-
-#All r update
-require(data.table)
-require(ggplot2)
-require(lubridate)
-require(stringr)
-require(reshape2)
-require(PerformanceAnalytics)
-require(quantmod)
-require(httr)
-
 #' generate cyb day file
+#' @export
 generateCYB <- function() {
   cybDay <- fread( paste0(dataFolder,"SZ#399006.txt"),header = TRUE,skip = 1,fill = T,
                    showProgress = TRUE,col.names = c("D","O","H","L","C","V","A"))
@@ -19,6 +9,7 @@ generateCYB <- function() {
 }
 
 #' fill the destination cyb with raw data
+#' @export
 fillData399006<- function() {
   dest <- paste0(cybDir,"SZ399006_2017.csv")
   #source <- "J:\\TDX\\T0002\\export_1m\\SZ#399006.txt"
@@ -39,7 +30,7 @@ fillData399006<- function() {
   return(res)
 }
 
-
+#' @export
 processCYB <- function()  {
 
   resCyb <- data.table()

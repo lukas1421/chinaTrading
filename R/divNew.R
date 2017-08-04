@@ -1,11 +1,5 @@
-require(rvest)
-require(data.table)
-require(lubridate)
-require(stringr)
-require(lubridate)
-require(plyr)
-
 #' get divs
+#' @export
 getDivs <- function() {
   url <- getDivURLNew()
   a<-read_html(url)
@@ -79,6 +73,8 @@ getLastCloseV3 <- function(symb,dat) {
     })
 }
 
+#' get the URL of today's dividend info page from TDX
+#' @export
 getDivURLNew <-function() {
   url<-"http://stock.10jqka.com.cn/jyts_list/"
   a<-read_html(url,encoding = "gbk")

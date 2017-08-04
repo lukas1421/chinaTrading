@@ -1,14 +1,15 @@
-require("data.table")
-require("stringr")
-require("lubridate")
 
 #' calculate sharpe of a specific stock
 
+#' calc sharp
+#' @export
 calcSSSharpe <- function(symb) {
   return(calcSSSharpeDate(symb))
 }
 
-#date
+#' date
+#' @export
+#' @import data.table
 calcSSSharpeDate <- function(symb,dat=ymd("20161231")) {
   d<-getDataPure(symb)
   d[,ret:=(C/shift(C,1)-1)]
@@ -26,14 +27,17 @@ calcSSSharpeDate <- function(symb,dat=ymd("20161231")) {
 
 
 
-#compare all sharpe
+#' compare all sharpe
+#' @export
+#' @import data.table
 compareAllSharpYtd <- function() {
   d<- fread("C:\\Users\\LUke\\Desktop\\Trading\\test.txt",header = FALSE)
   d<- d[, c(V2,calcSSSharpe(V1)), keyby=list(V1)]
   return(d)
 }
 
-#compare all sharpe
+#' compare all sharpe
+#' @export
 compareAllSharpYtdDate <- function(f,...) {
   d<- fread("C:\\Users\\LUke\\Desktop\\Trading\\test.txt",header = FALSE)
   d<- d[, c(V2,f(V1,...)), keyby=list(V1)]
@@ -42,7 +46,7 @@ compareAllSharpYtdDate <- function(f,...) {
   return(d)
 }
 
-
+#' graph sharpe for year to date
 sharpGraph <- function(symb) {
   d<-getDataPure(symb)
   d[,ret:=(C/shift(C,1)-1)]
@@ -56,7 +60,7 @@ sharpGraph <- function(symb) {
 #gen last sharpe and send to TXT file
 
 
-
+#' calculate daily mean
 calcDailyMean <- function(symb) {
   d<-getDataPure(symb)
   d[,ret:=(C/shift(C,1)-1)]
@@ -104,8 +108,7 @@ genReturnMatrix <- function(symb) {
   return(res)
 }
 
-
-
+#' check correl
 checkCorrel <- function(symb1,symb2) {
   d1 <- genReturnMatrix(symb1)
   d2 <- genReturnMatrix(symb2)

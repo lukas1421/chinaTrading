@@ -2,10 +2,12 @@
 % Please edit documentation in R/sharpe.R
 \name{calcSSSharpe}
 \alias{calcSSSharpe}
-\title{calculate sharpe of a specific stock}
+\title{calculate sharpe of a specific stock
+calc sharp}
 \usage{
 calcSSSharpe(symb)
 }
 \description{
 calculate sharpe of a specific stock
+calc sharp
 }
