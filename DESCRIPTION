@@ -20,3 +20,4 @@ Imports: data.table,
     quantmod,
     xts,
     TTR
+RoxygenNote: 6.0.1

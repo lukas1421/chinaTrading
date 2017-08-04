@@ -2,7 +2,7 @@
 tradingFolder <- paste0("C:\\Users\\",userName,"\\Desktop\\Trading\\")
 
 computeWeekend <- function(symb) {
-  m<- getMondayOfWeek(Sys.Date())  
+  m<- getMondayOfWeek(Sys.Date())
   d <- getDataPure(symb)
   friClose <-  d[D<m][.N,C]
   monOpen <- d[D>=m][1, O]
@@ -23,11 +23,11 @@ computeWeekendAll <- function() {
 
 
 m1 <- function(symb) {
-  m<- getMondayOfWeek(Sys.Date())  
+  m<- getMondayOfWeek(Sys.Date())
   d <- getDataPure(symb)
   d<- d[D>=m]
   return(d)
-  
+
 }
 
 
@@ -44,7 +44,7 @@ getPriceForDateAll <- function() {
   res
 }
 
-write.table(d, "C:\\Users\\LUke\\Desktop\\Trading\\may26Close.txt"
-            ,quote = FALSE,sep = "\t", row.names = FALSE)
+# write.table(d, "C:\\Users\\LUke\\Desktop\\Trading\\may26Close.txt"
+#             ,quote = FALSE,sep = "\t", row.names = FALSE)
 
 
