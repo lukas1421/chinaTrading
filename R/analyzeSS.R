@@ -9,7 +9,7 @@
 # require(quantmod)
 
 
-
+#' analyze SS
 analyzeSS <- function(symb) {
 
   require(rvest)
@@ -58,20 +58,15 @@ analyzeSS <- function(symb) {
 
 
 analyzeMin <- function(data) {
-
   colnames(data) <- c("d","t","o","h","l","c","v","vc")
-
-
-    #d <- d[max(t)==1500,keyby=list(d)]
-    d1 <- data[ d!=as.list(data[,list(maxt=max(t)) ,keyby=list(d)][maxt<1500, list(d)]),]
-    d1<-d1[,list(dayH=max(h), dayL=min(l), dayO=o[t==931], dayC=c[t==1500], amMax=max(h[t<1200]),
-          amMin=min(l[t<1200]),pmMax=max(h[t>1200]), pmMin=min(l[t>1200]), amMaxT= t[which.max(h[t<1200])],
-          amMinT=t[which.min(l[t<1200])], pmMaxT=t[t>1200][which.max(h[t>1200])],
-          pmMinT=t[t>1200][which.min(l[t>1200])], amClose=c[t==max(t[t<1200])]),  keyby=list(d)]
-
+  #d <- d[max(t)==1500,keyby=list(d)]
+  d1 <- data[ d!=as.list(data[,list(maxt=max(t)) ,keyby=list(d)][maxt<1500, list(d)]),]
+  d1<-d1[,list(dayH=max(h), dayL=min(l), dayO=o[t==931], dayC=c[t==1500], amMax=max(h[t<1200]),
+               amMin=min(l[t<1200]),pmMax=max(h[t>1200]), pmMin=min(l[t>1200]), amMaxT= t[which.max(h[t<1200])],
+               amMinT=t[which.min(l[t<1200])], pmMaxT=t[t>1200][which.max(h[t>1200])],
+               pmMinT=t[t>1200][which.min(l[t>1200])], amClose=c[t==max(t[t<1200])]),  keyby=list(d)]
   d1[, amho:= amMax/dayO-1]
   d1[, pmcl:= dayC/pmMin-1]
-
 
   #d1[d>ymd("2017/3/1"), max(t), keyby=list(d)]
   return(d1)
@@ -201,7 +196,7 @@ getCorrelGen<-function(symb) {
 ####################################### GRAPH #########################
 graph <- function(symb,dateStr) {
 
-    ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
+  ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
   d<- fread(paste0(dataFolder,ticker,".txt"),skip = 1,fill = T,showProgress = TRUE,col.names = c("D","O","H","L","C","V","A"))
   d <- d[!.N,]
   d[, D:=ymd(D)]
@@ -576,8 +571,6 @@ getFriSharpeAll <- function() {
   res <- res[, calcFriSharpe(V1), keyby=list(V1)]
   res
 }
-
-
 
 
 
