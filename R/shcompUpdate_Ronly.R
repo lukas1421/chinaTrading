@@ -16,7 +16,9 @@
 #   dayDataFolder <-  "G:\\export\\"
 # }
 
-
+#' generating index
+#' @export
+#'
 generateIndexDay <- function() {
   indexDay <- fread(paste0(dayDataFolder,"SH#000001.txt"),header = TRUE,skip = 1,fill = T,
                      showProgress = TRUE,col.names = c("D","O","H","L","C","V","A"))
@@ -44,6 +46,7 @@ fillData000001 <- function() {
   return(res)
 }
 
+#' @import data.table
 processShcomp <- function() {
   res <- data.table()
   tmp <- data.table()
@@ -191,8 +194,22 @@ isPm <- function(x) {
 
 
 #'Graph
-#'
-graphShcomp <- function() {
+#' @export
+graphShcomp1 <- function() {
+  g<-resMerged[,list(Open=O,High=H,Low=L,Close=C),]
+  g<-xts(g,order.by = resMerged$D)
+  candleChart(g['20170701/20170901'], theme="white",type="candles")
+
+  res[, DT:=ymd_hm(paste(D,paste0(str_sub(T,1,str_length(T)-2),":",str_sub(T,str_length(T)-1))))]
+
+  g1<-res[,list(Open=O,High=H,Low=L,Close=C),]
+  g1 <- xts(g1,order.by = res$DT)
+  candleChart(g1['20170717/20170901'], theme="white",type="candles")
+}
+
+#' Graph
+#' @export
+graphShcompD <- function() {
   g<-resMerged[,list(Open=O,High=H,Low=L,Close=C),]
   g<-xts(g,order.by = resMerged$D)
   candleChart(g['20170701/20170901'], theme="white",type="candles")
