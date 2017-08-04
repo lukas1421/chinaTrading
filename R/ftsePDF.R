@@ -26,6 +26,7 @@ userName <- Sys.getenv("USERNAME")
 #' @import XLConnect
 #' @import rvest
 #' @export
+#' @author Lucas
 getFTSEData <- function() {
 
   download.file("https://www.ftse.com/analytics/factsheets/Home/DownloadConstituentsWeights/?indexdetails=XINA50"

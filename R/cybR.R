@@ -164,6 +164,8 @@ processCYB <- function()  {
 
 }
 
+#' graphing
+#' @export
 graphCYB <- function(cybDay)  {
   # daily graph bars
   cybGraph<-cybDay[,list(Open=O,High=H,Low=L,Close=C),]

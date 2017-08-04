@@ -9,3 +9,6 @@ getFTSEData()
 \description{
 download FTSE index constituents sheet
 }
+\author{
+Lucas
+}

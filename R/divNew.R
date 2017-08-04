@@ -1,5 +1,8 @@
 #' get divs
 #' @export
+#' @importFrom  xml2 read_xml
+#' @import data.table
+#' @import stringr
 getDivs <- function() {
   url <- getDivURLNew()
   a<-read_html(url)
@@ -56,6 +59,7 @@ extractDiv1 <- function(tickerFull,x) {
   return(list(cashDiv=cashDiv, cashDivDate=date,  stockDiv=stockDiv1+stockDiv2, stockDivDate = date, lastPrice=lastPrice ))
 }
 
+#' internal method to get close data
 getLastCloseV3 <- function(symb,dat) {
   ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
   stock <- data.table()
@@ -85,6 +89,7 @@ getDivURLNew <-function() {
 }
 
 #' check if stock in dividend list
+#' internal
 isInStockList <- function(symb) {
   tradingFOlder <- paste0("C:\\Users\\",Sys.getenv("username"),"\\Desktop\\Trading\\")
   tickerList<- fread(paste0(tradingFolder,"tickerListDiv",".txt"), header=F)

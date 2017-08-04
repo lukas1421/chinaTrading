@@ -2,10 +2,12 @@
 % Please edit documentation in R/divNew.R
 \name{isInStockList}
 \alias{isInStockList}
-\title{check if stock in dividend list}
+\title{check if stock in dividend list
+internal}
 \usage{
 isInStockList(symb)
 }
 \description{
 check if stock in dividend list
+internal
 }
