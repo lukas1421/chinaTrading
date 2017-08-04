@@ -5,9 +5,9 @@ require(stringr)
 require(lubridate)
 require(plyr)
 
-#'get all divs
-#'
-#'
+
+#' get divs
+
 getDivs <- function() {
   url <- getDivURLNew()
   a<-read_html(url)
