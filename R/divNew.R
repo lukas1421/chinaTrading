@@ -7,8 +7,8 @@ require(plyr)
 
 
 #' get divs
-
 getDivs <- function() {
+
   url <- getDivURLNew()
   a<-read_html(url)
   l<-html_nodes(a,"table")
@@ -51,15 +51,13 @@ getDivs <- function() {
 
 
 ####################################################### CODE ENDS HERE ###############################################################
-
-
 extractDiv1 <- function(tickerFull,x) {
   date <- Sys.Date()
-  cashDiv = ifelse(is.na(as.numeric(str_match(x,"æ´¾(.*)(?:\\s+)?å…ƒ")[2])),0,as.numeric(str_match(x,"æ´¾(.*)(?:\\s+)?å…ƒ")[2]))
-  #cashDivDate = (str_match(x, "æ´¾æ¯æ—¥(\\d{4}-\\d{2}-\\d{2})")[2])
-  stockDiv1 = ifelse(is.na(as.numeric(str_match(x,"[é€](.*?)(?:\\s+)?è‚¡" )[2])),0,as.numeric(str_match(x,"[é€](.*?)(?:\\s+)?è‚¡" )[2]))
-  stockDiv2 = ifelse(is.na(as.numeric(str_match(x,"[è½¬](.*?)(?:\\s+)?è‚¡" )[2])),0,as.numeric(str_match(x,"[è½¬](.*?)(?:\\s+)?è‚¡" )[2]))
-  dateOff <- ifelse(weekdays(date)=="æ˜ŸæœŸä¸€", 3,1)
+  cashDiv = ifelse(is.na(as.numeric(str_match(x,"ÅÉ(.*)(?:\\s+)?Ôª")[2])),0,as.numeric(str_match(x,"ÅÉ(.*)(?:\\s+)?Ôª")[2]))
+  #cashDivDate = (str_match(x, "ÅÉÏ¢ÈÕ(\\d{4}-\\d{2}-\\d{2})")[2])
+  stockDiv1 = ifelse(is.na(as.numeric(str_match(x,"[ËÍ](.*?)(?:\\s+)?¹É" )[2])),0,as.numeric(str_match(x,"[ËÍ](.*?)(?:\\s+)?¹É" )[2]))
+  stockDiv2 = ifelse(is.na(as.numeric(str_match(x,"[×ª](.*?)(?:\\s+)?¹É" )[2])),0,as.numeric(str_match(x,"[×ª](.*?)(?:\\s+)?¹É" )[2]))
+  dateOff <- ifelse(weekdays(date)=="ÐÇÆÚÒ»", 3,1)
   lastPrice <- as.numeric(getLastCloseV3(tickerFull,date-dateOff))
   return(list(cashDiv=cashDiv, cashDivDate=date,  stockDiv=stockDiv1+stockDiv2, stockDivDate = date, lastPrice=lastPrice ))
 }
@@ -86,7 +84,7 @@ getDivURLNew <-function() {
   a<-read_html(url,encoding = "gbk")
   l<-html_nodes(a,"a")
   l1<-xml2::xml_attrs(l)
-  return((l1[which(lapply(l1,function(x) grep("æ²ªæ·±è‚¡å¸‚äº¤æ˜“æç¤º",x))>0)[1]])[[1]] %>%
+  return((l1[which(lapply(l1,function(x) grep("»¦Éî¹ÉÊÐ½»Ò×ÌáÊ¾",x))>0)[1]])[[1]] %>%
            (function(x) x[which(names(x)=="href")]))
 }
 

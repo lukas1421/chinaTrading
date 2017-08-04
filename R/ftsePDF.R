@@ -219,10 +219,10 @@ getBOCRmbRate<- function(){
   a <- html_text(a)
   a <-iconv(a,"utf-8","gb2312")
 
-  a<-str_split(str_trim(a[str_detect(a,"ç¾Žå…ƒ")]),"\\s+")
+  a<-str_split(str_trim(a[str_detect(a,"ÃÀÔª")]),"\\s+")
   a[[1]] <- NULL
   a <- data.table(matrix(unlist(a),nrow = length(a),byrow = T))
-  #names(a) <- c("è´§å¸åç§°","çŽ°æ±‡ä¹°å…¥ä»·"," çŽ°é’žä¹°å…¥ä»·","çŽ°æ±‡å–å‡ºä»·","çŽ°é’žå–å‡ºä»·","ä¸­è¡ŒæŠ˜ç®—ä»·","å‘å¸ƒæ—¥æœŸ","å‘å¸ƒæ—¶é—´")
+  #names(a) <- c("»õ±ÒÃû³Æ","ÏÖ»ãÂòÈë¼Û"," ÏÖ³®ÂòÈë¼Û","ÏÖ»ãÂô³ö¼Û","ÏÖ³®Âô³ö¼Û","ÖÐÐÐÕÛËã¼Û","·¢²¼ÈÕÆÚ","·¢²¼Ê±¼ä")
   names(a) <- c("currency","Buy wire"," Buy cash","Sell wire","Sell Cash","BOC","Date","Time")
   #a[, BOC:=as.numeric(BOC)/100]
   print(as.numeric(a$BOC)/100)
