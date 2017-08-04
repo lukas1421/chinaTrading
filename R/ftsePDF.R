@@ -242,19 +242,29 @@ getBOCRmbRate<- function(){
 
 #getBOCRmbRate()
 
-
+#' run daily tasks
+#' @export
 #Methods only:
-#getFTSEData()
-#getFTSE50Index()
-#getNAV()
-#getXIN0UIndex()
-#getIndicies()
-#getBOCRmbRate()
+runMorningTasks <- function() {
+  getFTSEData()
+  getFTSE50Index()
+  getNAV()
+  getXIN0UIndex()
+  getIndicies()
+  getBOCRmbRate()
+}
 
-#get wtd max and min everyday
-#getWtdMaxMinAll()
-#getMAAll(20)
+#' get week max/min + ma
+#' @export
+getMaxMinMA <- function() {
+  getWtdMaxMinAll()
+  getMAAll(20)
+}
+
+#' get sharpe
+#' @export
 #compute ytd sharpe and output to file
-#compareAllSharpYtd()
-
+computeSharp <- function() {
+  compareAllSharpYtd()
+}
 

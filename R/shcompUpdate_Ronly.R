@@ -27,6 +27,8 @@ generateIndexDay <- function() {
 }
 
 
+#'fill data for 000001
+#'@export
 fillData000001 <- function() {
   dest <- paste0(mainDir,"SH000001_2017.csv")
   source <- paste0(minuteDataFolder,"SH#000001.txt")

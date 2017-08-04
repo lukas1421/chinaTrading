@@ -20,5 +20,6 @@ Imports:
     quantmod,
     xts,
     TTR,
-    data.table
+    data.table,
+    zoo
 RoxygenNote: 6.0.1
