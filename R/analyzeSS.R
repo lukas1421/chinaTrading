@@ -519,20 +519,27 @@ getWtdMaxMin <- function(symb) {
   }
 }
 
-#get week to date max and min for all stocks
+#' get week to date max and min for all stocks
+#' @export
 getWtdMaxMinAll <- function() {
-  res<- fread(paste0(tradingFolder,"test.txt"),header = FALSE)
+  print("getting wtd max min all")
+  print(getTradingFolder())
+  res<- fread(paste0(getTradingFolder(),"test.txt"),header = FALSE)
   res<- res[,(getWtdMaxMin(V1)),keyby=list(V1)]
-  write.table(res, paste0(tradingFolder,"wtdMaxMin.txt"),quote = FALSE,sep = "\t", row.names = FALSE)
+  write.table(res, paste0(getTradingFolder(),"wtdMaxMin.txt"),quote = FALSE,sep = "\t", row.names = FALSE)
   res
 }
 
-
+#' ytd low date
+#' @export
 getYtdLowDate <- function(symb) {
   data <- getDataPure(symb)
   return(list(lowDate=data[D>ymd("20170101")][min(L)==L][1][,D]))
 }
 
+#' getYtdpercentile
+#' @export
+#' @param symb the stock in question
 getYtdPercentile <- function(symb) {
   d <- getDataPure(symb)
   d <- d[D>ymd("20161231")]

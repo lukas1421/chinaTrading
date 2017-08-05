@@ -38,7 +38,7 @@ getDivs <- function() {
 
   res<-res[inList==TRUE, ]
 
-  write.table(res, paste0(tradingFolder,"div.txt"),quote = FALSE,sep = "\t")
+  write.table(res, paste0(getTradingFolder(),"div.txt"),quote = FALSE,sep = "\t")
   print(res)
   invisible()
 }
@@ -91,8 +91,7 @@ getDivURLNew <-function() {
 #' check if stock in dividend list
 #' internal
 isInStockList <- function(symb) {
-  tradingFOlder <- paste0("C:\\Users\\",Sys.getenv("username"),"\\Desktop\\Trading\\")
-  tickerList<- fread(paste0(tradingFolder,"tickerListDiv",".txt"), header=F)
+  tickerList<- fread(paste0(getTradingFolder(),"tickerListDiv",".txt"), header=F)
   sum(tickerList==symb)>0
 }
 

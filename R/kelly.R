@@ -3,8 +3,6 @@
 calcKelly<-function(x) {
 
   #ifelse(length(x[x!=0]) > 0, x<-x[x!=0], 0);
-
-
   m <- mean(x)
   downMean <- mean(x[x<0])
   upMean <- mean(x[x>0])

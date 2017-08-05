@@ -80,7 +80,7 @@ getFTSEData <- function() {
 
 updateFTSEWeights <- function() {
   res <- getFTSEData()
-  wb <- loadWorkbook(paste0("C:\\Users\\",Sys.getenv("USERNAME"),"\\Desktop\\Trading\\new.xlsx"),create = TRUE)
+  wb <- loadWorkbook(paste0("C:\\Users\\",Sys.getenv("USERNAME"),"\\Desktop\\Trading\\","new.xlsx"),create = TRUE)
   createSheet(wb,"Sheet1")
   writeWorksheet(wb,res,"Sheet1",startRow = 1,startCol = 1, header = T)
   saveWorkbook(wb)
@@ -91,6 +91,7 @@ updateFTSEWeights <- function() {
 #' getting NAVs
 #' @export
 #' @import xml2
+#' @import stringr
 
 getNAV <- function() {
 
@@ -101,7 +102,7 @@ getNAV <- function() {
     #a <- read_html(httr::GET(paste("https://www.bloomberg.com/quote/",i, sep=""),use_proxy("127.0.0.1",1080)))
     a <- read_html(httr::GET(paste("https://www.bloomberg.com/quote/",i, sep="")))
     b <- html_nodes(a,"div") %>% html_text() %>% (function(x) {x[str_sub(str_trim(x),1,3) == "NAV"]})
-    b<-(stringr::str_split(b[[1]],"\\s\\s+"))
+    b<-(str_split(b[[1]],"\\s\\s+"))
     c<-as.numeric(str_match(html_nodes(a,"meta")[str_detect(rvest::html_nodes(a,"meta"),"price")][1],"[[:digit:].]+"))
     d<-as.numeric(b[[1]][3])
     print(paste('price',c,'NAV',d,'prem/disc',sprintf("%.2f%%", 100*round(10000*(c/d-1))/10000)))
@@ -210,7 +211,7 @@ getSHCOMP <- function() {
 
 
   print(res)
-  write.table(res,"C:\\Users\\LUke\\Desktop\\Trading\\shcomp.txt",quote = FALSE,sep = "\t",row.names = FALSE)
+  write.table(res,paste0(getTradingFolder(),"shcomp.txt"),quote = FALSE,sep = "\t",row.names = FALSE)
   #print(res3)
   #wb <- loadWorkbook("C:\\Users\\LUke\\Desktop\\Trading\\new.xlsx",create = TRUE)
   #createSheet(wb,"Sheet2")
@@ -254,10 +255,14 @@ runMorningTasks <- function() {
   getBOCRmbRate()
 }
 
+#' wrapper
+#' @xport
+getWtdMaxMinFn <- function() {
+  getWtdMaxMinAll()
+}
 #' get week max/min + ma
 #' @export
 getMaxMinMA <- function() {
-  getWtdMaxMinAll()
   getMAAll(20)
 }
 

@@ -1,6 +1,6 @@
 
-tradingFolder <- paste0("C:\\Users\\",userName,"\\Desktop\\Trading\\")
-
+#'
+#'@export
 computeWeekend <- function(symb) {
   m<- getMondayOfWeek(Sys.Date())
   d <- getDataPure(symb)
@@ -15,8 +15,10 @@ computeWeekend <- function(symb) {
   return(list(percentile=percentile , weekreturn=(lastClose/friClose-1)))
 }
 
+#'
+#'@export
 computeWeekendAll <- function() {
-  res<- fread(paste0(tradingFolder,"test.txt"),header = FALSE)
+  res<- fread(paste0(getTradingFolder(),"test.txt"),header = FALSE)
   res<- res[,computeWeekend(V1),keyby=list(V1)]
   res
 }
@@ -48,3 +50,5 @@ getPriceForDateAll <- function() {
 #             ,quote = FALSE,sep = "\t", row.names = FALSE)
 
 
+
+#weekend percentile all

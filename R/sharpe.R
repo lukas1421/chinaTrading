@@ -31,7 +31,7 @@ calcSSSharpeDate <- function(symb,dat=ymd("20161231")) {
 #' @export
 #' @import data.table
 compareAllSharpYtd <- function() {
-  d<- fread("C:\\Users\\LUke\\Desktop\\Trading\\test.txt",header = FALSE)
+  d<- fread(paste0(getTradingFolder(),"test.txt"),header = FALSE)
   d<- d[, c(V2,calcSSSharpe(V1)), keyby=list(V1)]
   return(d)
 }
@@ -39,14 +39,16 @@ compareAllSharpYtd <- function() {
 #' compare all sharpe
 #' @export
 compareAllSharpYtdDate <- function(f,...) {
-  d<- fread("C:\\Users\\LUke\\Desktop\\Trading\\test.txt",header = FALSE)
+  d<- fread(paste0(getTradingFolder(),"test.txt"),header = FALSE)
   d<- d[, c(V2,f(V1,...)), keyby=list(V1)]
   d[, SR:= ifelse(is.na(SR),0,round(SR,1))]
-  write.table(d[, list(V1,SR)], paste0(tradingFolder,"sharpe.txt"),quote = FALSE,sep = "\t",row.names = FALSE, col.names =FALSE)
+  write.table(d[, list(V1,SR)], paste0(getTradingFolder(),"sharpe.txt"),quote = FALSE,sep = "\t",row.names = FALSE, col.names =FALSE)
   return(d)
 }
 
 #' graph sharpe for year to date
+#' @import zoo
+#' @export
 sharpGraph <- function(symb) {
   d<-getDataPure(symb)
   d[,ret:=(C/shift(C,1)-1)]
@@ -61,6 +63,7 @@ sharpGraph <- function(symb) {
 
 
 #' calculate daily mean
+#' @export
 calcDailyMean <- function(symb) {
   d<-getDataPure(symb)
   d[,ret:=(C/shift(C,1)-1)]
@@ -69,7 +72,8 @@ calcDailyMean <- function(symb) {
 }
 
 
-
+#' calculate sd
+#' @export
 calcDailyMeanSD <- function(symb) {
   #symbName <- (substitute(symb))
 
@@ -109,6 +113,7 @@ genReturnMatrix <- function(symb) {
 }
 
 #' check correl
+#' @export
 checkCorrel <- function(symb1,symb2) {
   d1 <- genReturnMatrix(symb1)
   d2 <- genReturnMatrix(symb2)

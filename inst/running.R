@@ -5,5 +5,7 @@ getNAV()
 getXIN0UIndex()
 getIndicies()
 getBOCRmbRate()
+
+getWtdMaxMinAll()
 getMAAll(20)
 compareAllSharpYtd()

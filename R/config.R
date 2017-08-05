@@ -1,7 +1,7 @@
 
 #for desktop
 
-
+#print("testing if can be printed")
 userName <- Sys.getenv("RSTUDIO_USER_IDENTITY")
 tradingFolder <- paste0("C:\\Users\\",Sys.getenv("username"),"\\Desktop\\Trading\\")
 
