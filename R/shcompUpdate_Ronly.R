@@ -45,7 +45,7 @@ fillData000001 <- function() {
   } else if(Sys.getenv("USERNAME")=="Luke Shi") {
     mainDir <- "H:\\Data\\mainBoardR\\"
     dayDataFolder <-  "G:\\export\\"
-    dayDataFolder <-  "G:\\export_1m\\"
+    minuteDataFolder <-  "G:\\export_1m\\"
   }
 
   dest <- paste0(mainDir,"SH000001_2017.csv")

@@ -8,7 +8,7 @@ generateCYBDay <- function() {
   } else if(Sys.getenv("USERNAME")=="Luke Shi") {
     cybDir <- "H:\\Data\\cybR\\"
     dayDataFolder <-  "G:\\export\\"
-    dayDataFolder <-  "G:\\export_1m\\"
+    minuteDataFolder <-  "G:\\export_1m\\"
   }
   cybDay <- fread( paste0(dataFolder,"SZ#399006.txt"),header = TRUE,skip = 1,fill = T,
                    showProgress = TRUE,col.names = c("D","O","H","L","C","V","A"))
@@ -31,7 +31,7 @@ generateCYBMin <- function() {
   } else if(Sys.getenv("USERNAME")=="Luke Shi") {
     cybDir <- "H:\\Data\\cybR\\"
     dayDataFolder <-  "G:\\export\\"
-    dayDataFolder <-  "G:\\export_1m\\"
+    minuteDataFolder <-  "G:\\export_1m\\"
   }
 
   resCyb <- data.table()
@@ -70,7 +70,7 @@ fillData399006<- function() {
   } else if(Sys.getenv("USERNAME")=="Luke Shi") {
     cybDir <- "H:\\Data\\cybR\\"
     dayDataFolder <-  "G:\\export\\"
-    dayDataFolder <-  "G:\\export_1m\\"
+    minuteDataFolder <-  "G:\\export_1m\\"
   }
 
 
