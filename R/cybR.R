@@ -10,7 +10,7 @@ generateCYBDay <- function() {
     dayDataFolder <-  "G:\\export\\"
     minuteDataFolder <-  "G:\\export_1m\\"
   }
-  cybDay <- fread( paste0(dataFolder,"SZ#399006.txt"),header = TRUE,skip = 1,fill = T,
+  cybDay <- fread( paste0(dayDataFolder,"SZ#399006.txt"),header = TRUE,skip = 1,fill = T,
                    showProgress = TRUE,col.names = c("D","O","H","L","C","V","A"))
 
   cybDay <- cybDay[!.N,]

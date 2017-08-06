@@ -65,7 +65,7 @@ getLastCloseV3 <- function(symb,dat) {
   stock <- data.table()
   tryCatch(
     {
-      stock <- fread(paste0(dataFolder,ticker, ".txt"),header = TRUE,skip = 1,fill = T,
+      stock <- fread(paste0(getDayDataFolder(),ticker, ".txt"),header = TRUE,skip = 1,fill = T,
                      showProgress = TRUE,col.names = c("D","O","H","L","C","V","A"))
       stock <- stock [!.N,]
       stock [, D:=ymd(D)]

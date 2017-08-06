@@ -16,9 +16,11 @@ compareAllSharpYtd()
 srd<-compareAllSharpYtd()
 srd[order(-SR)][1:100][sd<0.3][SR>2.8]
 
-#
+#get divs
 getDivs()
 
+
+#bench & benchlist
 # Daily task
 
 

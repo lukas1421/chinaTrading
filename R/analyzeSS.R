@@ -66,7 +66,9 @@ analyzeMin <- function(data) {
 createIndex <- function() {
   benchList<- c("sh000001","sz399006","sz399001","sh000300","sh000016","sh000905")
   for(i in benchList) {
-    assign(i, getDataPure(i),envir=.GlobalEnv)
+    #assign(i, getDataPure(i),envir=.GlobalEnv)
+    #assign(i, getDataPure(i),envir=as.environment("package:chinaTrading"))
+    assign(i,getDataPure(i),envir=parent.frame(1))
   }
 }
 
@@ -132,7 +134,7 @@ calcAlpha <- function(symb1) {
 
 #' @export
 calcGen <- function(f) {
-  d<- fread(paste0(dataFolder,"test.txt"),header = FALSE)
+  d<- fread(paste0(getDayDataFolder(),"test.txt"),header = FALSE)
   d<- d[1:10,c(V2,f(V1)),keyby=list(V1)]
   names(d)[1:2] <- c("Ticker","Ch")
   return(d)
@@ -159,6 +161,7 @@ getCrashReturnAll <- function() {
 
 #' @export
 getCorrel<- function(symb1, index) {
+
   dt1<-getDataPure(symb1)
   dt1[, eval(symb1):= C/shift(C,1)-1 ]
   #print(dt1)
@@ -177,6 +180,7 @@ getCorrel<- function(symb1, index) {
 #' correl between one stock and all benches
 getCorrelGen<-function(symb) {
   benchList<- c("sh000001","sz399006","sz399001","sh000300","sh000016","sh000905")
+
   dt <- data.table(benchList)
   dt[, x:= getCorrel(symb, benchList), keyby=list(benchList)]
   print(dt[order(-x)][1])
@@ -196,12 +200,12 @@ graph <- function(symb,dateStr) {
 }
 
 graphD <- function(symb,dateStr) {
-  require(xts)
-  require(quantmod)
+  #require(xts)
+  #require(quantmod)
   #dataFolder <- "J:\\TDX\\T0002\\export_1m\\"
 
   ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
-  d<- fread(paste0(dataFolder,ticker,".txt"),skip = 1,fill = T,showProgress = TRUE,col.names = c("D","T","O","H","L","C","V","A"))
+  d<- fread(paste0(getDayDataFolder(),ticker,".txt"),skip = 1,fill = T,showProgress = TRUE,col.names = c("D","T","O","H","L","C","V","A"))
   d <- d[!.N,]
   d[, D:=ymd(D)]
   d[, DT:=ymd_hm(paste(D,paste0(str_sub(T,1,str_length(T)-2),":",str_sub(T,str_length(T)-1))))]
@@ -223,7 +227,7 @@ graphD <- function(symb,dateStr) {
 getDataPure<- function(symb) {
   print(paste0(" getting ",symb))
   ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
-  d<- fread(paste0(dataFolder,ticker,".txt"),skip = 1,fill = T,showProgress = TRUE,col.names = c("D","O","H","L","C","V","A"))
+  d<- fread(paste0(getDayDataFolder(),ticker,".txt"),skip = 1,fill = T,showProgress = TRUE,col.names = c("D","O","H","L","C","V","A"))
   d <- d[!.N,]
   d[, D:=ymd(D)]
   return(d[,list(D,O,H,L,C)])
@@ -233,7 +237,7 @@ getDataPureD<- function(symb) {
   print(paste0(" getting ",symb))
   print(minuteDataFolder)
   ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
-  d<- fread(paste0(minuteDataFolder,ticker,".txt"),skip = 1,fill = T,showProgress = TRUE,col.names = c("D","T","O","H","L","C","V","A"))
+  d<- fread(paste0(getMinuteDataFolder(),ticker,".txt"),skip = 1,fill = T,showProgress = TRUE,col.names = c("D","T","O","H","L","C","V","A"))
   d <- d[!.N,]
   d[, D:=ymd(D)]
   d[, DT:=ymd_hm(paste(D,paste0(str_sub(T,1,str_length(T)-2),":",str_sub(T,str_length(T)-1))))]
@@ -245,7 +249,7 @@ getData <- function(symb) {
   #dataFolder <- "J:\\TDX\\T0002\\export\\"
   ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
   #d<- fread(paste0(dataFolder,ticker,".txt"))
-  d<- fread(paste0(dataFolder,ticker,".txt"),skip = 1,fill = T,showProgress = TRUE,col.names = c("D","O","H","L","C","V","A"))
+  d<- fread(paste0(getDayDataFolder(),ticker,".txt"),skip = 1,fill = T,showProgress = TRUE,col.names = c("D","O","H","L","C","V","A"))
   d <- d[!.N,]
   d[, D:=ymd(D)]
   d[, ma5:=rollapplyr(C,5,mean, fill=NA)]
@@ -415,20 +419,21 @@ getWeekdayFunAll <- function(...) {
 
 getWeekdayCL <- function() {
   #d<- fread("C:\\Users\\LUke\\Desktop\\Trading\\test.txt",header = FALSE)
-  d<- fread(paste0("C:\\Users\\",Sys.getenv("USERNAME"), "\\Desktop\\Trading\\test.txt",header = FALSE))
+  d<- fread(paste0(getTradingFolder(),"test.txt"),header = FALSE)
   d<-d[, c(V2,computeWeekdayCLPure(V1)), keyby=list(V1)]
   print(d)
   return(d)
 }
 
 #' get bench of a stock and output to folder
+#' @export
 getBenchMark <- function() {
-  d<- fread("C:\\Users\\LUke\\Desktop\\Trading\\test.txt",header = FALSE)
+  createIndex()
+  d<- fread(paste0(getTradingFolder(),"test.txt"),header = FALSE)
   d<- d[, c(V2,getCorrelGen(V1)), keyby=list(V1)]
   #print(d)
-
   #filling bench
-  write.table(d, paste0("C:\\Users\\",Sys.getenv("USERNAME"),"\\Desktop\\Trading\\bench.txt"),quote = FALSE,sep = "\t")
+  write.table(d, paste0(getTradingFolder(),"bench.txt"),quote = FALSE,sep = "\t")
   return(d)
 }
 

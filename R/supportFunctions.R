@@ -14,3 +14,63 @@ getMondayOfWeek <- function(dat) {
 getTradingFolder <- function() {
   return(paste0("C:\\Users\\",Sys.getenv("USERNAME"),"\\Desktop\\Trading\\"))
 }
+
+
+#' get day data folder
+getDayDataFolder <- function() {
+
+  if(Sys.getenv("USERNAME")=="LUke") {
+    mainDir <- "J:\\Data\\mainBoardR\\"
+    dayDataFolder <- "J:\\TDX\\T0002\\export\\"
+    minuteDataFolder <- "J:\\TDX\\T0002\\export_1m\\"
+  } else if(Sys.getenv("USERNAME")=="Luke Shi") {
+    mainDir <- "H:\\Data\\mainBoardR\\"
+    dayDataFolder <-  "G:\\export\\"
+    minuteDataFolder <-  "G:\\export_1m\\"
+  }
+
+  return(dayDataFolder)
+}
+
+#' get min data folder
+getMinuteDataFolder <- function() {
+
+  if(Sys.getenv("USERNAME")=="LUke") {
+    mainDir <- "J:\\Data\\mainBoardR\\"
+    dayDataFolder <- "J:\\TDX\\T0002\\export\\"
+    minuteDataFolder <- "J:\\TDX\\T0002\\export_1m\\"
+  } else if(Sys.getenv("USERNAME")=="Luke Shi") {
+    mainDir <- "H:\\Data\\mainBoardR\\"
+    dayDataFolder <-  "G:\\export\\"
+    minuteDataFolder <-  "G:\\export_1m\\"
+  }
+
+  return(minuteDataFolder)
+}
+
+#' get main board folder
+getMainboardFolder <- function(){
+
+  if(Sys.getenv("USERNAME")=="LUke") {
+    mainDir <- "J:\\Data\\mainBoardR\\"
+    dayDataFolder <- "J:\\TDX\\T0002\\export\\"
+    minuteDataFolder <- "J:\\TDX\\T0002\\export_1m\\"
+  } else if(Sys.getenv("USERNAME")=="Luke Shi") {
+    mainDir <- "H:\\Data\\mainBoardR\\"
+    dayDataFolder <-  "G:\\export\\"
+    minuteDataFolder <-  "G:\\export_1m\\"
+  }
+
+  return(mainDir)
+}
+
+#' get cyb folder
+getCYBFolder <- function() {
+  if(Sys.getenv("USERNAME")=="LUke") {
+    cybDir <- "J:\\Data\\cybR\\"
+  } else if(Sys.getenv("USERNAME")=="Luke Shi") {
+    cybDir <- "H:\\Data\\cybR\\"
+  }
+  return(cybDir)
+}
+
