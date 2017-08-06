@@ -10,6 +10,6 @@ if(Sys.getenv("USERNAME")=="LUke") {
 fillData399006()
 cybIndex<-generateCYBDay()
 cybMin<-generateCYBMin()
-cybMerged<-process(cybIndex, cybMin)
+cybMerged<-processCYB(cybIndex, cybMin)
 graphCYB(cybIndex)
 graphCYBD(cybMin)

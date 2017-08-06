@@ -71,6 +71,16 @@ fillData000001 <- function() {
 #' @export
 generateIndexMin <- function() {
 
+  if(Sys.getenv("USERNAME")=="LUke") {
+    mainDir <- "J:\\Data\\mainBoardR\\"
+    dayDataFolder <- "J:\\TDX\\T0002\\export\\"
+    minuteDataFolder <- "J:\\TDX\\T0002\\export_1m\\"
+  } else if(Sys.getenv("USERNAME")=="Luke Shi") {
+    mainDir <- "H:\\Data\\mainBoardR\\"
+    dayDataFolder <-  "G:\\export\\"
+    dayDataFolder <-  "G:\\export_1m\\"
+  }
+
   res <- data.table()
   tmp <- data.table()
 
@@ -78,7 +88,6 @@ generateIndexMin <- function() {
     #assign(paste0("f",i),fread(paste0(mainDir,"SH000001_", i,".csv")))
     #assign(tmp,fread(paste0(mainDir,"SH000001_", i,".csv")))
     tmp <- fread(paste0(mainDir,"SH000001_", i,".csv"))
-    #tmp <- get(paste0("f",i))
     if(length(names(tmp)) > 6) {
       tmp[, names(tmp)[7:length(names(tmp))]:=NULL]
     }
@@ -101,8 +110,6 @@ processShcomp <- function(indexDay,indexMin) {
   res <- data.table()
   tmp <- data.table()
 
-
-
   res1<-melt.data.table(indexMin, id.vars = c("D","T"))
   res2 <- dcast.data.table(res1, D ~ variable+T, sep = "")
 
@@ -115,9 +122,10 @@ processShcomp <- function(indexDay,indexMin) {
   }
 
 
-  tradeTime <- c(931:959,1000:1059,1100:1130,1300:1359,1400:1459,1500)
+  #tradeTime <- c(931:959,1000:1059,1100:1130,1300:1359,1400:1459,1500)
   amTime <- c(931:959,1000:1059,1100:1130)
   pmTime <- c(1300:1359,1400:1459,1500)
+  tradeTime <- c(amTime, pmTime)
 
   #max min
   res2[, dayMax:=max(unlist(mget(paste0("H",tradeTime)))), keyby=list(D)]
@@ -138,9 +146,7 @@ processShcomp <- function(indexDay,indexMin) {
 
   # MERGE ########################################################################################
   resMerged <- merge(indexDay,res2,by = "D" )
-
   resMerged[, weekday:= wday(D)-1]
-
   resMerged[, range:= log(dayMax/dayMin)]
   resMerged[, first10:= log(C940/O931)]
   resMerged[, first1:=log(C931/O931)]
@@ -195,15 +201,12 @@ processShcomp <- function(indexDay,indexMin) {
   resMerged[, AMPMRatioY:= shift(AMPMRatio,1)]
   resMerged[, HOCHRatioYCat:= cut(HOCHRatioY,breaks = quantile(HOCHRatioY,na.rm = T),include.lowest = T)]
   resMerged[, AMPMRatioYCat:= cut(AMPMRatioY,quantile(AMPMRatioY,na.rm = T),include.lowest = T)]
-
-
   resMerged[is.na(percentileY), percentileY:= 0.5]
   resMerged[, percentileCat:=cut(percentile, breaks = quantile(percentile),include.lowest = T)]
   resMerged[, percentileYCat:=cut(percentileY, breaks = quantile(percentileY,na.rm = T),include.lowest = T)]
   resMerged[, weekday:= wday(D)-1]
   print(resMerged)
   resMerged
-
 }
 
 #' testing if AM
@@ -232,8 +235,6 @@ getTradingTime <- function() {
 # assign(paste0("f",1999),fread(paste0(mainDir,"SH000001_", 1999,".csv")))
 # assign(paste0("f",2000),fread(paste0(mainDir,"SH000001_", 2000,".csv")))
 # assign(paste0("f",2001),fread(paste0(mainDir,"SH000001_", 2001,".csv")))
-#
-#
 # data.table::rbindlist(list(f1999,f2000),use.names = T,fill = T)
 
 

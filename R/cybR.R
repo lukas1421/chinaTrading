@@ -224,10 +224,11 @@ processCYB <- function(cybDay, cybMin)  {
   cybMerged[, HOCHRatioYCat:= cut(HOCHRatioY,breaks = quantile(HOCHRatioY,na.rm = T),include.lowest = T)]
   cybMerged[, AMPMRatioYCat:= cut(AMPMRatioY,quantile(AMPMRatioY,na.rm = T),include.lowest = T)]
 
-  invisible()
+  cybMerged
 }
 
 #' graphing
+#' @param cybDay cybDayData
 #' @export
 graphCYB <- function(cybDay)  {
   g <- xts(cybDay[,list(Open=O,High=H,Low=L,Close=C),],order.by = cybDay$D)
@@ -236,6 +237,7 @@ graphCYB <- function(cybDay)  {
 }
 
 #' graphing detailed
+#' @param cybMin minute data of cyb
 #' @export
 graphCYBD <- function(cybMin) {
   #Detailed Graph CYB

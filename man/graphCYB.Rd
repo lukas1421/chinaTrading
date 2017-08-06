@@ -6,6 +6,9 @@
 \usage{
 graphCYB(cybDay)
 }
+\arguments{
+\item{cybDay}{cybDayData}
+}
 \description{
 graphing
 }

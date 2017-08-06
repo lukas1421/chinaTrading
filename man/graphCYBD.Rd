@@ -6,6 +6,9 @@
 \usage{
 graphCYBD(cybMin)
 }
+\arguments{
+\item{cybMin}{minute data of cyb}
+}
 \description{
 graphing detailed
 }
