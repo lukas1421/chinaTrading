@@ -142,7 +142,6 @@ getIndicies <- function() {
 #' @export
 getSHCOMP <- function() {
 
-  #minuteData <- fread("C:\\Users\\Administrator\\Desktop\\Trading\\minuteData.csv")
 
   AMOPENT = 931
   AMCLOSET = 1129
@@ -151,51 +150,19 @@ getSHCOMP <- function() {
 
   #minuteData <- fread("C:\\Users\\LUke\\Desktop\\Trading\\shcompDate.txt")
 
-  minuteData <- fread("J:\\TDX\\T0002\\export_1m\\SH#000001.txt", skip = 1, fill=T, showProgress = T, col.names =c("D","T", "O","H","L","C","V","A") )
+  minuteData <- fread(paste0(getMinuteDataFolder(),"SH#000001.txt"), skip = 1, fill=T, showProgress = T, col.names =c("D","T", "O","H","L","C","V","A") )
   minuteData <- minuteData[!.N,]
   minuteData[, D:=ymd(D)]
-  minuteData<-minuteData[D==ymd("2017-5-12"),list(D,T,O,H,L,C)]
+  minuteData<-minuteData[D==D[.N],list(D,T,O,H,L,C)]
 
   res <- minuteData[, list("AmOpen"=O[T==AMOPENT], "931"=C[T==AMOPENT], "935"=C[T==935], "940"=C[T==940], "AmClose"=C[T==AMCLOSET], "AmMax" = max(H[T<1200]), "AmMin"=min(L[T<1200]),
                            "AmMaxT" = T[T<1200][which.max(H[T<1200])], "AmMinT" = T[T<1200][which.min(L[T<1200])], "PmOpen"=O[T==PMOPENT], "Pm1310"=C[T==1310],"PmClose"=C[T==1459],
                            "PmMax" = max(H[T>1259]), "PmMin"=min(L[T>1259]), "PmMaxT" = T[T>1259][which.max(H[T>1259])], "PmMinT" = T[T>1259][which.min(L[T>1259])]
   ), ]
 
-  #minuteData[, dayHigh:= max(H), keyby=list(Date)]
-  #minuteData[, dayLow:= min(L), keyby=list(Date)]
-  #minuteData[, dayMaxT:=T[which.max(H)], keyby=list(Date)]
-  #minuteData[, dayMinT:=T[which.min(L)], keyby=list(Date)]
-  #minuteData[, dayRange:= log(dayHigh/dayLow)]
-  #minuteData[, retCH:= log(C[T== CLOSET]/dayHigh)]
-  #minuteData[, retCL:= log(C[T==1459]/dayLow), keyby=list(Date)]
-  #minuteData[, retHO:= log(dayHigh/O[T==930]), keyby=list(Date)]
-  #minuteData[, retLO:=log(dayLow/O[T==930])]
-  #minuteData[, retCO:= log(C[T==1500]/O[T==930]), keyby=list(Date)]
-  #minuteData[, retOPC:=log(O/shift(C,1))]
-  #minuteData[Date==shift(Date,1), retOPC:=0]
-  #minuteData[, retCC:= retCO+retOPC]
-  #minuteData[, amFirst1:= log(C[T==930]/O[T==930]), keyby=list(Date)]
-  #minuteData[, amFirst5:= log(C[T==935]/O[T==930]), keyby=list(Date)]
-  #minuteData[, amFirst10:= log(C[T==940]/O[T==930]), keyby=list(Date)]
-  #minuteData[, amco:= log(C[T==1130]/O[T==930]), keyby=list(Date)]
-  #minuteData[, pmco:= log(C[T==1459]/O[T==1300]), keyby=list(Date)]
-  #minuteData[, pmOpen:= O[T==1300], keyby=list(Date)]
-  #minuteData[, pmFirst1:= log(C[T==1300]/O[T==1300])]
-  #minuteData[, pmClose:= C[T==1459], keyby=list(Date)]
-  #minuteData[ ,pmChg:=log(C[T==1459]/O[T==1300]), keyby=list(Date)]
-
-  #minuteData[Date==shift(Date,1), retOPC:=0]
-  #res2 <- minuteData[T==930, list(Date,T,retOPC,dayHigh, dayLow, dayMaxT,dayMinT,dayRange,retCH,retCL,retHO,retLO,retCO,retCC), keyby=list(Date)]
-  #res3<- minuteData[T==931, list(Date,T,amFirst1,amFirst5,amFirst10,amco,pmco, pmOpen, pmClose, pmChg, pmFirst, pmChg-pmFirst1), keyby=list(Date) ]
-
-
   print(res)
   write.table(res,paste0(getTradingFolder(),"shcomp.txt"),quote = FALSE,sep = "\t",row.names = FALSE)
-  #print(res3)
-  #wb <- loadWorkbook("C:\\Users\\LUke\\Desktop\\Trading\\new.xlsx",create = TRUE)
-  #createSheet(wb,"Sheet2")
-  #writeWorksheet(wb,res,"Sheet2",startRow = 1,startCol = 1, header = T)
-  #saveWorkbook(wb)
+
 }
 #require(lubridate)
 #getSHCOMP()

@@ -1,5 +1,6 @@
 #' calculate sharpe of a return series
 #' @export
+#' @import PerformanceAnalytics
 calcSharp <- function(x) {
 
   #ifelse(length(x[x!=0]) > 0, x<-x[x!=0], 0);

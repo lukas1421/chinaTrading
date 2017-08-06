@@ -62,16 +62,6 @@ analyzeMin <- function(data) {
 }
 
 
-#' @export
-createIndex <- function() {
-  benchList<- c("sh000001","sz399006","sz399001","sh000300","sh000016","sh000905")
-  for(i in benchList) {
-    #assign(i, getDataPure(i),envir=.GlobalEnv)
-    #assign(i, getDataPure(i),envir=as.environment("package:chinaTrading"))
-    assign(i,getDataPure(i),envir=parent.frame(1))
-  }
-}
-
 get2Returnseries <- function(symb1, symb2) {
   dt1<-getDataPure(symb1)
   dt1[, eval(symb1):= log(C/shift(C,1)) ]
@@ -152,46 +142,20 @@ getCrashReturn <- function(symb1,index, thresh) {
 }
 
 getCrashReturnAll <- function() {
-  d<- fread("C:\\Users\\LUke\\Desktop\\Trading\\test.txt",header = FALSE)
+  d<- fread(paste0(getDayDataFolder(),"test.txt"),header = FALSE)
   d<- d[,list(V2,getCrashReturn(V1,"sh000001",-0.03)),keyby=list(V1)]
   names(d) <- c("Ticker","Ch","Res")
   d<-d[order(-as.numeric(Res))]
   return(d)
 }
 
-#' @export
-getCorrel<- function(symb1, index) {
 
-  dt1<-getDataPure(symb1)
-  dt1[, eval(symb1):= C/shift(C,1)-1 ]
-  #print(dt1)
-  dt2 <- get(index)
-  #print(dt2)
-  dt2[, eval(index):= C/shift(C,1)-1]
-  dt3<-merge(dt1[,list(D,get(symb1))],dt2[,list(D,get(index))],by = "D")
-  names(dt3) <- c("D",(eval(symb1)),(eval(index)))
-  print(dt3)
-  #return(dt3)
-  print(dt3[is.infinite(get(symb1))])
-  return(dt3[D>ymd("20100101")][!is.infinite(get(symb1)), cor(get(symb1),get(index),use="complete.obs")])
-  #return(dt3)
-}
-
-#' correl between one stock and all benches
-getCorrelGen<-function(symb) {
-  benchList<- c("sh000001","sz399006","sz399001","sh000300","sh000016","sh000905")
-
-  dt <- data.table(benchList)
-  dt[, x:= getCorrel(symb, benchList), keyby=list(benchList)]
-  print(dt[order(-x)][1])
-  return(list(bench=dt[order(-x)][1]$benchList,correl=dt[order(-x)][1]$x))
-}
 
 ####################################### GRAPH #########################
 graph <- function(symb,dateStr) {
 
   ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
-  d<- fread(paste0(dataFolder,ticker,".txt"),skip = 1,fill = T,showProgress = TRUE,col.names = c("D","O","H","L","C","V","A"))
+  d<- fread(paste0(getDayDataFolder(),ticker,".txt"),skip = 1,fill = T,showProgress = TRUE,col.names = c("D","O","H","L","C","V","A"))
   d <- d[!.N,]
   d[, D:=ymd(D)]
   g<-d[,list(Open=O,High=H,Low=L,Close=C),]
@@ -219,62 +183,6 @@ graphD <- function(symb,dateStr) {
   print(temp)
   candleChart(g[temp], theme="white",type="candles")
   #return(g)
-}
-
-#' general method to get stocks
-#' @export
-#' @import data.table
-getDataPure<- function(symb) {
-  print(paste0(" getting ",symb))
-  ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
-  d<- fread(paste0(getDayDataFolder(),ticker,".txt"),skip = 1,fill = T,showProgress = TRUE,col.names = c("D","O","H","L","C","V","A"))
-  d <- d[!.N,]
-  d[, D:=ymd(D)]
-  return(d[,list(D,O,H,L,C)])
-}
-
-getDataPureD<- function(symb) {
-  print(paste0(" getting ",symb))
-  print(minuteDataFolder)
-  ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
-  d<- fread(paste0(getMinuteDataFolder(),ticker,".txt"),skip = 1,fill = T,showProgress = TRUE,col.names = c("D","T","O","H","L","C","V","A"))
-  d <- d[!.N,]
-  d[, D:=ymd(D)]
-  d[, DT:=ymd_hm(paste(D,paste0(str_sub(T,1,str_length(T)-2),":",str_sub(T,str_length(T)-1))))]
-  return(d[,list(D,T,O,H,L,C)])
-}
-
-getData <- function(symb) {
-  print(paste0(" getting ",symb))
-  #dataFolder <- "J:\\TDX\\T0002\\export\\"
-  ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
-  #d<- fread(paste0(dataFolder,ticker,".txt"))
-  d<- fread(paste0(getDayDataFolder(),ticker,".txt"),skip = 1,fill = T,showProgress = TRUE,col.names = c("D","O","H","L","C","V","A"))
-  d <- d[!.N,]
-  d[, D:=ymd(D)]
-  d[, ma5:=rollapplyr(C,5,mean, fill=NA)]
-  d[, ma20:=rollapplyr(C,20,mean, fill=NA)]
-  d[, bull5:= ifelse(C>ma5, TRUE, FALSE)]
-  d[, bull20:= ifelse(C>ma20, TRUE, FALSE)]
-  d[, bull5Y:= shift(bull5,1)]
-  d[, bull20Y:= shift(bull20,1)]
-
-  if(nrow(d) > 250) {
-    d[, maxAll:= rollapplyr(H,.N,max,fill=NA)]
-    d[, minAll:= rollapplyr(L,.N,min,fill=NA)]
-    d[, percentileAll:=(C-minAll)/(maxAll-minAll)]
-    return(d[,list(D,O,H,L,C,ma5,ma20, bull5Y, bull20Y,maxAll, minAll, percentileAll)])
-  } else {
-    d[, maxAll:= rollapplyr(H,.N,max,fill=NA)]
-    d[, minAll:= rollapplyr(L,.N,min,fill=NA)]
-    d[, percentileAll:=(C-minAll)/(maxAll-minAll)]
-    return(d[,list(D,O,H,L,C,ma5,ma20, bull5Y, bull20Y,maxAll,minAll, percentileAll)])
-  }
-}
-
-getPercentile <- function(symb) {
-  d <- getData(symb)
-  return(d[.N, list(percentileAll)][1]$percentileAll)
 }
 
 computeWeekday <- function(symb) {
@@ -425,22 +333,9 @@ getWeekdayCL <- function() {
   return(d)
 }
 
-#' get bench of a stock and output to folder
-#' @export
-getBenchMark <- function() {
-  createIndex()
-  d<- fread(paste0(getTradingFolder(),"test.txt"),header = FALSE)
-  d<- d[, c(V2,getCorrelGen(V1)), keyby=list(V1)]
-  #print(d)
-  #filling bench
-  write.table(d, paste0(getTradingFolder(),"bench.txt"),quote = FALSE,sep = "\t")
-  return(d)
-}
 
 #write.table(d, paste0("C:\\Users\\",Sys.getenv("USERNAME"),"\\Desktop\\Trading\\bench.txt",quote = FALSE,sep = "\t"))
-
 #filling benchlist
-
 
 
 getWeekReturn<- function(symb) {
@@ -476,89 +371,7 @@ getWeekReturnAll <- function() {
 }
 
 
-getPercentileAll <- function() {
-  d<- fread(paste0("C:\\Users\\",Sys.getenv("USERNAME"), "\\Desktop\\Trading\\test.txt",header = FALSE))
-  d<- d[,list("Ch"=V2,weekReturn=getPercentile(V1)),keyby=list(V1)]
-  #names(d) <- c("Ticker", "Perc")
-  return(d[, ])
-}
 
-getWtdPercentile <- function(symb) {
-  weekBeginningDate <- ymd("2017-5-8")
-  d <- getDataPure(symb)
-  d <- d[D>= weekBeginningDate]
-  if(nrow(d)>0) {
-    d[, maxWeek:= max(H)]
-    d[, minWeek:= min(L)]
-    d[, cummax:= cummax(H)]
-    d[, cummin:= cummin(L)]
-    d[, perc:= (C-cummin)/(cummax-cummin)]
-
-    return(list(perc=d[.N, perc]))
-  } else {
-    return(list(0))
-  }
-}
-
-getWtdPercentileAll<- function(){
-  d<- fread("C:\\Users\\LUke\\Desktop\\Trading\\test.txt",header = FALSE)
-  d<- d[,list(getWtdPercentile(V1)),keyby=list(V1)]
-  names(d) <- c("Ticker", "Perc")
-  return(d)
-}
-
-# get wtd percentile
-
-getWtdMaxMin <- function(symb) {
-  m<-getMondayOfWeek(Sys.Date()-1)
-  print(m)
-  d<- getDataPure(symb)
-  d<- d[D>=m]
-  if(nrow(d) > 0) {
-    d[, cummax := cummax(H)]
-    d[, cummin := cummin(L)]
-    print(d[D>=m])
-    as.list(d[.N, .(cummax,cummin,C,(C-cummin)/(cummax-cummin), (cummax+cummin)/2/C-1 )])
-  } else {
-    return()
-  }
-}
-
-#' get week to date max and min for all stocks
-#' @export
-getWtdMaxMinAll <- function() {
-  print("getting wtd max min all")
-  print(getTradingFolder())
-  res<- fread(paste0(getTradingFolder(),"test.txt"),header = FALSE)
-  res<- res[,(getWtdMaxMin(V1)),keyby=list(V1)]
-  write.table(res, paste0(getTradingFolder(),"wtdMaxMin.txt"),quote = FALSE,sep = "\t", row.names = FALSE)
-  res
-}
-
-#' ytd low date
-#' @export
-getYtdLowDate <- function(symb) {
-  data <- getDataPure(symb)
-  return(list(lowDate=data[D>ymd("20170101")][min(L)==L][1][,D]))
-}
-
-#' getYtdpercentile
-#' @export
-#' @param symb the stock in question
-getYtdPercentile <- function(symb) {
-  d <- getDataPure(symb)
-  d <- d[D>ymd("20161231")]
-  d[, ytdMax:=cummax(H)]
-  d[, ytdMin:= cummin(L)]
-  return(list(perc=d[.N, (C-ytdMin)/(ytdMax-ytdMin)]))
-  #print(d)
-}
-
-getYtdPercentileAll <- function() {
-  res<- fread(paste0(tradingFolder,"test.txt"),header = FALSE)
-  res<- res[,(getYtdPercentile(V1)),keyby=list(V1)]
-  res
-}
 
 
 calcFriSharpe <- function(symb) {

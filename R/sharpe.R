@@ -27,8 +27,6 @@ calcSSSharpeDate <- function(symb,dat=ymd("20161231")) {
 }
 
 
-
-
 #' compare all sharpe
 #' @export
 #' @import data.table

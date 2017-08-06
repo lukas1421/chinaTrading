@@ -18,7 +18,6 @@ getTradingFolder <- function() {
 
 #' get day data folder
 getDayDataFolder <- function() {
-
   if(Sys.getenv("USERNAME")=="LUke") {
     mainDir <- "J:\\Data\\mainBoardR\\"
     dayDataFolder <- "J:\\TDX\\T0002\\export\\"
@@ -28,37 +27,25 @@ getDayDataFolder <- function() {
     dayDataFolder <-  "G:\\export\\"
     minuteDataFolder <-  "G:\\export_1m\\"
   }
-
   return(dayDataFolder)
 }
 
 #' get min data folder
 getMinuteDataFolder <- function() {
-
   if(Sys.getenv("USERNAME")=="LUke") {
-    mainDir <- "J:\\Data\\mainBoardR\\"
-    dayDataFolder <- "J:\\TDX\\T0002\\export\\"
     minuteDataFolder <- "J:\\TDX\\T0002\\export_1m\\"
   } else if(Sys.getenv("USERNAME")=="Luke Shi") {
-    mainDir <- "H:\\Data\\mainBoardR\\"
-    dayDataFolder <-  "G:\\export\\"
     minuteDataFolder <-  "G:\\export_1m\\"
   }
-
   return(minuteDataFolder)
 }
 
 #' get main board folder
 getMainboardFolder <- function(){
-
   if(Sys.getenv("USERNAME")=="LUke") {
     mainDir <- "J:\\Data\\mainBoardR\\"
-    dayDataFolder <- "J:\\TDX\\T0002\\export\\"
-    minuteDataFolder <- "J:\\TDX\\T0002\\export_1m\\"
   } else if(Sys.getenv("USERNAME")=="Luke Shi") {
     mainDir <- "H:\\Data\\mainBoardR\\"
-    dayDataFolder <-  "G:\\export\\"
-    minuteDataFolder <-  "G:\\export_1m\\"
   }
 
   return(mainDir)

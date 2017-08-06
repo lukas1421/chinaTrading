@@ -133,8 +133,6 @@ processCYB <- function(cybDay, cybMin)  {
     resCyb2[is.na(get(paste0(v,1500))), eval(paste0(v,1500)):=get(paste0(v,1459)),]
   }
 
-
-  #tradeTime <-c(931:959,1000:1059,1100:1130,1300:1359,1400:1459,1500)
   amTime <- c(931:959,1000:1059,1100:1130)
   pmTime <- c(1300:1359,1400:1459,1500)
   tradeTime<- c(amTime,pmTime)
@@ -156,10 +154,8 @@ processCYB <- function(cybDay, cybMin)  {
   resCyb2[, pmMinT1 := as.numeric(pmTime[which.min(unlist(mget(paste0("L",pmTime))))]), keyby=list(D)]
 
 
-  cybMerged <- merge(cybDay,resCyb2,by = "D" )
-
+  cybMerged <- merge(cybDay,resCyb2,by = "D")
   cybMerged[, weekday:= wday(D)-1]
-
   cybMerged[, range:= log(dayMax/dayMin)]
   cybMerged[, first10:= log(C940/O931)]
   cybMerged[, first1:=log(C931/O931)]
@@ -170,9 +166,7 @@ processCYB <- function(cybDay, cybMin)  {
   cybMerged[, retHOY:= shift(retHO,1)]
   cybMerged[, retCH:= log(C/H)]
   cybMerged[, retCHY:= shift(retCH,1)]
-
   cybMerged[, rangeDay:= log(H/L)]
-
   cybMerged[, openPercentile:=(O - dayMin)/(dayMax - dayMin)]
   cybMerged[, openPercentileY:= shift(openPercentile,1)]
   cybMerged[, openPercentileYCat:=cut(openPercentileY, quantile(openPercentileY,na.rm = T),include.lowest = T)]
@@ -183,7 +177,6 @@ processCYB <- function(cybDay, cybMin)  {
   cybMerged[is.na(retOPC), retOPC:=0]
   cybMerged[, retAMHO := log(amMax/O)]
   cybMerged[, retPMCH := log(C/pmMax)]
-
   cybMerged[, percentile:= (C-L)/(H-L)]
   cybMerged[, percentileY:=shift(percentile,1)]
   cybMerged[, percentileYCat:=cut(percentileY,quantile(percentileY,na.rm = T),include.lowest = T)]

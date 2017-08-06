@@ -1,5 +1,3 @@
-
-
 #' helper function
 #' @import zoo
 getMA <- function(symb,numDays) {
