@@ -21,7 +21,7 @@ generateIndexDay <- function() {
   } else if(Sys.getenv("USERNAME")=="Luke Shi") {
     mainDir <- "H:\\Data\\mainBoardR\\"
     dayDataFolder <-  "G:\\export\\"
-    dayDataFolder <-  "G:\\export_1m\\"
+    minuteDataFolder <-  "G:\\export_1m\\"
   }
 
   indexDay <- fread(paste0(dayDataFolder,"SH#000001.txt"),header = TRUE,skip = 1,fill = T,
@@ -53,7 +53,7 @@ fillData000001 <- function() {
   #get last date
   destDT <- fread(dest,fill=T, header = F)
   print(" destination")
-  print(destDT)
+  #print(destDT)
   lastDateinDest <- ymd(destDT[.N, V1])
   print(lastDateinDest)
   sourceDT <- fread(source,fill = T,skip = 1,header = T)
@@ -63,7 +63,7 @@ fillData000001 <- function() {
   sourceDT[, D:=ymd(D)]
   #sourceDT[]
   res <- sourceDT[D>lastDateinDest][, 1:6]
-  #write.table(res, dest, sep=",",col.names = F,append = T,row.names = F)
+  write.table(res, dest, sep=",",col.names = F,append = T,row.names = F)
   return(res)
 }
 
@@ -78,7 +78,7 @@ generateIndexMin <- function() {
   } else if(Sys.getenv("USERNAME")=="Luke Shi") {
     mainDir <- "H:\\Data\\mainBoardR\\"
     dayDataFolder <-  "G:\\export\\"
-    dayDataFolder <-  "G:\\export_1m\\"
+    minuteDataFolder <-  "G:\\export_1m\\"
   }
 
   res <- data.table()
