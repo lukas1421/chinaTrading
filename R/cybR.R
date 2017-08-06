@@ -1,37 +1,38 @@
 #' generate cyb day file
 #' @export
-generateCYB <- function() {
+generateCYBDay <- function() {
+  if(Sys.getenv("USERNAME")=="LUke") {
+    cybDir <- "J:\\Data\\cybR\\"
+    dayDataFolder <- "J:\\TDX\\T0002\\export\\"
+    minuteDataFolder <- "J:\\TDX\\T0002\\export_1m\\"
+  } else if(Sys.getenv("USERNAME")=="Luke Shi") {
+    cybDir <- "H:\\Data\\cybR\\"
+    dayDataFolder <-  "G:\\export\\"
+    dayDataFolder <-  "G:\\export_1m\\"
+  }
   cybDay <- fread( paste0(dataFolder,"SZ#399006.txt"),header = TRUE,skip = 1,fill = T,
                    showProgress = TRUE,col.names = c("D","O","H","L","C","V","A"))
 
   cybDay <- cybDay[!.N,]
   cybDay[, D:=ymd(D)]
+  cybDay
 }
 
-#' fill the destination cyb with raw data
-#' @export
-fillData399006<- function() {
-  dest <- paste0(cybDir,"SZ399006_2017.csv")
-  #source <- "J:\\TDX\\T0002\\export_1m\\SZ#399006.txt"
-  source <- paste0(minuteDataFolder,"SZ#399006.txt")
-  #get last date
-  destDT <- fread(dest,fill=T, header = T )
-  print(destDT)
-  lastDateinDest <- ymd(destDT[.N, D])
-  print(lastDateinDest)
-  sourceDT <- fread(source,fill = T,skip = 1,header = T)
-  names(sourceDT) <-c("D","T","O","H","L","C","V","A")
-  sourceDT <- sourceDT[-.N]
-  print(sourceDT)
-  sourceDT[, D:=ymd(D)]
-  #sourceDT[]
-  res <- sourceDT[D>lastDateinDest][, 1:6]
-  write.table(res, dest, sep=",",col.names = F,append = T,row.names = F)
-  return(res)
-}
 
+
+#' generate min data cyb
 #' @export
-processCYB <- function()  {
+generateCYBMin <- function() {
+
+  if(Sys.getenv("USERNAME")=="LUke") {
+    cybDir <- "J:\\Data\\cybR\\"
+    dayDataFolder <- "J:\\TDX\\T0002\\export\\"
+    minuteDataFolder <- "J:\\TDX\\T0002\\export_1m\\"
+  } else if(Sys.getenv("USERNAME")=="Luke Shi") {
+    cybDir <- "H:\\Data\\cybR\\"
+    dayDataFolder <-  "G:\\export\\"
+    dayDataFolder <-  "G:\\export_1m\\"
+  }
 
   resCyb <- data.table()
   tmp <- data.table()
@@ -54,11 +55,73 @@ processCYB <- function()  {
     assign(paste0("f",i),tmp)
     resCyb<-rbindlist(list(resCyb,tmp),use.names = TRUE,fill = TRUE)
   }
+  resCyb
+}
 
-  print(resCyb)
+
+#' fill the destination cyb with raw data
+#' @export
+fillData399006<- function() {
+
+  if(Sys.getenv("USERNAME")=="LUke") {
+    cybDir <- "J:\\Data\\cybR\\"
+    dayDataFolder <- "J:\\TDX\\T0002\\export\\"
+    minuteDataFolder <- "J:\\TDX\\T0002\\export_1m\\"
+  } else if(Sys.getenv("USERNAME")=="Luke Shi") {
+    cybDir <- "H:\\Data\\cybR\\"
+    dayDataFolder <-  "G:\\export\\"
+    dayDataFolder <-  "G:\\export_1m\\"
+  }
 
 
-  resCyb1<-melt.data.table(resCyb, id.vars = c("D","T"))
+  dest <- paste0(cybDir,"SZ399006_2017.csv")
+  #source <- "J:\\TDX\\T0002\\export_1m\\SZ#399006.txt"
+  source <- paste0(minuteDataFolder,"SZ#399006.txt")
+  #get last date
+  destDT <- fread(dest,fill=T, header = T )
+  print(destDT)
+  lastDateinDest <- ymd(destDT[.N, D])
+  print(lastDateinDest)
+  sourceDT <- fread(source,fill = T,skip = 1,header = T)
+  names(sourceDT) <-c("D","T","O","H","L","C","V","A")
+  sourceDT <- sourceDT[-.N]
+  print(sourceDT)
+  sourceDT[, D:=ymd(D)]
+  #sourceDT[]
+  res <- sourceDT[D>lastDateinDest][, 1:6]
+  write.table(res, dest, sep=",",col.names = F,append = T,row.names = F)
+  return(res)
+}
+
+#' @export
+processCYB <- function(cybDay, cybMin)  {
+
+  resCyb <- data.table()
+  tmp <- data.table()
+
+  # for(i in 2010:2017) {
+  #
+  #   #assign(paste0("f",i),fread(paste0(mainDir,"SH000001_", i,".csv")))
+  #   #assign(tmp,fread(paste0(mainDir,"SH000001_", i,".csv")))
+  #   tmp <- fread(paste0(cybDir,"SZ399006_", i,".csv"))
+  #   #tmp <- get(paste0("f",i))
+  #   if(length(names(tmp)) > 6) {
+  #     tmp[, names(tmp)[7:length(names(tmp))]:=NULL]
+  #   }
+  #   names(tmp) <- c("D","T","O","H","L","C")
+  #   print(is.data.table(tmp))
+  #   tmp[,D:=ymd(D)]
+  #   tmp[ ,T:= str_replace(T,":",""),]
+  #   tmp[, T:=ifelse(str_sub(T,1,1)=="0", str_sub(T,2),T),]
+  #   tmp[,T:=as.numeric(T)]
+  #   assign(paste0("f",i),tmp)
+  #   resCyb<-rbindlist(list(resCyb,tmp),use.names = TRUE,fill = TRUE)
+  # }
+  #
+  # print(resCyb)
+
+
+  resCyb1<-melt.data.table(cybMin, id.vars = c("D","T"))
   resCyb2 <- dcast.data.table(resCyb1, D ~ variable+T, sep = "")
 
 
@@ -161,24 +224,25 @@ processCYB <- function()  {
   cybMerged[, HOCHRatioYCat:= cut(HOCHRatioY,breaks = quantile(HOCHRatioY,na.rm = T),include.lowest = T)]
   cybMerged[, AMPMRatioYCat:= cut(AMPMRatioY,quantile(AMPMRatioY,na.rm = T),include.lowest = T)]
 
-
+  invisible()
 }
 
 #' graphing
 #' @export
 graphCYB <- function(cybDay)  {
-  # daily graph bars
-  cybGraph<-cybDay[,list(Open=O,High=H,Low=L,Close=C),]
-  cybGraph <- xts(cybGraph,order.by = cybDay$D)
-  candleChart(cybGraph['20170101/20170901'], theme="white",type="candles")
-
-  #Detailed Graph CYB
-  resCyb[, DT:=ymd_hm(paste(D,paste0(str_sub(T,1,str_length(T)-2),":",str_sub(T,str_length(T)-1))))]
-  cybGraphD<-resCyb[,list(Open=O,High=H,Low=L,Close=C),]
-  cybGraphD <- xts(cybGraphD,order.by = resCyb$DT)
-  candleChart(cybGraphD['20170701/20170901'], theme="white",type="candles")
-
+  g <- xts(cybDay[,list(Open=O,High=H,Low=L,Close=C),],order.by = cybDay$D)
+  #candleChart(cybGraph['20170101/20170901'], theme="white",type="candles")
+  chart_Series(g['20170701/20170901'])
 }
 
+#' graphing detailed
+#' @export
+graphCYBD <- function(cybMin) {
+  #Detailed Graph CYB
+  cybMin[, DT:=ymd_hm(paste(D,paste0(str_sub(T,1,str_length(T)-2),":",str_sub(T,str_length(T)-1))))]
+  g <- xts(cybMin[,list(Open=O,High=H,Low=L,Close=C),],order.by = cybMin$DT)
+  #candleChart(cybGraphD['20170701/20170901'], theme="white",type="candles")
+  chart_Series(g['20170801/20170901'])
+}
 
 
