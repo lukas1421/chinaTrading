@@ -4,7 +4,9 @@
 #' calc sharp
 #' @export
 calcSSSharpe <- function(symb) {
-  return(calcSSSharpeDate(symb))
+  sharpe <- calcSSSharpeDate(symb)
+  print(paste0(" sharpe ", symb, " ", sharpe))
+  sharpe
 }
 
 #' date

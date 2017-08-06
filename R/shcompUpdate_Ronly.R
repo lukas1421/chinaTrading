@@ -8,32 +8,51 @@
 # require(PerformanceAnalytics)
 # require(quantmod)
 
-# if(Sys.getenv("USERNAME")=="LUke") {
-#   mainDir <- "J:\\Data\\mainBoardR\\"
-#   dayDataFolder <- "J:\\TDX\\T0002\\export\\"
-# } else if(Sys.getenv("USERNAME")=="Luke Shi") {
-#   mainDir <- "H:\\Data\\mainBoardR\\"
-#   dayDataFolder <-  "G:\\export\\"
-# }
+
 
 #' generating index
 #' @export
-#'
 generateIndexDay <- function() {
+
+  if(Sys.getenv("USERNAME")=="LUke") {
+    mainDir <- "J:\\Data\\mainBoardR\\"
+    dayDataFolder <- "J:\\TDX\\T0002\\export\\"
+    minuteDataFolder <- "J:\\TDX\\T0002\\export_1m\\"
+  } else if(Sys.getenv("USERNAME")=="Luke Shi") {
+    mainDir <- "H:\\Data\\mainBoardR\\"
+    dayDataFolder <-  "G:\\export\\"
+    dayDataFolder <-  "G:\\export_1m\\"
+  }
+
   indexDay <- fread(paste0(dayDataFolder,"SH#000001.txt"),header = TRUE,skip = 1,fill = T,
                      showProgress = TRUE,col.names = c("D","O","H","L","C","V","A"))
   indexDay<- indexDay[!.N,]
   indexDay[, D:=ymd(D)]
+  indexDay
 }
 
 
 #'fill data for 000001
-#'@export
+#' @export
+#' @importFrom lubridate ymd
+
 fillData000001 <- function() {
+
+  if(Sys.getenv("USERNAME")=="LUke") {
+    mainDir <- "J:\\Data\\mainBoardR\\"
+    dayDataFolder <- "J:\\TDX\\T0002\\export\\"
+    minuteDataFolder <- "J:\\TDX\\T0002\\export_1m\\"
+  } else if(Sys.getenv("USERNAME")=="Luke Shi") {
+    mainDir <- "H:\\Data\\mainBoardR\\"
+    dayDataFolder <-  "G:\\export\\"
+    dayDataFolder <-  "G:\\export_1m\\"
+  }
+
   dest <- paste0(mainDir,"SH000001_2017.csv")
   source <- paste0(minuteDataFolder,"SH#000001.txt")
   #get last date
-  destDT <- fread(dest,fill=T, header = F )
+  destDT <- fread(dest,fill=T, header = F)
+  print(" destination")
   print(destDT)
   lastDateinDest <- ymd(destDT[.N, V1])
   print(lastDateinDest)
@@ -44,17 +63,18 @@ fillData000001 <- function() {
   sourceDT[, D:=ymd(D)]
   #sourceDT[]
   res <- sourceDT[D>lastDateinDest][, 1:6]
-  write.table(res, dest, sep=",",col.names = F,append = T,row.names = F)
+  #write.table(res, dest, sep=",",col.names = F,append = T,row.names = F)
   return(res)
 }
 
-#' @import data.table
-processShcomp <- function() {
+#' gen index min
+#' @export
+generateIndexMin <- function() {
+
   res <- data.table()
   tmp <- data.table()
 
   for(i in 1999:2017) {
-
     #assign(paste0("f",i),fread(paste0(mainDir,"SH000001_", i,".csv")))
     #assign(tmp,fread(paste0(mainDir,"SH000001_", i,".csv")))
     tmp <- fread(paste0(mainDir,"SH000001_", i,".csv"))
@@ -72,9 +92,18 @@ processShcomp <- function() {
     res<-rbindlist(list(res,tmp),use.names = TRUE,fill = TRUE)
   }
   print(res)
+  return(res)
+}
+
+#' @import data.table
+#' @export
+processShcomp <- function(indexDay,indexMin) {
+  res <- data.table()
+  tmp <- data.table()
 
 
-  res1<-melt.data.table(res, id.vars = c("D","T"))
+
+  res1<-melt.data.table(indexMin, id.vars = c("D","T"))
   res2 <- dcast.data.table(res1, D ~ variable+T, sep = "")
 
   for (v in c("O","H","L","C")) {
@@ -86,6 +115,9 @@ processShcomp <- function() {
   }
 
 
+  tradeTime <- c(931:959,1000:1059,1100:1130,1300:1359,1400:1459,1500)
+  amTime <- c(931:959,1000:1059,1100:1130)
+  pmTime <- c(1300:1359,1400:1459,1500)
 
   #max min
   res2[, dayMax:=max(unlist(mget(paste0("H",tradeTime)))), keyby=list(D)]
@@ -169,9 +201,12 @@ processShcomp <- function() {
   resMerged[, percentileCat:=cut(percentile, breaks = quantile(percentile),include.lowest = T)]
   resMerged[, percentileYCat:=cut(percentileY, breaks = quantile(percentileY,na.rm = T),include.lowest = T)]
   resMerged[, weekday:= wday(D)-1]
+  print(resMerged)
+  resMerged
 
 }
 
+#' testing if AM
 isAm <- function(x) {
   #print(str_sub(x,2))
   if(is.numeric(as.numeric(str_sub(x,2)))) {
@@ -180,11 +215,18 @@ isAm <- function(x) {
   return(FALSE)
 }
 
+#' testing if pm
 isPm <- function(x) {
   if(is.numeric(as.numeric(str_sub(x,2)))) {
     return(as.numeric(str_sub(x,2))>1200)
   }
   return(FALSE)
+}
+
+#' get trade time
+
+getTradingTime <- function() {
+  return(c(931:959,1000:1059,1100:1130,1300:1359,1400:1459,1500))
 }
 
 # assign(paste0("f",1999),fread(paste0(mainDir,"SH000001_", 1999,".csv")))
@@ -197,28 +239,23 @@ isPm <- function(x) {
 
 #'Graph
 #' @export
-graphShcomp1 <- function() {
-  g<-resMerged[,list(Open=O,High=H,Low=L,Close=C),]
-  g<-xts(g,order.by = resMerged$D)
-  candleChart(g['20170701/20170901'], theme="white",type="candles")
-
-  res[, DT:=ymd_hm(paste(D,paste0(str_sub(T,1,str_length(T)-2),":",str_sub(T,str_length(T)-1))))]
-
-  g1<-res[,list(Open=O,High=H,Low=L,Close=C),]
-  g1 <- xts(g1,order.by = res$DT)
-  candleChart(g1['20170717/20170901'], theme="white",type="candles")
+#' @importFrom xts xts
+#' @import quantmod
+graphShcomp <- function(indexDay) {
+  g<-indexDay[,list(Open=O,High=H,Low=L,Close=C),]
+  g<-xts(g,order.by = indexDay$D)
+  #candleChart(g['20170701/20170901'], theme="white",type="candles")
+  chart_Series(g['20170701/20170901'])
 }
 
 #' Graph
+#' @import stringr
+#' @importFrom lubridate ymd_hm
 #' @export
-graphShcompD <- function() {
-  g<-resMerged[,list(Open=O,High=H,Low=L,Close=C),]
-  g<-xts(g,order.by = resMerged$D)
-  candleChart(g['20170701/20170901'], theme="white",type="candles")
-
+graphShcompD <- function(res) {
   res[, DT:=ymd_hm(paste(D,paste0(str_sub(T,1,str_length(T)-2),":",str_sub(T,str_length(T)-1))))]
-
   g1<-res[,list(Open=O,High=H,Low=L,Close=C),]
   g1 <- xts(g1,order.by = res$DT)
-  candleChart(g1['20170717/20170901'], theme="white",type="candles")
+  chart_Series(g1['20170801/20170901'])
+  #candleChart(g1['20170717/20170901'], theme="white",type="candles")
 }

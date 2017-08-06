@@ -1,24 +1,3 @@
-# require(data.table)
-# require(stringr)
-# require(pdftools)
-# require(XLConnect)
-# require(rvest)
-# require(httr)
-# library(plyr)
-# library(lubridate)
-# library(ggplot2)
-# library(reshape2)
-# library(Rcpp)
-# library(lubridate)
-# library(PerformanceAnalytics)
-# library(quantmod)
-# library(xts)
-# require(TTR)
-# require("XLConnect")
-
-userName <- Sys.getenv("USERNAME")
-#tradingFolder <- "c:"
-
 #' download FTSE index constituents sheet
 #' @importFrom pdftools pdf_text
 #' @import data.table
@@ -256,7 +235,7 @@ runMorningTasks <- function() {
 }
 
 #' wrapper
-#' @xport
+#' @export
 getWtdMaxMinFn <- function() {
   getWtdMaxMinAll()
 }

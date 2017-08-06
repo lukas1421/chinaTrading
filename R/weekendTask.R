@@ -1,5 +1,4 @@
-
-#'
+#'computing weekend
 #'@export
 computeWeekend <- function(symb) {
   m<- getMondayOfWeek(Sys.Date())
@@ -15,7 +14,7 @@ computeWeekend <- function(symb) {
   return(list(percentile=percentile , weekreturn=(lastClose/friClose-1)))
 }
 
-#'
+#'computing weekend all
 #'@export
 computeWeekendAll <- function() {
   res<- fread(paste0(getTradingFolder(),"test.txt"),header = FALSE)
