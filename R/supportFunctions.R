@@ -10,6 +10,7 @@ getMondayOfWeek <- function(dat) {
   return(dat)
 }
 
+
 #' get working directory
 getTradingFolder <- function() {
   return(paste0("C:\\Users\\",Sys.getenv("USERNAME"),"\\Desktop\\Trading\\"))
