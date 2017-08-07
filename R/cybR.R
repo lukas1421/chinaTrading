@@ -1,16 +1,17 @@
 #' generate cyb day file
 #' @export
 generateCYBDay <- function() {
-  if(Sys.getenv("USERNAME")=="LUke") {
-    cybDir <- "J:\\Data\\cybR\\"
-    dayDataFolder <- "J:\\TDX\\T0002\\export\\"
-    minuteDataFolder <- "J:\\TDX\\T0002\\export_1m\\"
-  } else if(Sys.getenv("USERNAME")=="Luke Shi") {
-    cybDir <- "H:\\Data\\cybR\\"
-    dayDataFolder <-  "G:\\export\\"
-    minuteDataFolder <-  "G:\\export_1m\\"
-  }
-  cybDay <- fread( paste0(dayDataFolder,"SZ#399006.txt"),header = TRUE,skip = 1,fill = T,
+  # if(Sys.getenv("USERNAME")=="LUke") {
+  #   cybDir <- "J:\\Data\\cybR\\"
+  #   dayDataFolder <- "J:\\TDX\\T0002\\export\\"
+  #   minuteDataFolder <- "J:\\TDX\\T0002\\export_1m\\"
+  # } else if(Sys.getenv("USERNAME")=="Luke Shi") {
+  #   cybDir <- "H:\\Data\\cybR\\"
+  #   dayDataFolder <-  "G:\\export\\"
+  #   minuteDataFolder <-  "G:\\export_1m\\"
+  # }
+  #
+  cybDay <- fread( paste0(getDayDataFolder(),"SZ#399006.txt"),header = TRUE,skip = 1,fill = T,
                    showProgress = TRUE,col.names = c("D","O","H","L","C","V","A"))
 
   cybDay <- cybDay[!.N,]
@@ -24,15 +25,15 @@ generateCYBDay <- function() {
 #' @export
 generateCYBMin <- function() {
 
-  if(Sys.getenv("USERNAME")=="LUke") {
-    cybDir <- "J:\\Data\\cybR\\"
-    dayDataFolder <- "J:\\TDX\\T0002\\export\\"
-    minuteDataFolder <- "J:\\TDX\\T0002\\export_1m\\"
-  } else if(Sys.getenv("USERNAME")=="Luke Shi") {
-    cybDir <- "H:\\Data\\cybR\\"
-    dayDataFolder <-  "G:\\export\\"
-    minuteDataFolder <-  "G:\\export_1m\\"
-  }
+  # if(Sys.getenv("USERNAME")=="LUke") {
+  #   cybDir <- "J:\\Data\\cybR\\"
+  #   dayDataFolder <- "J:\\TDX\\T0002\\export\\"
+  #   minuteDataFolder <- "J:\\TDX\\T0002\\export_1m\\"
+  # } else if(Sys.getenv("USERNAME")=="Luke Shi") {
+  #   cybDir <- "H:\\Data\\cybR\\"
+  #   dayDataFolder <-  "G:\\export\\"
+  #   minuteDataFolder <-  "G:\\export_1m\\"
+  # }
 
   resCyb <- data.table()
   tmp <- data.table()
@@ -41,7 +42,7 @@ generateCYBMin <- function() {
 
     #assign(paste0("f",i),fread(paste0(mainDir,"SH000001_", i,".csv")))
     #assign(tmp,fread(paste0(mainDir,"SH000001_", i,".csv")))
-    tmp <- fread(paste0(cybDir,"SZ399006_", i,".csv"))
+    tmp <- fread(paste0(getCYBFolder(),"SZ399006_", i,".csv"))
     #tmp <- get(paste0("f",i))
     if(length(names(tmp)) > 6) {
       tmp[, names(tmp)[7:length(names(tmp))]:=NULL]
@@ -63,20 +64,20 @@ generateCYBMin <- function() {
 #' @export
 fillData399006<- function() {
 
-  if(Sys.getenv("USERNAME")=="LUke") {
-    cybDir <- "J:\\Data\\cybR\\"
-    dayDataFolder <- "J:\\TDX\\T0002\\export\\"
-    minuteDataFolder <- "J:\\TDX\\T0002\\export_1m\\"
-  } else if(Sys.getenv("USERNAME")=="Luke Shi") {
-    cybDir <- "H:\\Data\\cybR\\"
-    dayDataFolder <-  "G:\\export\\"
-    minuteDataFolder <-  "G:\\export_1m\\"
-  }
+  # if(Sys.getenv("USERNAME")=="LUke") {
+  #   cybDir <- "J:\\Data\\cybR\\"
+  #   dayDataFolder <- "J:\\TDX\\T0002\\export\\"
+  #   minuteDataFolder <- "J:\\TDX\\T0002\\export_1m\\"
+  # } else if(Sys.getenv("USERNAME")=="Luke Shi") {
+  #   cybDir <- "H:\\Data\\cybR\\"
+  #   dayDataFolder <-  "G:\\export\\"
+  #   minuteDataFolder <-  "G:\\export_1m\\"
+  # }
 
 
-  dest <- paste0(cybDir,"SZ399006_2017.csv")
+  dest <- paste0(getCYBFolder(),"SZ399006_2017.csv")
   #source <- "J:\\TDX\\T0002\\export_1m\\SZ#399006.txt"
-  source <- paste0(minuteDataFolder,"SZ#399006.txt")
+  source <- paste0(getMinuteDataFolder(),"SZ#399006.txt")
   #get last date
   destDT <- fread(dest,fill=T, header = T )
   print(destDT)

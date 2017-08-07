@@ -185,6 +185,7 @@ graphD <- function(symb,dateStr) {
   #return(g)
 }
 
+#' @export
 computeWeekday <- function(symb) {
   d <- getData(symb)
   d[, weekday:=wday(D)-1]

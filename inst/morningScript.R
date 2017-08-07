@@ -20,10 +20,14 @@ srd[order(-SR)][1:100][sd<0.3][SR>2.8]
 getDivs()
 
 
+
+# bench CAUTIOUS LONG EXECUTION
+#
+getBenchMark()
+
+
 #bench & benchlist
 # Daily task
-
-
 #ftse
 #getFTSEData()
 #getFTSE50Index()
@@ -48,4 +52,35 @@ getDivs()
 #creating index for comparison, get bench
 #createIndex()
 #d<-getBenchMark()
+
+
+#' #' run daily tasks
+#' #' @export
+#' #Methods only:
+#' runMorningTasks <- function() {
+#'   getFTSEData()
+#'   getFTSE50Index()
+#'   getNAV()
+#'   getXIN0UIndex()
+#'   getIndicies()
+#'   getBOCRmbRate()
+#' }
+#'
+#' #' wrapper
+#' #' @export
+#' getWtdMaxMinFn <- function() {
+#'   getWtdMaxMinAll()
+#' }
+#' #' get week max/min + ma
+#' #' @export
+#' getMaxMinMA <- function() {
+#'   getMAAll(20)
+#' }
+#'
+#' #' get sharpe
+#' #' @export
+#' #compute ytd sharpe and output to file
+#' computeSharp <- function() {
+#'   compareAllSharpYtd()
+#' }
 

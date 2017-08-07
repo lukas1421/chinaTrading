@@ -9,9 +9,9 @@
 getFTSEData <- function() {
 
   download.file("https://www.ftse.com/analytics/factsheets/Home/DownloadConstituentsWeights/?indexdetails=XINA50"
-                , destfile = paste0(tradingFolder,"res.pdf"), mode="wb")
+                , destfile = paste0(getTradingFolder(),"res.pdf"), mode="wb")
 
-  toc <- pdf_text(paste0(tradingFolder,"res.pdf"))
+  toc <- pdf_text(paste0(getTradingFolder(),"res.pdf"))
 
   #print(toc)
   t1<-str_split(toc[1],"\n")
@@ -23,43 +23,29 @@ getFTSEData <- function() {
 
   for(i in seq(7,24,1)) {
     lapply(str_split(str_trim(str_split(t1[[1]][i],"CHINA")[[1]],"right"), "\\s\\s+"),
-
            function(x) {
-
              if(str_trim(x, side="left")[[1]] !="") {
                if(length(str_trim(x, side="left")) == 2) {
-
-                 #print(str_trim(x, side="left")[[1]])
-                 #print(str_replace(str_trim(x, side="left")[[1]],"\\(.*\\)",""))
-                 #print(str_trim(x, side="left")[[1]][1])
-                 #print(str_trim(x, side="left")[[2]][1])
-                 #print(i)
                  res$stock[j] <<- str_trim(toupper(str_replace(str_trim(x, side="left")[[1]],"\\(.*\\)","")))
                  res$weight[j] <<- as.numeric(str_trim(x, side="left")[[2]])
                  j <<- j+1
                } else if (length(str_trim(x, side="left")) == 3) {
-                 #print(str_trim(x, side="left"))
                  res$stock[j] <<- str_trim(toupper(str_replace(str_trim(x, side="left")[2],"\\(.*\\)","")))
                  res$weight[j] <<- as.numeric(str_trim(x, side="left")[3])
                  j <<- j+1
                }
-               #res$stock[i-6] <- str_trim(x, side="left")[1]
-               #res$weight[i-6] <- str_trim(x, side="left")[2]
              }
            })
   }
-  #print(res)
-  #return(res)
-
-  wb <- XLConnect::loadWorkbook(paste0(tradingFolder,"new.xlsx"),create = TRUE)
-  XLConnect::createSheet(wb,"Sheet1")
+  wb <- XLConnect::loadWorkbook(paste0(getTradingFolder(),"new.xlsx"),create = TRUE)
+  createSheet(wb,"Sheet1")
   XLConnect::writeWorksheet(wb,res,"Sheet1",startRow = 1,startCol = 1, header = T)
   XLConnect::saveWorkbook(wb)
 }
 
 updateFTSEWeights <- function() {
   res <- getFTSEData()
-  wb <- loadWorkbook(paste0("C:\\Users\\",Sys.getenv("USERNAME"),"\\Desktop\\Trading\\","new.xlsx"),create = TRUE)
+  wb <- loadWorkbook(paste0(getTradingFolder(),"new.xlsx"),create = TRUE)
   createSheet(wb,"Sheet1")
   writeWorksheet(wb,res,"Sheet1",startRow = 1,startCol = 1, header = T)
   saveWorkbook(wb)
@@ -71,11 +57,9 @@ updateFTSEWeights <- function() {
 #' @export
 #' @import xml2
 #' @import stringr
-
+#'
 getNAV <- function() {
-
   stocks <- c("2823:HK","2822:HK", "3147:HK", "3188:HK", "FXI:US","CNXT:US","ASHR:US","ASHS:US")
-
   for(i in stocks) {
     print(i)
     #a <- read_html(httr::GET(paste("https://www.bloomberg.com/quote/",i, sep=""),use_proxy("127.0.0.1",1080)))
@@ -95,8 +79,6 @@ getFTSE50Index <- function (){
   a <- read_html("https://hk.investing.com/indices/ftse-china-a50")
   a<- (html_nodes(a,"td") %>% (function(x) {x[str_detect(x,".*28930.*")]}) %>% html_text())
   a <- as.numeric(str_replace(a,"[,|%]",""))
-  #return(c(a[1],a[2],a[1]-a[2], log(a[1]/(a[1]-a[2])),a[3]))
-
   return(c(a[1],a[2],a[1]-a[2],sprintf("%.2f%%", 100*log(a[1]/(a[1]-a[2])))))
 }
 
@@ -115,7 +97,6 @@ getXIN0UIndex <- function() {
   yest <- as.numeric(price)-ifelse(str_sub(chg,1,1)=="+", 1,-1)*abs(as.numeric(chg))
   return(c(price, chg[1],yest,sprintf("%.2f%%",100*log(price/yest))))
 }
-#print(getXIN0UIndex())
 
 ########################################################################################################################################################################
 
@@ -131,10 +112,9 @@ getIndicies <- function() {
     a <- a %>% html_text()
     a <- str_split(a, ",")
     print(paste(i, ": ",a[[1]][4], " Previous " , a[[1]][3], " ch ", sprintf("%.2f%%",100*log(as.numeric(a[[1]][4])/as.numeric(a[[1]][3])))))
-    #read_html()
   }
-  #return("")
 }
+
 #getIndicies()
 ##########################################################################################################################################
 
@@ -188,34 +168,4 @@ getBOCRmbRate<- function(){
 }
 
 #getBOCRmbRate()
-
-#' run daily tasks
-#' @export
-#Methods only:
-runMorningTasks <- function() {
-  getFTSEData()
-  getFTSE50Index()
-  getNAV()
-  getXIN0UIndex()
-  getIndicies()
-  getBOCRmbRate()
-}
-
-#' wrapper
-#' @export
-getWtdMaxMinFn <- function() {
-  getWtdMaxMinAll()
-}
-#' get week max/min + ma
-#' @export
-getMaxMinMA <- function() {
-  getMAAll(20)
-}
-
-#' get sharpe
-#' @export
-#compute ytd sharpe and output to file
-computeSharp <- function() {
-  compareAllSharpYtd()
-}
 

@@ -14,17 +14,17 @@
 #' @export
 generateIndexDay <- function() {
 
-  if(Sys.getenv("USERNAME")=="LUke") {
-    mainDir <- "J:\\Data\\mainBoardR\\"
-    dayDataFolder <- "J:\\TDX\\T0002\\export\\"
-    minuteDataFolder <- "J:\\TDX\\T0002\\export_1m\\"
-  } else if(Sys.getenv("USERNAME")=="Luke Shi") {
-    mainDir <- "H:\\Data\\mainBoardR\\"
-    dayDataFolder <-  "G:\\export\\"
-    minuteDataFolder <-  "G:\\export_1m\\"
-  }
+  # if(Sys.getenv("USERNAME")=="LUke") {
+  #   mainDir <- "J:\\Data\\mainBoardR\\"
+  #   dayDataFolder <- "J:\\TDX\\T0002\\export\\"
+  #   minuteDataFolder <- "J:\\TDX\\T0002\\export_1m\\"
+  # } else if(Sys.getenv("USERNAME")=="Luke Shi") {
+  #   mainDir <- "H:\\Data\\mainBoardR\\"
+  #   dayDataFolder <-  "G:\\export\\"
+  #   minuteDataFolder <-  "G:\\export_1m\\"
+  # }
 
-  indexDay <- fread(paste0(dayDataFolder,"SH#000001.txt"),header = TRUE,skip = 1,fill = T,
+  indexDay <- fread(paste0(getDayDataFolder(),"SH#000001.txt"),header = TRUE,skip = 1,fill = T,
                      showProgress = TRUE,col.names = c("D","O","H","L","C","V","A"))
   indexDay<- indexDay[!.N,]
   indexDay[, D:=ymd(D)]
@@ -38,18 +38,18 @@ generateIndexDay <- function() {
 
 fillData000001 <- function() {
 
-  if(Sys.getenv("USERNAME")=="LUke") {
-    mainDir <- "J:\\Data\\mainBoardR\\"
-    dayDataFolder <- "J:\\TDX\\T0002\\export\\"
-    minuteDataFolder <- "J:\\TDX\\T0002\\export_1m\\"
-  } else if(Sys.getenv("USERNAME")=="Luke Shi") {
-    mainDir <- "H:\\Data\\mainBoardR\\"
-    dayDataFolder <-  "G:\\export\\"
-    minuteDataFolder <-  "G:\\export_1m\\"
-  }
+  # if(Sys.getenv("USERNAME")=="LUke") {
+  #   mainDir <- "J:\\Data\\mainBoardR\\"
+  #   dayDataFolder <- "J:\\TDX\\T0002\\export\\"
+  #   minuteDataFolder <- "J:\\TDX\\T0002\\export_1m\\"
+  # } else if(Sys.getenv("USERNAME")=="Luke Shi") {
+  #   mainDir <- "H:\\Data\\mainBoardR\\"
+  #   dayDataFolder <-  "G:\\export\\"
+  #   minuteDataFolder <-  "G:\\export_1m\\"
+  # }
 
-  dest <- paste0(mainDir,"SH000001_2017.csv")
-  source <- paste0(minuteDataFolder,"SH#000001.txt")
+  dest <- paste0(getMainboardFolder(),"SH000001_2017.csv")
+  source <- paste0(getMinuteDataFolder(),"SH#000001.txt")
   #get last date
   destDT <- fread(dest,fill=T, header = F)
   print(" destination")
@@ -70,16 +70,16 @@ fillData000001 <- function() {
 #' gen index min
 #' @export
 generateIndexMin <- function() {
-
-  if(Sys.getenv("USERNAME")=="LUke") {
-    mainDir <- "J:\\Data\\mainBoardR\\"
-    dayDataFolder <- "J:\\TDX\\T0002\\export\\"
-    minuteDataFolder <- "J:\\TDX\\T0002\\export_1m\\"
-  } else if(Sys.getenv("USERNAME")=="Luke Shi") {
-    mainDir <- "H:\\Data\\mainBoardR\\"
-    dayDataFolder <-  "G:\\export\\"
-    minuteDataFolder <-  "G:\\export_1m\\"
-  }
+#
+#   if(Sys.getenv("USERNAME")=="LUke") {
+#     mainDir <- "J:\\Data\\mainBoardR\\"
+#     dayDataFolder <- "J:\\TDX\\T0002\\export\\"
+#     minuteDataFolder <- "J:\\TDX\\T0002\\export_1m\\"
+#   } else if(Sys.getenv("USERNAME")=="Luke Shi") {
+#     mainDir <- "H:\\Data\\mainBoardR\\"
+#     dayDataFolder <-  "G:\\export\\"
+#     minuteDataFolder <-  "G:\\export_1m\\"
+#   }
 
   res <- data.table()
   tmp <- data.table()
@@ -87,7 +87,7 @@ generateIndexMin <- function() {
   for(i in 1999:2017) {
     #assign(paste0("f",i),fread(paste0(mainDir,"SH000001_", i,".csv")))
     #assign(tmp,fread(paste0(mainDir,"SH000001_", i,".csv")))
-    tmp <- fread(paste0(mainDir,"SH000001_", i,".csv"))
+    tmp <- fread(paste0(getMainboardFolder(),"SH000001_", i,".csv"))
     if(length(names(tmp)) > 6) {
       tmp[, names(tmp)[7:length(names(tmp))]:=NULL]
     }

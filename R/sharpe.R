@@ -1,6 +1,5 @@
 
 #' calculate sharpe of a specific stock
-
 #' calc sharp
 #' @export
 calcSSSharpe <- function(symb) {
