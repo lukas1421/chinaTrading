@@ -8,6 +8,7 @@ getXIN0UIndex()
 getIndicies()
 getBOCRmbRate()
 
+# maxmin/ma/sharpe
 getWtdMaxMinAll()
 getMAAll(20)
 compareAllSharpYtd()

@@ -40,4 +40,10 @@ pnl[`Actual ptf change` < -30000, list(D,weekday, `Actual ptf change`, MTM, `Tra
 pnl[`Actual ptf change` < -30000, list(D,weekday, `Actual ptf change`, MTM, `Trade pnl`,`Delta close`, deltaPrev)]
 
 
+#graph pnl
+pnl[, qplot(D,NetPtf,geom = "line")]
+
+#Graph ptf growth
+pnl[is.na(V23), V23]
+pnl[, qplot(D, cumprod(1+V23),geom = "line")]
 
