@@ -6,7 +6,7 @@ getMA <- function(symb,numDays) {
   dt<-getDataPure(symb)
   #z <- as.zoo(dt)
   dt[, eval(label):=rollmean(C,numDays,fill = NA, align = "right")]
-  #print(dt[.N,get(eval(label))])
+  print(dt[.N,get(eval(label))])
   return(dt[.N, get(eval(label))])
 }
 

@@ -21,7 +21,6 @@ srd[order(-SR)][1:100][sd<0.3][SR>2.8]
 getDivs()
 
 
-
 # bench CAUTIOUS LONG EXECUTION
 #
 getBenchMark()

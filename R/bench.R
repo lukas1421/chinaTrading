@@ -31,11 +31,11 @@ getCorrel<- function(symb1, index) {
 }
 
 #' creating index
-createIndex <- function() {
-  benchList<- c("sh000001","sz399006","sz399001","sh000300","sh000016","sh000905")
-  for(i in benchList) {
-    #assign(i, getDataPure(i),envir=.GlobalEnv)
-    #assign(i, getDataPure(i),envir=as.environment("package:chinaTrading"))
-    assign(i,getDataPure(i),envir=parent.frame(1))
-  }
-}
+# createIndex <- function() {
+#   benchList<- c("sh000001","sz399006","sz399001","sh000300","sh000016","sh000905")
+#   for(i in benchList) {
+#     #assign(i, getDataPure(i),envir=.GlobalEnv)
+#     #assign(i, getDataPure(i),envir=as.environment("package:chinaTrading"))
+#     assign(i,getDataPure(i),envir=parent.frame(1))
+#   }
+# }
