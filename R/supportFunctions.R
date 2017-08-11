@@ -12,12 +12,14 @@ getMondayOfWeek <- function(dat) {
 
 
 #' get working directory
+#' @export
 getTradingFolder <- function() {
   return(paste0("C:\\Users\\",Sys.getenv("USERNAME"),"\\Desktop\\Trading\\"))
 }
 
 
 #' get day data folder
+#' @export
 getDayDataFolder <- function() {
   if(Sys.getenv("USERNAME")=="LUke") {
     mainDir <- "J:\\Data\\mainBoardR\\"
@@ -32,6 +34,7 @@ getDayDataFolder <- function() {
 }
 
 #' get min data folder
+#' @export
 getMinuteDataFolder <- function() {
   if(Sys.getenv("USERNAME")=="LUke") {
     minuteDataFolder <- "J:\\TDX\\T0002\\export_1m\\"
@@ -42,6 +45,7 @@ getMinuteDataFolder <- function() {
 }
 
 #' get main board folder
+#' @export
 getMainboardFolder <- function(){
   if(Sys.getenv("USERNAME")=="LUke") {
     mainDir <- "J:\\Data\\mainBoardR\\"
