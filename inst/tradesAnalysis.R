@@ -31,6 +31,9 @@ yrMtm[, list(fullSum=sum(Full,na.rm = T),amSum=sum(AM,na.rm = T),pmSum=sum(PM,na
 
 
 
+##################  get open pnl
+
+
 #save
 write.table(yrMtm, paste0(getTradingFolder(),"ampmmtm.txt"),quote = FALSE,sep = "\t",row.names = F)
 yrMtmTest <- fread(paste0(getTradingFolder(),"ampmmtm.txt"))
@@ -39,12 +42,68 @@ yrMtm[, list(sum(Full,na.rm = T),sum(AM,na.rm = T),sum(PM,na.rm = T))]
 yrMtm[, list(mean(Full,na.rm = T),mean(AM,na.rm = T),mean(PM,na.rm = T))]
 
 
+
+#get max min info
+maxMin<-tr[D>ymd("2017-8-6"),getMinuteMtmForAll(D),keyby=list(D)]
+
 ##########################FUNCTIONS########################################################################################################
-getOpenPos <- function(dat) {
-  tr[D<(dat), list(FullTicker,sum(Volume)),
-     keyby=list(FullTicker)][V2!=0,][,list(ticker=FullTicker,open=V2,prev=getClosingPriceBeforeD(dat,FullTicker)),
-                                     keyby=list(FullTicker)]
+
+
+
+
+getMinuteMtm <- function(dat, symb,pos) {
+  symbS <- deparse(substitute(symb))
+  d <- getMinuteDataPure(dat,symb)
+  prev <- getClosingPriceBeforeD(dat,symb)
+  d[, mtm:= (C-prev)*pos]
+  d<-d[, list(T,mtm)]
+  names(d) <- c("T",eval(symb))
+  d
+  #names(res) <- d$T
 }
+
+getMinuteMtmForAll <- function(dat) {
+  openPos <- getOpenPos(dat)
+  res <- data.table()
+  for(t in openPos$ticker) {
+    open <- openPos[ticker==t,open]
+    m <- getMinuteMtm(dat, t, open)
+    print(m)
+    if(nrow(res)==0){
+      res <- m
+    } else {
+      res <- merge(res,m, by="T")
+    }
+  }
+  mtmForAll <- res[, mtm:=rowSums(.SD), keyby=list(T)]
+
+  mtmForAll[, qplot(T,mtm, geom="line")]
+
+  print(mtmForAll)
+  dayMax <- mtmForAll[, max(mtm)]
+  dayMin <- mtmForAll[, min(mtm)]
+  amMax <- mtmForAll[T<1130, max(mtm)]
+  amMin <- mtmForAll[T<1130, min(mtm)]
+  pmMax <- mtmForAll[T>1259, max(mtm)]
+  pmMin <- mtmForAll[T>1259, min(mtm)]
+  dayMaxT <- mtmForAll[max(mtm)==mtm][,T]
+  dayMinT <- mtmForAll[min(mtm)==mtm][,T]
+
+  amMaxT <- mtmForAll[T<1130][max(mtm)==mtm][,T]
+  amMinT <- mtmForAll[T<1130][min(mtm)==mtm][,T]
+
+  pmMaxT <- mtmForAll[T>1259][max(mtm)==mtm][,T]
+  pmMinT <- mtmForAll[T>1259][min(mtm)==mtm][,T]
+  dayOpen <- mtmForAll[T==931, mtm]
+  dayClose <- mtmForAll[T==1500, mtm]
+
+  return(list(dayMax=dayMax, dayMin=dayMin, amMax=amMax,amMin = amMin, pmMax=pmMax, pmMin = pmMin,
+               dayMaxT = dayMaxT, dayMinT=dayMinT, amMaxT = amMaxT, amMinT= amMinT, pmMaxT=pmMaxT,pmMinT=pmMinT,
+              dayOpen = dayOpen, dayClose= dayClose))
+  # #print(openPos[ticker==t,open])
+  #mtmForAll
+}
+
 
 getMTMForAll <-function(dat) {
   d<-tr[D<(dat), list(FullTicker,sum(Volume)),
@@ -90,10 +149,10 @@ getMinuteDataPure <- function(dat, symb) {
     stock <- stock [!.N,]
 
     #return(stock[D==dat,list(D,T,C, (C- ytdClose)*pos)])
-    stockPrev  <- stock[D<dat, ][.N, ][,list(D,T,O,C)]
+    #stockPrev  <- stock[D<dat, ][.N, ][,list(D,T,O,C)]
     stock <- stock[D==dat,list(D,T,O,C)]
-    res<-rbindlist(list(stockPrev,stock),use.names = TRUE,fill = TRUE)
-    res
+    #res<-rbindlist(list(stockPrev,stock),use.names = TRUE,fill = TRUE)
+    stock
   }, error = function(err) {
     print(err)
     stock <- 0.0
