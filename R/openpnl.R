@@ -43,7 +43,7 @@ getOpenPnl <- function(dat, symb, pos) {
 }
 
 #' open pnl for all stocks
-#'
+#' @export
 getOpenPnlForPtf <- function(dat) {
   openPos <- getOpenPosPure(dat)
   openPos[, openPnl:= getOpenPnl(dat,ticker,open), keyby=list(ticker)]

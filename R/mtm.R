@@ -168,7 +168,7 @@ getMinuteDataPureForAllDate <- function(symb) {
   })
 }
 
-
+#' get minute data for day
 getMinuteDataForDay <- function(dat,symb,pos) {
   tryCatch ({
     ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
@@ -222,6 +222,7 @@ getAllMTM<- function(dat, symb, pos) {
 }
 
 #' converting time
+#' @export
 convertTimeToDecimal <- function(t) {
   hr <- floor(t/100)
   hr+(t-hr*100)/60

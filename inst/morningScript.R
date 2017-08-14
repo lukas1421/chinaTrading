@@ -11,9 +11,10 @@ getBOCRmbRate()
 # maxmin/ma/sharpe
 getWtdMaxMinAll()
 getMAAll(20)
-compareAllSharpYtd()
+
 
 #sharpe
+compareAllSharpYtd()
 srd<-compareAllSharpYtd()
 srd[order(-SR)][1:100][sd<0.3][SR>2.8]
 
@@ -22,32 +23,8 @@ getDivs()
 
 
 # bench CAUTIOUS LONG EXECUTION
-#
 getBenchMark()
 
-
-#bench & benchlist
-# Daily task
-#ftse
-#getFTSEData()
-#getFTSE50Index()
-#getNAV()
-#getXIN0UIndex()
-#getIndicies()
-#getBOCRmbRate()
-
-
-# wtd max min
-#getWtdMaxMinAll()
-
-#ma
-#getMAAll(20)
-
-#divs
-#getDivs()
-
-#sharpe
-#compareAllSharpYtd()
 
 #creating index for comparison, get bench
 #createIndex()
