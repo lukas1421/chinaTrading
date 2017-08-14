@@ -1,23 +1,26 @@
 #open pnl
-openPnl <- tr[D>ymd("2017-4-30"),list(openPnl=getOpenPnlForPtf(D)), keyby=list(D)]
-openPnl[,w:=wday(D)-1]
 
 
 #' get open position list
+#' @export
 getOpenPosPure <- function(dat) {
+  tr <- getTradingHistory()
   tr[D<(dat), list(FullTicker,sum(Volume)),
      keyby=list(FullTicker)][V2!=0,][,list(ticker=FullTicker,open=V2),keyby=list(FullTicker)]
 }
 
 #' get open position with ytd close price
+#' get open pos
+#' @export
 getOpenPos <- function(dat) {
+  tr <- getTradingHistory()
   tr[D<(dat), list(FullTicker,sum(Volume)),
      keyby=list(FullTicker)][V2!=0,][,list(ticker=FullTicker,open=V2,prev=getClosingPriceBeforeD(dat,FullTicker)),
                                      keyby=list(FullTicker)]
 }
 
 
-# open pnl
+#' open pnl
 getOpenPnl <- function(dat, symb, pos) {
   tryCatch ({
     ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))

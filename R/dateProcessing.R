@@ -57,3 +57,6 @@ getData <- function(symb) {
 
 
 
+
+
+
