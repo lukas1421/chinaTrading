@@ -10,6 +10,10 @@ tr <- fread(paste0(getTradingFolder(),"trades.csv"))
 tr[, D:=ymd(Date)]
 tr[, w:= wday(D)-1]
 
+tradeDates <- fread(paste0(getTradingFolder(),"tradeDates.csv"))
+tradeDates[, D:=ymd(Date)]
+tradeDates[, w:= wday(D)-1]
+
 #check top/worst performer
 tr[, sum(`Unrealized PL`),keyby=list(Name)][order(-V1)][1:20]
 tr[, sum(`Unrealized PL`),keyby=list(Name)][order(V1)][1:20]
@@ -210,4 +214,9 @@ getAllMTM<- function(dat, symb, pos) {
   } else {
     return(list(Full=0,AM=0,PM=0))
   }
+}
+
+convertTimeToDecimal <- function(t) {
+  hr <- floor(t/100)
+  hr+(t-hr*100)/60
 }
