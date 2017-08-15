@@ -82,6 +82,7 @@ getMTMForAll <-function(dat) {
 
 
 #' get closing price
+#' @export
 getClosingPriceBeforeD <- function(dat,symb) {
   tryCatch ({
     ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))

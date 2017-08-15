@@ -32,10 +32,7 @@ tr[, sum(`Unrealized PL`),keyby=list(Name)][order(V1)][1:20]
 
 #open position for a given date
 tr[D< ymd("2017-8-15"), list(FullTicker,sum(Volume)), keyby=list(FullTicker)][V2!=0]
-
-
-dat <-ymd("2017-8-11")
-d<-tr[D< dat, list(FullTicker,sum(Volume),getClosingPriceBeforeD(dat,FullTicker)), keyby=list(FullTicker)][V2!=0]
+d<-tr[D< ymd("2017-8-11"), list(FullTicker,sum(Volume),getClosingPriceBeforeD(dat,FullTicker)), keyby=list(FullTicker)][V2!=0]
 
 
 # MTM
@@ -47,10 +44,10 @@ yrMtm[, list(fullSum=sum(Full,na.rm = T),amSum=sum(AM,na.rm = T),pmSum=sum(PM,na
 
 #save
 write.table(yrMtm, paste0(getTradingFolder(),"ampmmtm.txt"),quote = FALSE,sep = "\t",row.names = F)
-yrMtmTest <- fread(paste0(getTradingFolder(),"ampmmtm.txt"))
 
-yrMtm[, list(sum(Full,na.rm = T),sum(AM,na.rm = T),sum(PM,na.rm = T))]
-yrMtm[, list(mean(Full,na.rm = T),mean(AM,na.rm = T),mean(PM,na.rm = T))]
+yrMtmTest <- fread(paste0(getTradingFolder(),"ampmmtm.txt"))
+yrMtm[, list(full=sum(Full,na.rm = T),am=sum(AM,na.rm = T),pm=sum(PM,na.rm = T))]
+yrMtm[, list(fullMean=mean(Full,na.rm = T),amMean=mean(AM,na.rm = T),pmMean=mean(PM,na.rm = T))]
 
 
 
