@@ -39,7 +39,6 @@ d<-tr[D< dat, list(FullTicker,sum(Volume),getClosingPriceBeforeD(dat,FullTicker)
 
 
 # MTM
-
 yrMtm<-tradeDates[D>=ymd("2017-4-30"),getMTMForAll(D),keyby=list(D)]
 yrMtm[, list(fullSum=sum(Full,na.rm = T),amSum=sum(AM,na.rm = T),pmSum=sum(PM,na.rm = T)),]
 
