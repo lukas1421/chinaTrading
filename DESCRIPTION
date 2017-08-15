@@ -21,5 +21,9 @@ Imports:
     xts,
     TTR,
     data.table,
-    zoo
+    zoo,
+    knitr
 RoxygenNote: 6.0.1
+Suggests: knitr,
+    rmarkdown
+VignetteBuilder: knitr
