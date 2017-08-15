@@ -21,14 +21,17 @@ library(ggplot2)
 #   tradeDates[, w:= wday(D)-1]
 # }
 
+chinaTrading::loadRecurrentStocks()
+
 tr <- getTradingHistory()
+tradeDates <- getTradingDates()
 
 #check top/worst performer
 tr[, sum(`Unrealized PL`),keyby=list(Name)][order(-V1)][1:20]
 tr[, sum(`Unrealized PL`),keyby=list(Name)][order(V1)][1:20]
 
 #open position for a given date
-tr[D< ymd("2017-8-11"), list(FullTicker,sum(Volume)), keyby=list(FullTicker)][V2!=0]
+tr[D< ymd("2017-8-15"), list(FullTicker,sum(Volume)), keyby=list(FullTicker)][V2!=0]
 
 
 dat <-ymd("2017-8-11")
@@ -36,7 +39,7 @@ d<-tr[D< dat, list(FullTicker,sum(Volume),getClosingPriceBeforeD(dat,FullTicker)
 
 
 # MTM
-tradeDates <- getTradingDates()
+
 yrMtm<-tradeDates[D>=ymd("2017-4-30"),getMTMForAll(D),keyby=list(D)]
 yrMtm[, list(fullSum=sum(Full,na.rm = T),amSum=sum(AM,na.rm = T),pmSum=sum(PM,na.rm = T)),]
 

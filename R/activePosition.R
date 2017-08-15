@@ -28,6 +28,7 @@ daysWithActivePosition <- function(symb){
 #' load into main namespace all stocks that exceed an active day threshold of 1
 #' @export
 loadRecurrentStocks <- function() {
+
   tr <- getTradingHistory()
 
   recurList<-tr[, list(sum=sum(abs(Volume))), keyby=list(FullTicker)][sum>0,(FullTicker)]

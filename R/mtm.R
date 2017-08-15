@@ -43,9 +43,7 @@ getMinuteMtmForAll <- function(dat) {
     }
   }
   mtmForAll <- res[, mtm:=rowSums(.SD), keyby=list(T)]
-
   mtmForAll[, qplot(T,mtm, geom="line")]
-
   print(mtmForAll)
   dayMax <- mtmForAll[, max(mtm)]
   dayMin <- mtmForAll[, min(mtm)]
@@ -93,7 +91,6 @@ getClosingPriceBeforeD <- function(dat,symb) {
     stock <- stock [!.N,]
     stock [, D:=ymd(D)]
     return(stock[D<dat, ][.N,C])
-
   }, error = function(err) {
     print(err)
     stock <- 0.0
@@ -105,7 +102,6 @@ getClosingPriceBeforeD <- function(dat,symb) {
 getMinuteDataPure <- function(dat, symb) {
   tryCatch ({
     ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
-
     if(exists(toupper(symb))) {
       print("exists")
       stock <- get(toupper(symb))
