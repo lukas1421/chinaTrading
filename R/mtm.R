@@ -43,7 +43,7 @@ getMinuteMtmForAll <- function(dat) {
     }
   }
   mtmForAll <- res[, mtm:=rowSums(.SD), keyby=list(T)]
-  mtmForAll[, qplot(T,mtm, geom="line")]
+  #mtmForAll[, qplot(T,mtm, geom="line")]
   print(mtmForAll)
   dayMax <- mtmForAll[, max(mtm)]
   dayMin <- mtmForAll[, min(mtm)]
@@ -59,12 +59,17 @@ getMinuteMtmForAll <- function(dat) {
 
   pmMaxT <- mtmForAll[T>1259][max(mtm)==mtm][,T]
   pmMinT <- mtmForAll[T>1259][min(mtm)==mtm][,T]
+
   dayOpen <- mtmForAll[T==931, mtm]
   dayClose <- mtmForAll[T==1500, mtm]
+  amClose <- mtmForAll[T<=1130, ][.N,mtm]
+
+  percClose <- mtmForAll[, (dayClose - dayMin)/( dayMax - dayMin)]
+  pmChgPerc <- (dayClose - amClose)/( dayMax - dayMin)
 
   return(list(dayMax=dayMax, dayMin=dayMin, amMax=amMax,amMin = amMin, pmMax=pmMax, pmMin = pmMin,
               dayMaxT = dayMaxT, dayMinT=dayMinT, amMaxT = amMaxT, amMinT= amMinT, pmMaxT=pmMaxT,pmMinT=pmMinT,
-              dayOpen = dayOpen, dayClose= dayClose))
+              dayOpen = dayOpen, dayClose= dayClose, percClose = percClose, pmChgPerc = pmChgPerc))
 }
 
 
@@ -100,6 +105,7 @@ getClosingPriceBeforeD <- function(dat,symb) {
 }
 
 #' get minute data pure
+#' @export
 getMinuteDataPure <- function(dat, symb) {
   tryCatch ({
     ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
@@ -192,12 +198,12 @@ getMinuteDataForDay <- function(dat,symb,pos) {
 }
 
 getDayMTM <- function(dat, symb, pos) {
-  d <- getMinuteDataPure(dat, symb)
+  d <- getMinuteDataPureWithPrevClose(dat, symb)
   (d[.N,C ] - d[1,C])*pos
 }
 
 getAMMTM <- function(dat, symb, pos) {
-  d <- getMinuteDataPure(dat, symb)
+  d <- getMinuteDataPureWithPrevClose(dat, symb)
   (d[T<=1130, list(T,C)][.N,C] - d[1,C])*pos
 }
 
@@ -211,12 +217,23 @@ getAllMTM<- function(dat, symb, pos) {
   print(d)
   if(nrow(d)>=240) {
     return(list(Full=(d[.N,C ] - d[1,C])*pos,
+                Open= (d[2,O] - d[1,C])*pos,
                 AM=(d[T<=1130, list(T,C)][.N,C] - d[1,C])*pos,
                 PM=(d[.N,C] - d[T<=1130, list(T,C)][.N,C])*pos))
   } else {
     return(list(Full=0,AM=0,PM=0))
   }
 }
+
+
+# getMTMMinuteList<- function(dat, symb, pos) {
+#   d <- getMinuteDataPureWithPrevClose(dat, symb)
+#   print(d)
+#   prevClose <- d[1,C]
+#   d[, chg:=(C-prevClose)*pos]
+#   d[-1,list(D,T,chg)]
+# }
+
 
 #' converting time
 #' @export

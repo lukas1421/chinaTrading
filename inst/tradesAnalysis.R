@@ -37,9 +37,11 @@ d<-tr[D< ymd("2017-8-11"), list(FullTicker,sum(Volume),getClosingPriceBeforeD(da
 
 # MTM
 yrMtm<-tradeDates[D>=ymd("2017-4-30"),getMTMForAll(D),keyby=list(D)]
+yrMtm[, w:= wday(D)-1]
 yrMtm[, list(fullSum=sum(Full,na.rm = T),amSum=sum(AM,na.rm = T),pmSum=sum(PM,na.rm = T)),]
+yrMtm[, list(fullSum=sum(Full,na.rm = T),amSum=sum(AM,na.rm = T),pmSum=sum(PM,na.rm = T)),keyby=list(w)]
 
-
+test<-tradeDates[D>=ymd("2017-7-30"),c(getMTMForAll(D),getOpenPnlForPtf(D)),keyby=list(D)]
 
 
 #save
@@ -64,7 +66,7 @@ openPnl[, sum(openPnl), keyby=list(w)]
 
 maxMin<-tr[D>ymd("2017-4-30"),getMinuteMtmForAll(D),keyby=list(D)]
 
-maxMin[, w:=wday(D)]
+maxMin[, w:=wday(D)-1]
 maxMin[, dayMaxT1:= convertTimeToDecimal(dayMaxT)]
 maxMin[, dayMinT1:= convertTimeToDecimal(dayMinT)]
 maxMin[, amMaxT1:= convertTimeToDecimal(amMaxT)]
@@ -81,6 +83,13 @@ maxMin[, pmRange:= pmMax - pmMin]
 
 maxMin[, mean(amRange), keyby=list(w)]
 maxMin[, mean(pmRange), keyby=list(w)]
+
+maxMin[, prevCP:= shift(percClose, 1)]
+
+
+maxMin[, mean(percClose), keyby=list(w)]
+maxMin[, mean(percClose), keyby=list(w,cut(prevCP,breaks = quantile(prevCP,na.rm = T),include.lowest = T ))]
+maxMin[, mean(percClose), keyby=list(w,prevCP>0.5)]
 
 #merge
 fullMtmMaxMin<-merge(maxMin, yrMtm, by = "D")

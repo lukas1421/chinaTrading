@@ -48,5 +48,6 @@ getOpenPnlForPtf <- function(dat) {
   openPos <- getOpenPosPure(dat)
   openPos[, openPnl:= getOpenPnl(dat,ticker,open), keyby=list(ticker)]
   print(openPos)
-  openPos[, sum(openPnl,na.rm=T)]
+  sumPnl<-openPos[, sum(openPnl,na.rm=T)]
+  list(openPnl=sumPnl)
 }

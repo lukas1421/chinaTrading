@@ -25,6 +25,11 @@ getDivs()
 # bench CAUTIOUS LONG EXECUTION
 getBenchMark()
 
+#
+saveToGit()
+
+
+
 
 #creating index for comparison, get bench
 #createIndex()
