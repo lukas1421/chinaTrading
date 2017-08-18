@@ -41,22 +41,22 @@ yrMtm[, w:= wday(D)-1]
 yrMtm[, list(fullSum=sum(Full,na.rm = T),amSum=sum(AM,na.rm = T),pmSum=sum(PM,na.rm = T)),]
 yrMtm[, list(fullSum=sum(Full,na.rm = T),amSum=sum(AM,na.rm = T),pmSum=sum(PM,na.rm = T)),keyby=list(w)]
 
-test<-tradeDates[D>=ymd("2017-7-30"),c(getMTMForAll(D),getOpenPnlForPtf(D)),keyby=list(D)]
+#test<-tradeDates[D>=ymd("2017-7-30"),c(getMTMForAll(D),getOpenPnlForPtf(D)),keyby=list(D)]
 
 
 #save
 write.table(yrMtm, paste0(getTradingFolder(),"ampmmtm.txt"),quote = FALSE,sep = "\t",row.names = F)
 
-yrMtmTest <- fread(paste0(getTradingFolder(),"ampmmtm.txt"))
-yrMtm[, list(full=sum(Full,na.rm = T),am=sum(AM,na.rm = T),pm=sum(PM,na.rm = T))]
-yrMtm[, list(fullMean=mean(Full,na.rm = T),amMean=mean(AM,na.rm = T),pmMean=mean(PM,na.rm = T))]
+# yrMtmTest <- fread(paste0(getTradingFolder(),"ampmmtm.txt"))
+# yrMtm[, list(full=sum(Full,na.rm = T),am=sum(AM,na.rm = T),pm=sum(PM,na.rm = T))]
+# yrMtm[, list(fullMean=mean(Full,na.rm = T),amMean=mean(AM,na.rm = T),pmMean=mean(PM,na.rm = T))]
 
 
 
 #open pnl
-openPnl <- tr[D>ymd("2017-4-30"),list(openPnl=getOpenPnlForPtf(D)), keyby=list(D)]
+openPnl <- tr[D>ymd("2017-4-30"),getOpenPnlForPtf(D), keyby=list(D)]
 openPnl[,w:=wday(D)-1]
-openPnl[, sum(openPnl), keyby=list(w)]
+openPnl[, sum(openpnl), keyby=list(w)]
 
 
 
@@ -75,7 +75,8 @@ maxMin[, pmMaxT1:= convertTimeToDecimal(pmMaxT)]
 maxMin[, pmMinT1:= convertTimeToDecimal(pmMinT)]
 
 #get max/min time mean
-maxMin[, list(daymax=mean(dayMaxT1), daymin=mean(dayMinT1), ammax = mean(amMaxT1), ammin = mean(amMinT1), pmmax=mean(pmMaxT1),pmmin=mean(pmMinT1)), keyby=list(w)]
+maxMin[, list(daymax=mean(dayMaxT1), daymin=mean(dayMinT1),
+              ammax = mean(amMaxT1), ammin = mean(amMinT1), pmmax=mean(pmMaxT1),pmmin=mean(pmMinT1)), keyby=list(w)]
 
 #range
 maxMin[, amRange:= amMax - amMin]

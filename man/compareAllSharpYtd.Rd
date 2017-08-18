@@ -4,7 +4,7 @@
 \alias{compareAllSharpYtd}
 \title{compare all sharpe}
 \usage{
-compareAllSharpYtd()
+compareAllSharpYtd(dat)
 }
 \description{
 compare all sharpe

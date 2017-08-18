@@ -15,8 +15,15 @@ getMAAll(20)
 
 #sharpe
 compareAllSharpYtd()
-srd<-compareAllSharpYtd()
-srd[order(-SR)][1:100][sd<0.3][SR>2.8]
+srd<-compareAllSharpYtd(ymd("2016-12-31"))
+output<-srd[order(-SR)][1:100][sd<0.3][SR>2.8]
+write.table(output[,list(V1,SR)], paste0(getTradingFolder(),"sharpeOuput.txt"),quote = FALSE,sep = "\t",row.names = FALSE, col.names =FALSE)
+
+
+srd1 <- compareAllSharpYtd(ymd("2014-1-30"))
+srd1[order(-SR)][1:100][sd<0.3][SR>0]
+
+#weekly sharp
 
 #get divs
 getDivs()
@@ -27,8 +34,6 @@ getBenchMark()
 
 #
 saveToGit()
-
-
 
 
 #creating index for comparison, get bench

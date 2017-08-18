@@ -2,8 +2,8 @@
 #' calculate sharpe of a specific stock
 #' calc sharp
 #' @export
-calcSSSharpe <- function(symb) {
-  sharpe <- calcSSSharpeDate(symb)
+calcSSSharpe <- function(symb, dat) {
+  sharpe <- calcSSSharpeDate(symb, dat)
   print(paste0(" sharpe ", symb, " ", sharpe))
   sharpe
 }
@@ -11,7 +11,7 @@ calcSSSharpe <- function(symb) {
 #' date
 #' @export
 #' @import data.table
-calcSSSharpeDate <- function(symb,dat=ymd("20161231")) {
+calcSSSharpeDate <- function(symb,dat) {
   d<-getDataPure(symb)
   d[,ret:=(C/shift(C,1)-1)]
   mean <- d[D>dat, mean(ret,na.rm=T)]
@@ -29,9 +29,9 @@ calcSSSharpeDate <- function(symb,dat=ymd("20161231")) {
 #' compare all sharpe
 #' @export
 #' @import data.table
-compareAllSharpYtd <- function() {
+compareAllSharpYtd <- function(dat) {
   d<- fread(paste0(getTradingFolder(),"test.txt"),header = FALSE)
-  d<- d[, c(V2,calcSSSharpe(V1)), keyby=list(V1)]
+  d<- d[, c(V2,calcSSSharpe(V1, dat)), keyby=list(V1)]
   d[, SR:= ifelse(is.na(SR),0,round(SR,1))]
   write.table(d[, list(V1,SR)], paste0(getTradingFolder(),"sharpe.txt"),
               quote = FALSE,sep = "\t",row.names = FALSE, col.names =FALSE)

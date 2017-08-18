@@ -5,7 +5,7 @@
 \title{calculate sharpe of a specific stock
 calc sharp}
 \usage{
-calcSSSharpe(symb)
+calcSSSharpe(symb, dat)
 }
 \description{
 calculate sharpe of a specific stock

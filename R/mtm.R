@@ -77,11 +77,13 @@ getMinuteMtmForAll <- function(dat) {
 #' @export
 getMTMForAll <-function(dat) {
   print(dat)
-  tr <- getTradingHistory()
+  #tr <- getTradingHistory()
   d<-tr[D<(dat), list(FullTicker,sum(Volume)),
         keyby=list(FullTicker)][V2!=0,][,list(ticker=FullTicker,open=V2,prev=getClosingPriceBeforeD(dat,FullTicker)),
                                         keyby=list(FullTicker)]
+  #print(d)
   e <- d[,c(ticker,open,getAllMTM(dat,ticker,open)),keyby=list(ticker)]
+  #print(e)
   e[, list(dat,Full=sum(Full),AM=sum(AM),PM=sum(PM))]
 }
 
@@ -221,7 +223,7 @@ getAllMTM<- function(dat, symb, pos) {
                 AM=(d[T<=1130, list(T,C)][.N,C] - d[1,C])*pos,
                 PM=(d[.N,C] - d[T<=1130, list(T,C)][.N,C])*pos))
   } else {
-    return(list(Full=0,AM=0,PM=0))
+    return(list(Full=0,Open=0,AM=0,PM=0))
   }
 }
 

@@ -4,7 +4,7 @@
 \alias{calcSSSharpeDate}
 \title{date}
 \usage{
-calcSSSharpeDate(symb, dat = ymd("20161231"))
+calcSSSharpeDate(symb, dat)
 }
 \description{
 date
