@@ -1,5 +1,7 @@
 #morning runs
 
+
+
 library(chinaTrading)
 getFTSEData()
 getFTSE50Index()
@@ -12,12 +14,11 @@ getBOCRmbRate()
 getWtdMaxMinAll()
 getMAAll(20)
 
-
 #sharpe
 compareAllSharpYtd()
-srd<-compareAllSharpYtd(ymd("2016-12-31"))
+srd<-compareAllSharpYtd(lubridate::ymd("2016-12-31"))
 output<-srd[order(-SR)][1:100][sd<0.3][SR>2.8]
-write.table(output[,list(V1,SR)], paste0(getTradingFolder(),"sharpeOuput.txt"),quote = FALSE,sep = "\t",row.names = FALSE, col.names =FALSE)
+write.table(output[,list(V1,SR)], paste0(getTradingFolder(),"sharpeOutput.txt"),quote = FALSE,sep = "\t",row.names = FALSE, col.names =FALSE)
 
 
 srd1 <- compareAllSharpYtd(ymd("2014-1-30"))

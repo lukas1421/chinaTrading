@@ -5,6 +5,7 @@
 #' @export
 #' @import data.table
 getDataPure<- function(symb) {
+  #print(paste0("getting data",symb))
   ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
   d<- fread(paste0(getDayDataFolder(),ticker,".txt"),skip = 1,fill = T,showProgress = TRUE,col.names = c("D","O","H","L","C","V","A"))
   d <- d[!.N,]
