@@ -18,7 +18,8 @@ getDataPure<- function(symb) {
 #' @export
 getDataPureD<- function(symb) {
   ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
-  d<- fread(paste0(getMinuteDataFolder(),ticker,".txt"),skip = 1,fill = T,showProgress = TRUE,col.names = c("D","T","O","H","L","C","V","A"))
+  d<- fread(paste0(getMinuteDataFolder(),ticker,".txt"),
+            skip = 1,fill = T,showProgress = TRUE,col.names = c("D","T","O","H","L","C","V","A"))
   d <- d[!.N,]
   d[, D:=ymd(D)]
   d[, DT:=ymd_hm(paste(D,paste0(str_sub(T,1,str_length(T)-2),":",str_sub(T,str_length(T)-1))))]
