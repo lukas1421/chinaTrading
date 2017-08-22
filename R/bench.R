@@ -3,7 +3,6 @@
 #' get bench of a stock and output to folder
 #' @export
 getBenchMark <- function() {
-
   env <- new.env()
   benchList<- c("sh000001","sz399006","sz399001","sh000300","sh000016","sh000905")
   dt <- data.table(benchList)
@@ -11,8 +10,10 @@ getBenchMark <- function() {
          function(x) {
            d <- getDataPure(x)
            d[, eval(x):= C/shift(C,1)-1]
+           #print(d)
            assign(x,d, envir = env)
          })
+  assign("b",dt,envir=env)
   d<- fread(paste0(getTradingFolder(),"test.txt"),header = FALSE)
   d<- d[, c(V2,getCorrelGen(V1,env)), keyby=list(V1)]
   write.table(d, paste0(getTradingFolder(),"bench.txt"),quote = FALSE,sep = "\t")
@@ -23,6 +24,7 @@ getBenchMark <- function() {
 #' @export
 getCorrelGen<-function(symb,env) {
   print(symb)
+  dt <- get("b", envir=env)
   dt[, x:= getCorrel(symb,benchList,env), keyby=list(benchList)]
   return(list(bench=dt[order(-x)][1]$benchList,correl=dt[order(-x)][1]$x))
   #invisible()

@@ -22,8 +22,7 @@ Imports:
     TTR,
     data.table,
     zoo,
-    knitr,
-    hash
+    knitr
 RoxygenNote: 6.0.1
 Suggests: knitr,
     rmarkdown

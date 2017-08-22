@@ -4,7 +4,7 @@
 \alias{getCorrelGen}
 \title{correl between one stock and all benches}
 \usage{
-getCorrelGen(symb)
+getCorrelGen(symb, env)
 }
 \description{
 correl between one stock and all benches
