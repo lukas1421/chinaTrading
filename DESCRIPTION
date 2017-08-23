@@ -24,7 +24,8 @@ Imports:
     zoo,
     knitr,
     Rcpp,
-    xml2
+    xml2,
+    rJava
 RoxygenNote: 6.0.1
 Suggests: knitr,
     rmarkdown
