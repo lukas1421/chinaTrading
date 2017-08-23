@@ -1,6 +1,8 @@
 #bench and correl
 
 #' get bench of a stock and output to folder
+#' @importFrom  Rcpp sourceCpp
+#' @useDynLib chinaTrading
 #' @export
 getBenchMark <- function() {
   env <- new.env()

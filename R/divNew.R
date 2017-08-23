@@ -1,6 +1,7 @@
 #' get divs
 #' @export
 #' @importFrom  xml2 read_xml
+#' @importFrom xml2 read_html
 #' @import data.table
 #' @import stringr
 getDivs <- function() {

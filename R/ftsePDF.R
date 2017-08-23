@@ -55,7 +55,6 @@ updateFTSEWeights <- function() {
 
 #' getting NAVs
 #' @export
-#' @import xml2
 #' @import stringr
 #'
 getNAV <- function() {
