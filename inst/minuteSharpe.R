@@ -10,3 +10,4 @@ sd(d[,chg])*sqrt(240)
 mean(d[, chg])/sd(d[,chg])*sqrt(240)
 
 
+#test
