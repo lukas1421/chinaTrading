@@ -7,7 +7,7 @@ using namespace Rcpp;
 
 // timesThree
 NumericVector timesThree(NumericVector x);
-RcppExport SEXP chinaTrading_timesThree(SEXP xSEXP) {
+RcppExport SEXP _chinaTrading_timesThree(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -18,7 +18,7 @@ END_RCPP
 }
 // getMean
 double getMean(NumericVector x);
-RcppExport SEXP chinaTrading_getMean(SEXP xSEXP) {
+RcppExport SEXP _chinaTrading_getMean(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -29,7 +29,7 @@ END_RCPP
 }
 // getSharpe
 double getSharpe(NumericVector x);
-RcppExport SEXP chinaTrading_getSharpe(SEXP xSEXP) {
+RcppExport SEXP _chinaTrading_getSharpe(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -37,4 +37,16 @@ BEGIN_RCPP
     rcpp_result_gen = Rcpp::wrap(getSharpe(x));
     return rcpp_result_gen;
 END_RCPP
+}
+
+static const R_CallMethodDef CallEntries[] = {
+    {"_chinaTrading_timesThree", (DL_FUNC) &_chinaTrading_timesThree, 1},
+    {"_chinaTrading_getMean", (DL_FUNC) &_chinaTrading_getMean, 1},
+    {"_chinaTrading_getSharpe", (DL_FUNC) &_chinaTrading_getSharpe, 1},
+    {NULL, NULL, 0}
+};
+
+RcppExport void R_init_chinaTrading(DllInfo *dll) {
+    R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
+    R_useDynamicSymbols(dll, FALSE);
 }

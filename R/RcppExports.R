@@ -3,16 +3,16 @@
 
 #' @export
 timesThree <- function(x) {
-    .Call('chinaTrading_timesThree', PACKAGE = 'chinaTrading', x)
+    .Call('_chinaTrading_timesThree', PACKAGE = 'chinaTrading', x)
 }
 
 #' @export
 getMean <- function(x) {
-    .Call('chinaTrading_getMean', PACKAGE = 'chinaTrading', x)
+    .Call('_chinaTrading_getMean', PACKAGE = 'chinaTrading', x)
 }
 
 #' @export
 getSharpe <- function(x) {
-    .Call('chinaTrading_getSharpe', PACKAGE = 'chinaTrading', x)
+    .Call('_chinaTrading_getSharpe', PACKAGE = 'chinaTrading', x)
 }
 
