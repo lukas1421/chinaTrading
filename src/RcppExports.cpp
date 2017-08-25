@@ -38,11 +38,23 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// getSD
+double getSD(NumericVector x);
+RcppExport SEXP _chinaTrading_getSD(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(getSD(x));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_chinaTrading_timesThree", (DL_FUNC) &_chinaTrading_timesThree, 1},
     {"_chinaTrading_getMean", (DL_FUNC) &_chinaTrading_getMean, 1},
     {"_chinaTrading_getSharpe", (DL_FUNC) &_chinaTrading_getSharpe, 1},
+    {"_chinaTrading_getSD", (DL_FUNC) &_chinaTrading_getSD, 1},
     {NULL, NULL, 0}
 };
 

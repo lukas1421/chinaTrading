@@ -16,3 +16,8 @@ getSharpe <- function(x) {
     .Call('_chinaTrading_getSharpe', PACKAGE = 'chinaTrading', x)
 }
 
+#' @export
+getSD <- function(x) {
+    .Call('_chinaTrading_getSD', PACKAGE = 'chinaTrading', x)
+}
+

@@ -44,3 +44,14 @@ double getSharpe(NumericVector x) {
   }
   return sqrt(res2/(x.size()-1));
 }
+
+//' @export
+//[[Rcpp::export]]
+double getSD(NumericVector x) {
+  int len = x.size();
+  return sqrt((sum(pow(x,2))/x.size()- pow(mean(x),2))*x.size()/(x.size()-1));
+
+}
+
+
+
