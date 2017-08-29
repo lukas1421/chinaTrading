@@ -169,14 +169,17 @@ getSumSumSq <- function(symb, dat) {
   return()
 }
 
-#provide sum and sum sq data for wtd sharpe ( to be used in conjunction with pcb)
+#provide sum and sum sq data for wtd sharpe ( to be used in conjunction with pricemapbar)
 getSumSumSqAll <- function(dat) {
   d <- fread(paste0(getTradingFolder(),"test.txt"),header = FALSE)
-  d <- d[, c(V2,getSumSumSq(V1,dat)), keyby=list(V1)]
+  d <- d[1:20, c(V2,getSumSumSq(V1,dat)), keyby=list(V1)]
+  names(d) <-c("Ticker", "chn","sumRet","sumRetSq","N","SR")
+  write.table(d, paste0(getTradingFolder(),"wtdSumSumSq.txt"),quote = FALSE,sep = "\t"
+              ,row.names = FALSE, col.names = FALSE)
   d
 }
 
-write.table(d, paste0(getTradingFolder(),"wtdSumSumSq.txt"),quote = FALSE,sep = "\t")
+
 
 
 getMonOfWeek <- function(d) {
