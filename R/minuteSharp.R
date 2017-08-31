@@ -16,6 +16,20 @@ getDaySharpe <- function(symb,dat) {
   list(res=res, am=amRes, pm=pmRes)
 }
 
+#' get cumulative sharpe of one day for one symbol
+#' @export
+getDayCumuSharpe <- function(symb, dat) {
+  d <- chinaTrading::getDataPureD(symb)
+  d[, chg:= C/shift(C,1)-1]
+  d <- d[D==dat,]
+  d[, mean:= (cumsum(chg)/.I)]
+  d[, sd:= sqrt((cumsum(chg^2)/.I-(cumsum(chg)/.I)^2)*.I/(.I-1))]
+  d[, sharpe:= mean/sd*sqrt(240) ]
+  #print(symb)
+  #print(d)
+  return(d)
+}
+
 #' export to file to be processed for wtd sharpe
 #' @export
 getSumSumSq <- function(symb, dat) {
@@ -31,9 +45,11 @@ getSumSumSq <- function(symb, dat) {
     sumRet <- d[, sum(chg,na.rm = T)]
     sumRetSq <- d[,sum(chgSq,na.rm = T)]
     n <- d[,.N]
+    print(n)
     m <- sumRet/n
     sd <- sqrt((sumRetSq/n - m^2)*n/(n-1))
-    sr <- m/sd*sqrt(n)
+    print(sd)
+    sr <- m/sd*sqrt(240)
     #print((list(sumRet=sumRet, sumRetSq=sumRetSq,N=n, mean=m, sd=sd, sr=sr)))
     return(list(sumRet=sumRet, sumRetSq=sumRetSq,N=n, sr=sr))
   }
@@ -50,6 +66,25 @@ getSumSumSqAll <- function(dat) {
   write.table(d, paste0(getTradingFolder(),"wtdSumSumSq.txt"),quote = FALSE,sep = "\t"
               ,row.names = FALSE, col.names = FALSE)
   d
+}
+
+#' wtd cumulative sharpe.
+#' @export
+getWtdCumuSharpe <- function(symb, dat) {
+  mon <- getMonOfWeek(dat)
+  d <- chinaTrading::getDataPureD(symb)
+  d <- d[D>=mon,]
+  d[, chg:= C/shift(C,1)-1]
+  d[1, chg:=(C/O)-1]
+  #d[, cumChg:= cumsum(chg)]
+  #d[, rowN := .I]
+  #d[, meanSoFar:= cumChg/rowN]
+
+  d[, mean:= (cumsum(chg)/.I)]
+  d[, sd:= sqrt((cumsum(chg^2)/.I-(cumsum(chg)/.I)^2)*.I/(.I-1))]
+  d[, sharpe:= mean/sd*sqrt(240) ]
+  print(d)
+  return(d)
 }
 
 #' get the monday of a given date

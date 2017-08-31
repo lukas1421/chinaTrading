@@ -23,7 +23,7 @@ getDaySharpeFromEnv <- function(symb,dat,env) {
 }
 
 # get sharpe from date (inclusive)
-getDaySharpeFromDate <- function(symb, dat) {
+getDaySharpeSinceDate <- function(symb, dat) {
   d <- chinaTrading::getDataPureD(symb)
   d[, chg:= C/shift(C,1)-1]
   d[1, chg:=(C/O)-1]
@@ -33,7 +33,7 @@ getDaySharpeFromDate <- function(symb, dat) {
 
   d<-d[D>=dat, ]
   days <- data.table(days=unique(d[,(D) ]))
-  days<-(days[, getDaySharpeFromEnv(symb, days, env), keyby=list(days) ])
+  days <- (days[, getDaySharpeFromEnv(symb, days, env), keyby=list(days) ])
   days[, w:=wday(days)-1]
   print(days)
   days[, list(meanRes=mean(res), meanAm=mean(am), meanPm=mean(pm)), keyby=list(w)]
@@ -41,34 +41,6 @@ getDaySharpeFromDate <- function(symb, dat) {
 }
 
 
-#wtd cumulative sharpe.
-getWtdCumuSharpe <- function(symb, dat) {
-  d <- chinaTrading::getDataPureD(symb)
-  d[, chg:= C/shift(C,1)-1]
-  d <- d[D>=dat,]
-  #d[1, chg:=(C/O)-1]
-  #d[, cumChg:= cumsum(chg)]
-  #d[, rowN := .I]
-  #d[, meanSoFar:= cumChg/rowN]
-
-  d[, mean:= (cumsum(chg)/.I)]
-  d[, sd:= sqrt((cumsum(chg^2)/.I-(cumsum(chg)/.I)^2)*.I/(.I-1))]
-  d[, sharpe:= mean/sd*sqrt(240) ]
-  print(d)
-  return(d)
-}
-
-getDayCumuSharpe <- function(symb, dat) {
-  d <- chinaTrading::getDataPureD(symb)
-  d[, chg:= C/shift(C,1)-1]
-  d <- d[D==dat,]
-  d[, mean:= (cumsum(chg)/.I)]
-  d[, sd:= sqrt((cumsum(chg^2)/.I-(cumsum(chg)/.I)^2)*.I/(.I-1))]
-  d[, sharpe:= mean/sd*sqrt(240) ]
-  #print(symb)
-  #print(d)
-  return(d)
-}
 
 # all index
 getIndexDaySharpe <- function(dat) {
