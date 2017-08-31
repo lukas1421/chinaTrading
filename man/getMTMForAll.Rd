@@ -6,6 +6,9 @@
 \usage{
 getMTMForAll(dat)
 }
+\arguments{
+\item{dat}{date}
+}
 \description{
 get mtm for all
 }

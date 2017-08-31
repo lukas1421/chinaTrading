@@ -6,6 +6,9 @@
 \usage{
 getMinuteDataPureForAllDate(symb)
 }
+\arguments{
+\item{symb}{stock symbol}
+}
 \description{
 get minute data for all date
 }

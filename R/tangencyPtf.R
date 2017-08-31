@@ -1,6 +1,7 @@
 #tangency ptf
 
-
+#' gen return matrix
+#' @param symb stock
 genReturnMatrix <- function(symb) {
   d<-getDataPure(symb)
   d[, ret:=C/shift(C,1)-1]
@@ -11,6 +12,8 @@ genReturnMatrix <- function(symb) {
 
 #' check correl
 #' @export
+#' @param symb1 first stock
+#' @param symb2 second stock
 checkCorrel <- function(symb1,symb2) {
   d1 <- genReturnMatrix(symb1)
   d2 <- genReturnMatrix(symb2)

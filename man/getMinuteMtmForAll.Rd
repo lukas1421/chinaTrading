@@ -6,6 +6,9 @@
 \usage{
 getMinuteMtmForAll(dat)
 }
+\arguments{
+\item{dat}{date}
+}
 \description{
 get minute mtm for all
 }

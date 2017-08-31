@@ -6,6 +6,9 @@
 \usage{
 calcDailyMeanSD(symb)
 }
+\arguments{
+\item{symb}{stock symbol}
+}
 \description{
 calculate sd
 }

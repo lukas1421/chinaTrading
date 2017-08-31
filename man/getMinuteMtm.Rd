@@ -6,6 +6,13 @@
 \usage{
 getMinuteMtm(dat, symb, pos)
 }
+\arguments{
+\item{dat}{date}
+
+\item{symb}{stock}
+
+\item{pos}{opening pos for that stock}
+}
 \description{
 get minute mtm
 }

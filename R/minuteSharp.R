@@ -2,6 +2,8 @@
 
 #' get the sharpe ratio of the day given a stock and a date
 #' @export
+#' @param symb stock
+#' @param dat date
 getDaySharpe <- function(symb,dat) {
   d <- chinaTrading::getDataPureD(symb)
   d <- d[D==dat]
@@ -18,6 +20,8 @@ getDaySharpe <- function(symb,dat) {
 
 #' get cumulative sharpe of one day for one symbol
 #' @export
+#' @param symb stock
+#' @param dat date
 getDayCumuSharpe <- function(symb, dat) {
   d <- chinaTrading::getDataPureD(symb)
   d[, chg:= C/shift(C,1)-1]
@@ -32,6 +36,8 @@ getDayCumuSharpe <- function(symb, dat) {
 
 #' export to file to be processed for wtd sharpe
 #' @export
+#' @param symb stock
+#' @param dat date
 getSumSumSq <- function(symb, dat) {
   print(symb)
   mon <- getMonOfWeek(dat)
@@ -59,6 +65,7 @@ getSumSumSq <- function(symb, dat) {
 #' get all sum and sum sq for a given date
 #' provide sum and sum sq data for wtd sharpe ( to be used in conjunction with pricemapbar)
 #' @export
+#' @param dat date
 getSumSumSqAll <- function(dat) {
   d <- fread(paste0(getTradingFolder(),"test.txt"),header = FALSE)
   d <- d[, c(V2,getSumSumSq(V1,dat)), keyby=list(V1)]
@@ -70,6 +77,8 @@ getSumSumSqAll <- function(dat) {
 
 #' wtd cumulative sharpe.
 #' @export
+#' @param symb stock
+#' @param dat date
 getWtdCumuSharpe <- function(symb, dat) {
   mon <- getMonOfWeek(dat)
   d <- chinaTrading::getDataPureD(symb)
@@ -87,9 +96,85 @@ getWtdCumuSharpe <- function(symb, dat) {
   return(d)
 }
 
-#' get the monday of a given date
+#' get minute cumulative sharpe
 #' @export
+#' @param dat date#'
+getIndexDayCumuSharpe <- function(dat) {
+  env <- new.env()
+  indx <- c("sh000001","sz399006","sz399001","sh000016","sh000300","sh000905")
+  env$res <- data.table()
+  sapply(indx,
+         function(x) {
+           d <- getDayCumuSharpe(x,dat)
+           d<-d[, list(T,sharpe)]
+           names(d) <- c("T", x)
+           print(d)
+           assign(x, d, env = env)
+           if(nrow(env$res)==0) {
+             env$res <- d
+           } else{
+             env$res <- merge(env$res, d, by.x = "T", by.y="T" )
+           }
+         })
+  return(env$res)
+
+  # d <- chinaTrading::getDataPureD(symb)
+  # d[, chg:= C/shift(C,1)-1]
+  # d <- d[D==dat,]
+  # d[, mean:= (cumsum(chg)/.I)]
+  # d[, sd:= sqrt((cumsum(chg^2)/.I-(cumsum(chg)/.I)^2)*.I/(.I-1))]
+  # d[, sharpe:= mean/sd*sqrt(240) ]
+  # print(d)
+  # return(d)
+  #invisible()
+}
+
+#' get the monday of a given date
+#' @param d a date
 getMonOfWeek <- function(d) {
   w <- lubridate::wday(d)-1
   d-(w-1)
 }
+
+#' get day sharpe with data given in an env
+#' @param symb stock
+#' @param dat date
+#' @param env environment from which to getdata
+getDaySharpeFromEnv <- function(symb,dat,env) {
+  d <- get("d", envir = env)
+  #d[, chg:= C/shift(C,1)-1]
+  #d[1, chg:= (C/O)-1]
+
+  d<-d[D==dat]
+  amD <- d[T<1200]
+  pmD <- d[T>1259]
+
+  res <- mean(d[, chg])/sd(d[,chg])*sqrt(240)
+  amRes <- mean(amD[, chg])/sd(amD[,chg])*sqrt(240)
+  pmRes <- mean(pmD[, chg])/sd(pmD[,chg])*sqrt(240)
+  #print(res)
+  list(res=res, am=amRes, pm=pmRes)
+}
+
+#' get sharpe from date (inclusive)
+#' @export
+#' @param symb stock
+#' @param dat date
+getDaySharpeSinceDate <- function(symb, dat) {
+  d <- chinaTrading::getDataPureD(symb)
+  d[, chg:= C/shift(C,1)-1]
+  d[1, chg:=(C/O)-1]
+
+  env <- new.env()
+  assign('d', d, envir = env)
+
+  d<-d[D>=dat, ]
+  days <- data.table(days=unique(d[,(D) ]))
+  days <- (days[, getDaySharpeFromEnv(symb, days, env), keyby=list(days) ])
+  days[, w:=wday(days)-1]
+  print(days)
+  days[, list(meanRes=mean(res), meanAm=mean(am), meanPm=mean(pm)), keyby=list(w)]
+
+}
+
+

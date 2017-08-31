@@ -7,6 +7,9 @@ get open pos}
 \usage{
 getOpenPos(dat)
 }
+\arguments{
+\item{dat}{date}
+}
 \description{
 get open position with ytd close price
 get open pos

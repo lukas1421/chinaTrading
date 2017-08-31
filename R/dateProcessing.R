@@ -4,6 +4,7 @@
 #' general method to get stocks
 #' @export
 #' @import data.table
+#' @param symb stock symbol sh510050
 getDataPure<- function(symb) {
   #print(paste0("getting data",symb))
   ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
@@ -16,6 +17,7 @@ getDataPure<- function(symb) {
 
 #' get data
 #' @export
+#' @param symb stock symbol
 getDataPureD<- function(symb) {
   ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
   d<- fread(paste0(getMinuteDataFolder(),ticker,".txt"),
@@ -29,6 +31,7 @@ getDataPureD<- function(symb) {
 
 #' get data
 #' @export
+#' @param symb stock symbol
 getData <- function(symb) {
   print(paste0(" getting ",symb))
   #dataFolder <- "J:\\TDX\\T0002\\export\\"

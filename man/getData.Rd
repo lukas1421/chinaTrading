@@ -6,6 +6,9 @@
 \usage{
 getData(symb)
 }
+\arguments{
+\item{symb}{stock symbol}
+}
 \description{
 get data
 }

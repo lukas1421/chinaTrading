@@ -6,6 +6,11 @@
 \usage{
 getCorrelGen(symb, env)
 }
+\arguments{
+\item{symb}{stock name}
+
+\item{env}{environment to get variable}
+}
 \description{
 correl between one stock and all benches
 }

@@ -3,6 +3,7 @@
 
 #' get open position list
 #' @export
+#' @param dat date
 getOpenPosPure <- function(dat) {
   tr <- getTradingHistory()
   tr[D<(dat), list(FullTicker,sum(Volume)),
@@ -12,6 +13,7 @@ getOpenPosPure <- function(dat) {
 #' get open position with ytd close price
 #' get open pos
 #' @export
+#' @param dat date
 getOpenPos <- function(dat) {
   tr <- getTradingHistory()
   tr[D<(dat), list(FullTicker,sum(Volume)),
@@ -20,6 +22,9 @@ getOpenPos <- function(dat) {
 }
 
 #' open pnl
+#' @param dat date
+#' @param symb stock
+#' @param pos opening position
 getOpenPnl <- function(dat, symb, pos) {
   tryCatch ({
     ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
@@ -43,6 +48,7 @@ getOpenPnl <- function(dat, symb, pos) {
 
 #' open pnl for all stocks
 #' @export
+#' @param dat date
 getOpenPnlForPtf <- function(dat) {
   openpos <- getOpenPosPure(dat)
   openpos[, openpnl:= getOpenPnl(dat,ticker,open), keyby=list(ticker)]

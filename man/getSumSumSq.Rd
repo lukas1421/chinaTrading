@@ -6,6 +6,11 @@
 \usage{
 getSumSumSq(symb, dat)
 }
+\arguments{
+\item{symb}{stock}
+
+\item{dat}{date}
+}
 \description{
 export to file to be processed for wtd sharpe
 }

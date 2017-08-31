@@ -6,6 +6,9 @@
 \usage{
 computeWeekend(symb)
 }
+\arguments{
+\item{symb}{stock}
+}
 \description{
 computing weekend
 }

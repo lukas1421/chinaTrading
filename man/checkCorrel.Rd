@@ -6,6 +6,11 @@
 \usage{
 checkCorrel(symb1, symb2)
 }
+\arguments{
+\item{symb1}{first stock}
+
+\item{symb2}{second stock}
+}
 \description{
 check correl
 }

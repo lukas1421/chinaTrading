@@ -6,6 +6,11 @@
 \usage{
 calcOpenPositionForStock(dat, symb)
 }
+\arguments{
+\item{dat}{date}
+
+\item{symb}{stock}
+}
 \description{
 calc position stock
 }

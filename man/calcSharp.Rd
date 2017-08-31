@@ -6,6 +6,9 @@
 \usage{
 calcSharp(x)
 }
+\arguments{
+\item{x}{list of returns}
+}
 \description{
 calculate sharpe of a return series
 }

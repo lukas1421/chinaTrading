@@ -6,6 +6,9 @@
 \usage{
 convertTimeToDecimal(t)
 }
+\arguments{
+\item{t}{time to convert}
+}
 \description{
 converting time
 }

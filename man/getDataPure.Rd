@@ -6,6 +6,9 @@
 \usage{
 getDataPure(symb)
 }
+\arguments{
+\item{symb}{stock symbol sh510050}
+}
 \description{
 general method to get stocks
 }

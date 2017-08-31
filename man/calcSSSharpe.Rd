@@ -7,6 +7,11 @@ calc sharp}
 \usage{
 calcSSSharpe(symb, dat)
 }
+\arguments{
+\item{symb}{stock}
+
+\item{dat}{date on which to retrieve sharpe}
+}
 \description{
 calculate sharpe of a specific stock
 calc sharp

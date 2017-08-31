@@ -35,12 +35,12 @@ f <- function() {
 
    print(parent.frame(2))
 
-  print(get(deparse(quote(y)),envir = .GlobalEnv))
-  print(get("y", envir = parent.env(my_env)))
-  print(get("y", envir = call_env))
-  print(get("y", envir = parent.frame(1)))
-  print(get("y", envir = parent.frame(2)))
-  invisible()
+   print(get(deparse(quote(y)),envir = .GlobalEnv))
+   print(get("y", envir = parent.env(my_env)))
+   print(get("y", envir = call_env))
+   print(get("y", envir = parent.frame(1)))
+   print(get("y", envir = parent.frame(2)))
+   invisible()
 }
 
 y <- 3
@@ -48,3 +48,12 @@ g <- function() {
   y <- 2
   f()
 }
+
+benchList<- c("sh000001","sz399006","sz399001","sh000300","sh000016","sh000905")
+benchNames <- c("主板","创","小","沪深","大","中证")
+benchDt <- data.table(benchList=benchList, benchNames=benchNames)
+#print(benchDt)
+env <- new.env()
+
+
+

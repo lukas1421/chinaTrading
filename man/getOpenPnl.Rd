@@ -6,6 +6,13 @@
 \usage{
 getOpenPnl(dat, symb, pos)
 }
+\arguments{
+\item{dat}{date}
+
+\item{symb}{stock}
+
+\item{pos}{opening position}
+}
 \description{
 open pnl
 }

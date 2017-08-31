@@ -6,6 +6,9 @@
 \usage{
 getOpenPnlForPtf(dat)
 }
+\arguments{
+\item{dat}{date}
+}
 \description{
 open pnl for all stocks
 }

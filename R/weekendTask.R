@@ -1,5 +1,6 @@
 #'computing weekend
 #'@export
+#'@param symb stock
 computeWeekend <- function(symb) {
   m<- getMondayOfWeek(Sys.Date())
   d <- getDataPure(symb)

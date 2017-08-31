@@ -5,6 +5,8 @@
 ###########################################################methods ##########################################
 #' calc position stock
 #' @export
+#' @param dat date
+#' @param symb stock
 calcOpenPositionForStock <- function(dat, symb)  {
   tr <- getTradingHistory()
   res <- tr[FullTicker==toupper(symb) & D<dat, list(sum=sum(Volume)),keyby=list(FullTicker)][,sum]
@@ -19,6 +21,7 @@ getStockPositionHistory <- function(symb) {
 
 #' get days with active position
 #' @export
+#' @param symb stock
 daysWithActivePosition <- function(symb){
   res <- getStockPositionHistory(symb)
   print(paste(symb,nrow(res)))

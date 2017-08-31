@@ -6,6 +6,11 @@
 \usage{
 extractDiv1(tickerFull, x)
 }
+\arguments{
+\item{tickerFull}{full ticker}
+
+\item{x}{containing info}
+}
 \description{
 extract info from divs
 }

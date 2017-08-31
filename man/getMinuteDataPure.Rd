@@ -6,6 +6,11 @@
 \usage{
 getMinuteDataPure(dat, symb)
 }
+\arguments{
+\item{dat}{date}
+
+\item{symb}{stock symbol}
+}
 \description{
 get minute data pure
 }

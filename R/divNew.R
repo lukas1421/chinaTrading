@@ -44,6 +44,8 @@ getDivs <- function() {
 ####################################################### CODE ENDS HERE ###############################################################
 
 #' extract info from divs
+#' @param tickerFull full ticker
+#' @param x containing info
 extractDiv1 <- function(tickerFull,x) {
   date <- Sys.Date()
   cashDiv = ifelse(is.na(as.numeric(str_match(x,"ÅÉ(.*)(?:\\s+)?Ôª")[2])),0,as.numeric(str_match(x,"ÅÉ(.*)(?:\\s+)?Ôª")[2]))
@@ -56,6 +58,8 @@ extractDiv1 <- function(tickerFull,x) {
 }
 
 #' internal method to get close data
+#' @param symb stock
+#' @param dat date
 getLastCloseV3 <- function(symb,dat) {
   ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
   stock <- data.table()
@@ -86,6 +90,7 @@ getDivURLNew <-function() {
 
 #' check if stock in dividend list
 #' internal
+#' @param symb stock
 isInStockList <- function(symb) {
   tickerList<- fread(paste0(getTradingFolder(),"tickerListDiv",".txt"), header=F)
   sum(tickerList==symb)>0

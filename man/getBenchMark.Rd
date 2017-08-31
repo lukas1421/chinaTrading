@@ -2,10 +2,10 @@
 % Please edit documentation in R/bench.R
 \name{getBenchMark}
 \alias{getBenchMark}
-\title{get bench of a stock and output to folder}
+\title{get bench of a stock and output to folder (ticker, chn, index, correl, indexChn, indexChnCorrel)}
 \usage{
 getBenchMark()
 }
 \description{
-get bench of a stock and output to folder
+get bench of a stock and output to folder (ticker, chn, index, correl, indexChn, indexChnCorrel)
 }

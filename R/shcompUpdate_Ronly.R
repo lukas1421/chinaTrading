@@ -35,7 +35,6 @@ generateIndexDay <- function() {
 #'fill data for 000001
 #' @export
 #' @importFrom lubridate ymd
-
 fillData000001 <- function() {
 
   # if(Sys.getenv("USERNAME")=="LUke") {
@@ -210,6 +209,7 @@ processShcomp <- function(indexDay,indexMin) {
 }
 
 #' testing if AM
+#' @param x testing if x is in am
 isAm <- function(x) {
   #print(str_sub(x,2))
   if(is.numeric(as.numeric(str_sub(x,2)))) {
@@ -219,6 +219,7 @@ isAm <- function(x) {
 }
 
 #' testing if pm
+#' @param x testing if x is in pm
 isPm <- function(x) {
   if(is.numeric(as.numeric(str_sub(x,2)))) {
     return(as.numeric(str_sub(x,2))>1200)

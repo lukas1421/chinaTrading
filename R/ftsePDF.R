@@ -4,8 +4,9 @@
 #' @import stringr
 #' @import XLConnect
 #' @import rvest
+#' @importFrom utils download.file tail write.table
+#' @importFrom stats cor cov quantile sd var
 #' @export
-#' @author Lucas
 getFTSEData <- function() {
 
   download.file("https://www.ftse.com/analytics/factsheets/Home/DownloadConstituentsWeights/?indexdetails=XINA50"
@@ -56,7 +57,6 @@ updateFTSEWeights <- function() {
 #' getting NAVs
 #' @export
 #' @import stringr
-#'
 getNAV <- function() {
   stocks <- c("2823:HK","2822:HK", "3147:HK", "3188:HK", "FXI:US","CNXT:US","ASHR:US","ASHS:US")
   for(i in stocks) {
@@ -120,7 +120,6 @@ getIndicies <- function() {
 #' daily shcomp
 #' @export
 getSHCOMP <- function() {
-
 
   AMOPENT = 931
   AMCLOSET = 1129

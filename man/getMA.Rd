@@ -6,6 +6,11 @@
 \usage{
 getMA(symb, numDays)
 }
+\arguments{
+\item{symb}{stock}
+
+\item{numDays}{rolling parameter}
+}
 \description{
 helper function
 }

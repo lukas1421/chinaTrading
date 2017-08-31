@@ -6,6 +6,11 @@
 \usage{
 getLastCloseV3(symb, dat)
 }
+\arguments{
+\item{symb}{stock}
+
+\item{dat}{date}
+}
 \description{
 internal method to get close data
 }

@@ -6,6 +6,11 @@
 \usage{
 getClosingPriceBeforeD(dat, symb)
 }
+\arguments{
+\item{dat}{date}
+
+\item{symb}{stock symbol}
+}
 \description{
 get closing price
 }

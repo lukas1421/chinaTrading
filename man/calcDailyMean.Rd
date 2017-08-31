@@ -6,6 +6,9 @@
 \usage{
 calcDailyMean(symb)
 }
+\arguments{
+\item{symb}{stock symbol}
+}
 \description{
 calculate daily mean
 }

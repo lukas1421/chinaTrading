@@ -6,6 +6,9 @@
 \usage{
 getMonOfWeek(d)
 }
+\arguments{
+\item{d}{a date}
+}
 \description{
 get the monday of a given date
 }

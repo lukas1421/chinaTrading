@@ -6,6 +6,9 @@
 \usage{
 isPm(x)
 }
+\arguments{
+\item{x}{testing if x is in pm}
+}
 \description{
 testing if pm
 }

@@ -17,6 +17,9 @@ getTradingDates <- function() {
 
 #' get minute mtm
 #' @export
+#' @param dat date
+#' @param symb stock
+#' @param pos opening pos for that stock
 getMinuteMtm <- function(dat, symb,pos) {
   symbS <- deparse(substitute(symb))
   d <- getMinuteDataPure(dat,symb)
@@ -29,6 +32,7 @@ getMinuteMtm <- function(dat, symb,pos) {
 
 #' get minute mtm for all
 #' @export
+#' @param dat date
 getMinuteMtmForAll <- function(dat) {
   openPos <- getOpenPos(dat)
   res <- data.table()
@@ -75,6 +79,7 @@ getMinuteMtmForAll <- function(dat) {
 
 #' get mtm for all
 #' @export
+#' @param dat date
 getMTMForAll <-function(dat) {
   print(dat)
   #tr <- getTradingHistory()
@@ -90,6 +95,8 @@ getMTMForAll <-function(dat) {
 
 #' get closing price
 #' @export
+#' @param dat date
+#' @param symb stock symbol
 getClosingPriceBeforeD <- function(dat,symb) {
   tryCatch ({
     ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
@@ -108,6 +115,8 @@ getClosingPriceBeforeD <- function(dat,symb) {
 
 #' get minute data pure
 #' @export
+#' @param dat date
+#' @param symb stock symbol
 getMinuteDataPure <- function(dat, symb) {
   tryCatch ({
     ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
@@ -131,6 +140,8 @@ getMinuteDataPure <- function(dat, symb) {
 
 #' get minute data
 #' @export
+#' @param dat date
+#' @param symb stock symbol
 getMinuteDataPureWithPrevClose <- function(dat, symb) {
   tryCatch ({
     ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
@@ -158,6 +169,7 @@ getMinuteDataPureWithPrevClose <- function(dat, symb) {
 
 #' get minute data for all date
 #' @export
+#' @param symb stock symbol
 getMinuteDataPureForAllDate <- function(symb) {
   tryCatch ({
     ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
@@ -174,6 +186,9 @@ getMinuteDataPureForAllDate <- function(symb) {
 }
 
 #' get minute data for day
+#' @param dat date
+#' @param symb stock
+#' @param pos opening pos for that stock
 getMinuteDataForDay <- function(dat,symb,pos) {
   tryCatch ({
     ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
@@ -238,7 +253,7 @@ getAllMTM<- function(dat, symb, pos) {
 
 
 #' converting time
-#' @export
+#' @param t time to convert
 convertTimeToDecimal <- function(t) {
   hr <- floor(t/100)
   hr+(t-hr*100)/60

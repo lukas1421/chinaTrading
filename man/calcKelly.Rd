@@ -6,6 +6,9 @@
 \usage{
 calcKelly(x)
 }
+\arguments{
+\item{x}{a list of returns}
+}
 \description{
 kelly
 }

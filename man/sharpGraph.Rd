@@ -6,6 +6,9 @@
 \usage{
 sharpGraph(symb)
 }
+\arguments{
+\item{symb}{stock symbol}
+}
 \description{
 graph sharpe for year to date
 }

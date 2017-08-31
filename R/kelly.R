@@ -1,5 +1,6 @@
 #' kelly
 #' @export
+#' @param x a list of returns
 calcKelly<-function(x) {
 
   #ifelse(length(x[x!=0]) > 0, x<-x[x!=0], 0);

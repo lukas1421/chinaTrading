@@ -6,6 +6,11 @@
 \usage{
 compareAllSharpYtdDate(f, ...)
 }
+\arguments{
+\item{f}{the function to apply to all symbols}
+
+\item{...}{any addition params to be passed to the function f}
+}
 \description{
 compare all sharpe
 }

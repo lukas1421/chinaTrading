@@ -6,6 +6,9 @@
 \usage{
 getOpenPosPure(dat)
 }
+\arguments{
+\item{dat}{date}
+}
 \description{
 get open position list
 }

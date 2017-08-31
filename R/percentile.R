@@ -10,6 +10,8 @@ getPercentileAll <- function() {
   return(d[, ])
 }
 
+#' get wtd percentile
+#' @param symb stock symbol
 getWtdPercentile <- function(symb) {
   weekBeginningDate <- ymd("2017-5-8")
   d <- getDataPure(symb)
@@ -67,6 +69,7 @@ getWtdMaxMinAll <- function() {
 
 #' ytd low date
 #' @export
+#' @param symb stock symbol
 getYtdLowDate <- function(symb) {
   data <- getDataPure(symb)
   return(list(lowDate=data[D>ymd("20170101")][min(L)==L][1][,D]))

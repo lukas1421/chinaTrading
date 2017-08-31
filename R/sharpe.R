@@ -2,6 +2,8 @@
 #' calculate sharpe of a specific stock
 #' calc sharp
 #' @export
+#' @param symb stock
+#' @param dat date on which to retrieve sharpe
 calcSSSharpe <- function(symb, dat) {
   sharpe <- calcSSSharpeDate(symb, dat)
   print(paste0(" sharpe ", symb, " ", sharpe))
@@ -11,6 +13,8 @@ calcSSSharpe <- function(symb, dat) {
 #' date
 #' @export
 #' @import data.table
+#' @param symb stock
+#' @param dat date on which to retrieve sharpe
 calcSSSharpeDate <- function(symb,dat) {
   d<-getDataPure(symb)
   d[,ret:=(C/shift(C,1)-1)]
@@ -29,6 +33,7 @@ calcSSSharpeDate <- function(symb,dat) {
 #' compare all sharpe
 #' @export
 #' @import data.table
+#' @param dat date on which to compare all sharpe
 compareAllSharpYtd <- function(dat) {
   d<- fread(paste0(getTradingFolder(),"test.txt"),header = FALSE)
   d<- d[, c(V2,calcSSSharpe(V1, dat)), keyby=list(V1)]
@@ -40,6 +45,8 @@ compareAllSharpYtd <- function(dat) {
 
 #' compare all sharpe
 #' @export
+#' @param f the function to apply to all symbols
+#' @param ... any addition params to be passed to the function f
 compareAllSharpYtdDate <- function(f,...) {
   d<- fread(paste0(getTradingFolder(),"test.txt"),header = FALSE)
   d<- d[, c(V2,f(V1,...)), keyby=list(V1)]
@@ -52,6 +59,7 @@ compareAllSharpYtdDate <- function(f,...) {
 #' graph sharpe for year to date
 #' @import zoo
 #' @export
+#' @param symb stock symbol
 sharpGraph <- function(symb) {
   d<-getDataPure(symb)
   d[,ret:=(C/shift(C,1)-1)]
@@ -67,6 +75,7 @@ sharpGraph <- function(symb) {
 
 #' calculate daily mean
 #' @export
+#' @param symb stock symbol
 calcDailyMean <- function(symb) {
   d<-getDataPure(symb)
   d[,ret:=(C/shift(C,1)-1)]
@@ -77,6 +86,7 @@ calcDailyMean <- function(symb) {
 
 #' calculate sd
 #' @export
+#' @param symb stock symbol
 calcDailyMeanSD <- function(symb) {
   #symbName <- (substitute(symb))
 
@@ -86,6 +96,7 @@ calcDailyMeanSD <- function(symb) {
   sd <- d[D>ymd("20161231"), sd(ret,na.rm=T)]
   return(list(symb=symb,mean=(mean),sd=sd))
 }
+
 
 drawRollingSD <- function(symb) {
   d<-getDataPure(symb)
@@ -97,6 +108,8 @@ drawRollingSD <- function(symb) {
   d[D>ymd("20121231"), qplot(D,sd,geom = "line")]
 }
 
+#' get daily hldsd
+#' @param symb stock
 calcDailyHLSD <- function(symb) {
   d<-getDataPure(symb)
   d[,HLret:=H/L-1]

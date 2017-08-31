@@ -7,6 +7,9 @@ provide sum and sum sq data for wtd sharpe ( to be used in conjunction with pric
 \usage{
 getSumSumSqAll(dat)
 }
+\arguments{
+\item{dat}{date}
+}
 \description{
 get all sum and sum sq for a given date
 provide sum and sum sq data for wtd sharpe ( to be used in conjunction with pricemapbar)

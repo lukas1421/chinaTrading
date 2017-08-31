@@ -25,7 +25,8 @@ Imports:
     knitr,
     Rcpp,
     xml2,
-    rJava
+    rJava,
+    hash
 RoxygenNote: 6.0.1
 Suggests: knitr,
     rmarkdown

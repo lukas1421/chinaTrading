@@ -6,6 +6,11 @@
 \usage{
 getDaySharpe(symb, dat)
 }
+\arguments{
+\item{symb}{stock}
+
+\item{dat}{date}
+}
 \description{
 get the sharpe ratio of the day given a stock and a date
 }

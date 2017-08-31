@@ -6,6 +6,9 @@
 \usage{
 getMAAll(numDays)
 }
+\arguments{
+\item{numdays}{no. days usually 20}
+}
 \description{
 compute MA
 }

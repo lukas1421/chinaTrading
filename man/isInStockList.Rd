@@ -7,6 +7,9 @@ internal}
 \usage{
 isInStockList(symb)
 }
+\arguments{
+\item{symb}{stock}
+}
 \description{
 check if stock in dividend list
 internal

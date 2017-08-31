@@ -6,6 +6,9 @@
 \usage{
 isAm(x)
 }
+\arguments{
+\item{x}{testing if x is in am}
+}
 \description{
 testing if AM
 }

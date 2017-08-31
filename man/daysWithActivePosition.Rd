@@ -6,6 +6,9 @@
 \usage{
 daysWithActivePosition(symb)
 }
+\arguments{
+\item{symb}{stock}
+}
 \description{
 get days with active position
 }
