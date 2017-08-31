@@ -18,9 +18,21 @@ getBenchMark <- function() {
   assign("b",dt,envir=env)
   d<- fread(paste0(getTradingFolder(),"test.txt"),header = FALSE)
   d<- d[, c(V2,getCorrelGen(V1,env)), keyby=list(V1)]
-  write.table(d, paste0(getTradingFolder(),"bench.txt"),quote = FALSE,sep = "\t")
+  write.table(d, paste0(getTradingFolder(),"bench.txt"),quote = FALSE,sep = "\t", row.names = FALSE, col.names = FALSE)
   return(d)
 }
+
+#' processing a bench with four columns (output from getbenchmark) to benchlist.txt
+#' this involves copying and possibly not that efficient
+#' @export
+#' @param d a data.table with 4 columns - ticker chnName benchTicker correl
+#' @return does not return anything, but outputs a 3-col (ticker indexNameCorrel index) ()
+fromBenchToBenchlist <- function(d) {
+  d
+
+
+}
+
 
 #' correl between one stock and all benches
 #' @export
