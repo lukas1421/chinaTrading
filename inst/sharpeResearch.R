@@ -1,0 +1,4 @@
+# research sharpe
+
+#mon strength
+

@@ -2,10 +2,28 @@
 % Please edit documentation in R/supportFunctions.R
 \name{getTradingFolder}
 \alias{getTradingFolder}
-\title{get working directory}
+\title{#' get monday of week
+#' @importFrom lubridate is.Date
+getMondayOfWeek <- function(dat) {
+  weekdayl <- list("星期一"=1,"星期二"=2,"星期三"=3,"星期四"=4,"星期五"=5,"星期六"=6,"星期日"=7 )
+  if(is.Date(dat)) {
+    return(dat-weekdayl[[weekdays(dat)]]+1)
+  }
+  return(dat)
+}
+get working directory}
 \usage{
 getTradingFolder()
 }
 \description{
+#' get monday of week
+#' @importFrom lubridate is.Date
+getMondayOfWeek <- function(dat) {
+  weekdayl <- list("星期一"=1,"星期二"=2,"星期三"=3,"星期四"=4,"星期五"=5,"星期六"=6,"星期日"=7 )
+  if(is.Date(dat)) {
+    return(dat-weekdayl[[weekdays(dat)]]+1)
+  }
+  return(dat)
+}
 get working directory
 }

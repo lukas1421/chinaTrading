@@ -25,6 +25,9 @@ local({
 
 chinaTrading::getSumSumSqAll(Sys.Date())
 
+# bench CAUTIOUS LONG EXECUTION
+getBenchMark()
+
 # srd1 <- compareAllSharpYtd(ymd("2014-1-30"))
 # srd1[order(-SR)][1:100][sd<0.3][SR>0]
 #weekly sharp
@@ -33,8 +36,7 @@ chinaTrading::getSumSumSqAll(Sys.Date())
 getDivs()
 
 
-# bench CAUTIOUS LONG EXECUTION
-getBenchMark()
+
 
 #
 saveToGit()

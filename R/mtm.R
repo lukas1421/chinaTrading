@@ -82,7 +82,7 @@ getMinuteMtmForAll <- function(dat) {
 #' @param dat date
 getMTMForAll <-function(dat) {
   print(dat)
-  #tr <- getTradingHistory()
+  tr <- getTradingHistory()
   d<-tr[D<(dat), list(FullTicker,sum(Volume)),
         keyby=list(FullTicker)][V2!=0,][,list(ticker=FullTicker,open=V2,prev=getClosingPriceBeforeD(dat,FullTicker)),
                                         keyby=list(FullTicker)]

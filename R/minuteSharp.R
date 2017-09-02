@@ -5,6 +5,7 @@
 #' @param symb stock
 #' @param dat date
 getDaySharpe <- function(symb,dat) {
+  print(symb)
   d <- chinaTrading::getDataPureD(symb)
   d <- d[D==dat]
   d[, chg:= C/shift(C,1)-1]
@@ -13,10 +14,42 @@ getDaySharpe <- function(symb,dat) {
   pmD <- d[T>1259]
 
   res <- mean(d[, chg])/sd(d[,chg])*sqrt(240)
-  amRes <- mean(amD[, chg])/sd(amD[,chg])*sqrt(240)
-  pmRes <- mean(pmD[, chg])/sd(pmD[,chg])*sqrt(240)
-  list(res=res, am=amRes, pm=pmRes)
+  #amRes <- mean(amD[, chg])/sd(amD[,chg])*sqrt(240)
+  #pmRes <- mean(pmD[, chg])/sd(pmD[,chg])*sqrt(240)
+  #list(res=res, am=amRes, pm=pmRes)
+  list(res=res)
 }
+
+#' m/t/w/th/fr sharp
+#' @export
+#' @param symb stock
+#' @param dat date
+getWtdDailySharpe <- function(symb,dat) {
+  print(symb)
+  mon <- getMonOfWeek(dat)
+
+  d <- chinaTrading::getDataPureD(symb)
+  d <- d[D>=mon,]
+  d[, chg:= C/shift(C,1)-1]
+  l <- unique(d$D)
+  env <- new.env()
+  res <- new.env()
+  assign("d",d,envir = env)
+  lapply(l, function(x) {
+        assign(paste0(x,""),getDaySharpeFromEnv(sym,ymd(x),env),envir = res)
+    })
+  as.list(res)
+}
+
+#' get wtd sharpe all
+#' @export
+#' @param dat date
+getWtdDailySharpeAll <- function(dat) {
+  d <- fread(paste0(getTradingFolder(),"test.txt"),header = FALSE)
+  d <- d[, c(V2,getWtdDailySharpe(V1,dat)), keyby=list(V1)]
+  d
+}
+
 
 #' get cumulative sharpe of one day for one symbol
 #' @export
@@ -132,7 +165,7 @@ getIndexDayCumuSharpe <- function(dat) {
 #' get the monday of a given date
 #' @param d a date
 getMonOfWeek <- function(d) {
-  w <- lubridate::wday(d)-1
+  w <- data.table::wday(d)-1
   d-(w-1)
 }
 
@@ -146,14 +179,15 @@ getDaySharpeFromEnv <- function(symb,dat,env) {
   #d[1, chg:= (C/O)-1]
 
   d<-d[D==dat]
-  amD <- d[T<1200]
-  pmD <- d[T>1259]
-
+  d[1, chg:=(C/O)-1]
+  # amD <- d[T<1200]
+  # pmD <- d[T>1259]
   res <- mean(d[, chg])/sd(d[,chg])*sqrt(240)
-  amRes <- mean(amD[, chg])/sd(amD[,chg])*sqrt(240)
-  pmRes <- mean(pmD[, chg])/sd(pmD[,chg])*sqrt(240)
+  # amRes <- mean(amD[, chg])/sd(amD[,chg])*sqrt(240)
+  # pmRes <- mean(pmD[, chg])/sd(pmD[,chg])*sqrt(240)
   #print(res)
-  list(res=res, am=amRes, pm=pmRes)
+  #list(res=res, am=amRes, pm=pmRes)
+  res
 }
 
 #' get sharpe from date (inclusive)
@@ -177,4 +211,14 @@ getDaySharpeSinceDate <- function(symb, dat) {
 
 }
 
+#' get the list of high sharpe stocks on a given date
+#' @export
+#' @param dat date
+getSharpeAllStocksOnDat <- function(dat) {
+  d <- fread(paste0(getTradingFolder(),"test.txt"),header = FALSE)
+  # getDaySharpe
+  d <- d[, c(V2, getDaySharpe(V1,dat)), keyby=list(V1)]
+  print(d)
+  d
+}
 
