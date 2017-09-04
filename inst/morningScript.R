@@ -9,6 +9,7 @@ getNAV()
 getXIN0UIndex()
 getIndicies()
 getBOCRmbRate()
+updateTradeDateFTSEOpen()
 
 # maxmin/ma/sharpe
 getWtdMaxMinAll()

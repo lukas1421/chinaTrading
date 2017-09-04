@@ -30,6 +30,21 @@ getMinuteMtm <- function(dat, symb,pos) {
   d
 }
 
+#' get minute delta
+#' @export
+#' @param dat date
+#' @param symb stock
+#' @param pos open position
+getMinuteDelta <- function(dat, symb,pos) {
+  #symbS <- deparse(substitute(symb))
+  d <- getMinuteDataPure(dat,symb)
+  d[, mtm:= C*pos]
+  d<-d[, list(T,mtm)]
+  names(d) <- c("T",eval(symb))
+  d
+}
+
+
 #' get minute mtm for all
 #' @export
 #' @param dat date
@@ -74,6 +89,48 @@ getMinuteMtmForAll <- function(dat) {
   return(list(dayMax=dayMax, dayMin=dayMin, amMax=amMax,amMin = amMin, pmMax=pmMax, pmMin = pmMin,
               dayMaxT = dayMaxT, dayMinT=dayMinT, amMaxT = amMaxT, amMinT= amMinT, pmMaxT=pmMaxT,pmMinT=pmMinT,
               dayOpen = dayOpen, dayClose= dayClose, percClose = percClose, pmChgPerc = pmChgPerc))
+}
+
+#' get the minute data mtm
+#' @export
+#' @param dat date
+getMTMDelta <- function(dat) {
+  openPos <- getOpenPos(dat)
+  res <- data.table()
+  # for(t in openPos$ticker) {
+  #   open <- openPos[ticker==t,open]
+  #   m <- getMinuteDelta(dat, t, open)
+  #   print(m)
+  #   if(nrow(res)==0){
+  #     res <- m
+  #   } else {
+  #     res <- merge(res,m, by="T")
+  #   }
+  # }
+
+  sapply(openPos$ticker, function(t) {
+    print(paste0(" ticker ", t))
+    open <- openPos[ticker==t,open]
+    print(paste0(" open ", open))
+    m <- getMinuteDelta(dat, t, open)
+    print(m)
+    if(nrow(res)==0){
+      res <<- m
+    } else {
+      res <<- merge(res,m, by="T")
+    }
+  })
+  print(res)
+
+  res[, mtm:=rowSums(.SD), keyby=list(T)]
+  res[, chg:= mtm/shift(mtm,1)-1,]
+  res[1, chg:= 0.0]
+  res[, mean:= (cumsum(chg)/.I)]
+  res[, sd:= sqrt((cumsum(chg^2)/.I-(cumsum(chg)/.I)^2)*.I/(.I-1))]
+  res[, sharpe:= mean/sd*sqrt(240) ]
+  print(res)
+
+  #res
 }
 
 
