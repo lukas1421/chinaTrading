@@ -1,5 +1,4 @@
 #saving data to gitignore and upload to git
-
 #'saving data to git and gitignore
 #' @export
 saveToGit <- function() {
@@ -22,7 +21,6 @@ saveToGit <- function() {
               , append = TRUE)
   write.table("!.gitignore", paste0(getDayDataFolder(),".gitignore"),quote = FALSE,sep = "\t", row.names = FALSE,col.names = FALSE
               , append = TRUE)
-
 
 
   #minute data
