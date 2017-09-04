@@ -32,8 +32,8 @@ getWtdDailySharpe <- function(symb,dat) {
   d <- d[D>=mon,]
   d[, chg:= C/shift(C,1)-1]
   l <- unique(d$D)
-  env <- new.env()
-  res <- new.env()
+  env <- new.env(parent = emptyenv())
+  res <- new.env(parent = emptyenv())
   assign("d",d,envir = env)
   lapply(l, function(x) {
         assign(paste0(x,""),getDaySharpeFromEnv(sym,ymd(x),env),envir = res)
@@ -131,7 +131,7 @@ getWtdCumuSharpe <- function(symb, dat) {
 
 #' get minute cumulative sharpe
 #' @export
-#' @param dat date#'
+#' @param dat date
 getIndexDayCumuSharpe <- function(dat) {
   env <- new.env()
   indx <- c("sh000001","sz399006","sz399001","sh000016","sh000300","sh000905")
