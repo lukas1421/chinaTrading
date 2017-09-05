@@ -1,7 +1,4 @@
 #morning runs
-
-
-
 library(chinaTrading)
 getFTSEData()
 getFTSE50Index()
@@ -10,6 +7,7 @@ getXIN0UIndex()
 getIndicies()
 getBOCRmbRate()
 updateTradeDateFTSEOpen()
+getSumSumSqAll(Sys.Date())
 
 # maxmin/ma/sharpe
 getWtdMaxMinAll()
@@ -24,7 +22,7 @@ local({
               paste0(getTradingFolder(),"sharpeOutput.txt"),quote = FALSE,sep = "\t",row.names = FALSE, col.names =FALSE)
 })
 
-chinaTrading::getSumSumSqAll(Sys.Date())
+
 
 # bench CAUTIOUS LONG EXECUTION
 getBenchMark()
@@ -35,9 +33,6 @@ getBenchMark()
 #get divs
 
 getDivs()
-
-
-
 
 #
 saveToGit()

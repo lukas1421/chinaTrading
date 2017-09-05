@@ -10,7 +10,7 @@ updateTradeDateFTSEOpen <- function() {
   names(d) <-c("D")
   names(open) <- c("open")
   m <- data.table(d,open)
-  m<-m[(.N-2):.N, ]
+  m <- m[D<Sys.Date(),][(.N-2):.N, ]
   write.table(m,paste0(getTradingFolder(),"ftseA50Open.txt"),quote = FALSE,sep = "\t",row.names = FALSE, col.names = FALSE)
   m
 }

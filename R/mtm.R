@@ -36,7 +36,6 @@ getMinuteMtm <- function(dat, symb,pos) {
 #' @param symb stock
 #' @param pos open position
 getMinuteDelta <- function(dat, symb,pos) {
-  #symbS <- deparse(substitute(symb))
   d <- getMinuteDataPure(dat,symb)
   d[, mtm:= C*pos]
   d<-d[, list(T,mtm)]
