@@ -7,7 +7,7 @@
 getIndexDayCumuSharpe(dat)
 }
 \arguments{
-\item{dat}{date#'}
+\item{dat}{date}
 }
 \description{
 get minute cumulative sharpe

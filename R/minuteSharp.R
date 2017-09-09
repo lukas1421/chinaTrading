@@ -129,6 +129,35 @@ getWtdCumuSharpe <- function(symb, dat) {
   return(d)
 }
 
+#' the last function was cumulative (showing sharpe for each line)
+#' this method only gets the end of week sharpe
+#' @export
+#' @param symb stock name
+#' @param dat date
+getWtdSharpe <- function(symb, dat) {
+  print(symb)
+  mon <- getMonOfWeek(dat)
+  d <- chinaTrading::getDataPureD(symb)
+  d <- d[D>=mon,]
+  d[, chg:= C/shift(C,1)-1]
+  d[1, chg:=(C/O)-1]
+  list(wtdSr=d[,mean(chg)/sd(chg)*sqrt(240)])
+  #print(d[, mean(chg)/sqrt((mean(chg^2)-(mean(chg))^2)*.N/(.N-1))*sqrt(240)])
+}
+
+#' apply the same function to all stocks in test.txt
+#' @export
+#' @param f function to apply
+#' @param ... any other parameters
+applyFunctionToAllStocks <- function(f,...) {
+  d <- fread(paste0(getTradingFolder(),"test.txt"),header = FALSE)
+  d <- d[1:10, c(V2,f(V1,...)), keyby=list(V1)]
+  d
+}
+
+
+
+
 #' get minute cumulative sharpe
 #' @export
 #' @param dat date

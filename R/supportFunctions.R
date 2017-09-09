@@ -10,6 +10,8 @@
 #' }
 
 
+
+
 #' get working directory
 #' @export
 getTradingFolder <- function() {

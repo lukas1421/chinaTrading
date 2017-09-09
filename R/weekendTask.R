@@ -1,8 +1,8 @@
-#'computing weekend
+#'computing week percentile and week return
 #'@export
 #'@param symb stock
-computeWeekend <- function(symb) {
-  m<- getMondayOfWeek(Sys.Date())
+computeWeekPercReturn <- function(symb) {
+  m<- getMonOfWeek(Sys.Date())
   d <- getDataPure(symb)
   friClose <-  d[D<m][.N,C]
   monOpen <- d[D>=m][1, O]
@@ -15,17 +15,23 @@ computeWeekend <- function(symb) {
   return(list(percentile=percentile , weekreturn=(lastClose/friClose-1)))
 }
 
-#'computing weekend all
+#'compute week return and percentile for all stocks
 #'@export
 computeWeekendAll <- function() {
   res<- fread(paste0(getTradingFolder(),"test.txt"),header = FALSE)
-  res<- res[,computeWeekend(V1),keyby=list(V1)]
+  res<- res[,computeWeekPercReturn(V1),keyby=list(V1)]
   res
 }
 
+#' compute cumulative wtd sharpe
+#' @export
+
+
+
+
 
 m1 <- function(symb) {
-  m<- getMondayOfWeek(Sys.Date())
+  m<- getMonOfWeek(Sys.Date())
   d <- getDataPure(symb)
   d<- d[D>=m]
   return(d)

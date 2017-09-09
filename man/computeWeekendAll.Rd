@@ -2,10 +2,10 @@
 % Please edit documentation in R/weekendTask.R
 \name{computeWeekendAll}
 \alias{computeWeekendAll}
-\title{computing weekend all}
+\title{compute week return and percentile for all stocks}
 \usage{
 computeWeekendAll()
 }
 \description{
-computing weekend all
+compute week return and percentile for all stocks
 }
