@@ -40,7 +40,7 @@ getWtdPercentileAll<- function(){
 
 # get wtd percentile
 getWtdMaxMin <- function(symb) {
-  m<-getMondayOfWeek(Sys.Date()-1)
+  m<-getMonOfWeek(Sys.Date()-1)
   print(m)
   d<- getDataPure(symb)
   d<- d[D>=m]

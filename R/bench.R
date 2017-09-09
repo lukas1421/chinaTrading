@@ -6,7 +6,7 @@
 #' @export
 #' @importFrom hash hash
 getBenchMark <- function() {
-  env <- new.env()
+  env <- new.env(parent = emptyenv())
   benchList<- c("sh000001","sz399006","sz399001","sh000300","sh000016","sh000905")
   benchNames <- c("主板","创","小","沪深","大","中证")
   h <- hash(benchList,benchNames)
@@ -33,14 +33,13 @@ getBenchMark <- function() {
 #' @export
 #' @param d a data.table with 4 columns - ticker chnName benchTicker correl
 #' @return does not return anything, but outputs a 3-col (ticker indexNameCorrel index) ()
+
 fromBenchToBenchlist <- function() {
   benchList<- c("sh000001","sz399006","sz399001","sh000300","sh000016","sh000905")
   benchNames <- c("主板","创","小","沪深","大","中证")
   benchDt <- data.table(benchList=benchList, benchNames=benchNames)
   #print(benchDt)
   env <- new.env()
-
-
 }
 
 

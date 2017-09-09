@@ -84,10 +84,9 @@ getSumSumSq <- function(symb, dat) {
     sumRet <- d[, sum(chg,na.rm = T)]
     sumRetSq <- d[,sum(chgSq,na.rm = T)]
     n <- d[,.N]
-    print(n)
     m <- sumRet/n
     sd <- sqrt((sumRetSq/n - m^2)*n/(n-1))
-    print(sd)
+    #print(sd)
     sr <- m/sd*sqrt(240)
     #print((list(sumRet=sumRet, sumRetSq=sumRetSq,N=n, mean=m, sd=sd, sr=sr)))
     return(list(sumRet=sumRet, sumRetSq=sumRetSq,N=n, sr=sr))

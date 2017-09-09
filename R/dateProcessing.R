@@ -59,9 +59,3 @@ getData <- function(symb) {
     return(d[,list(D,O,H,L,C,ma5,ma20, bull5Y, bull20Y,maxAll,minAll, percentileAll)])
   }
 }
-
-
-
-
-
-
