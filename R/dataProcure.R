@@ -22,7 +22,7 @@ getDataPure<- function(symb) {
 getDataPureD<- function(symb) {
   #ticker <-
   d<- fread(paste0(getMinuteDataFolder(),getOneTicker(symb),".txt"),
-            skip = 1,fill = T,select = c(1,2,3,4,5,6),col.names = c("D","T","O","H","L","C"))
+            skip = 1,fill = T,select = c(1,2,3,4,5,6),key = "D",col.names = c("D","T","O","H","L","C"))
   d <- d[!.N,]
   d[, D:=ymd(D)]
   #d[, DT:=ymd_hm(paste(D,paste0(str_sub(T,1,str_length(T)-2),":",str_sub(T,str_length(T)-1))))]

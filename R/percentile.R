@@ -14,17 +14,18 @@ getPercentileAll <- function() {
 #' @export
 #' @param symb stock symbol
 getWtdPercentile <- function(symb) {
-  weekBeginningDate <- getMonOfWeek()
+  weekBeginningDate <- getMonOfWeek(Sys.Date())
   d <- getDataPure(symb)
   d <- d[D>= weekBeginningDate]
   if(nrow(d)>0) {
-    d[, maxWeek:= max(H)]
-    d[, minWeek:= min(L)]
-    d[, cummax:= cummax(H)]
-    d[, cummin:= cummin(L)]
-    d[, perc:= (C-cummin)/(cummax-cummin)]
+    # d[, maxWeek:= max(H)]
+    # d[, minWeek:= min(L)]
+    # d[, cummax:= cummax(H)]
+    # d[, cummin:= cummin(L)]
+    # d[, perc:= (C-cummin)/(cummax-cummin)]
+    # return(list(perc=d[.N, perc]))
 
-    return(list(perc=d[.N, perc]))
+    return(list(perc=getPercentileCpp(d)))
   } else {
     return(list(0))
   }
@@ -87,7 +88,8 @@ getYtdPercentile <- function(symb) {
   # d[, ytdMax:=cummax(H)]
   # d[, ytdMin:= cummin(L)]
   # print(d[.N, (C-ytdMin)/(ytdMax-ytdMin)])
-  return(list(perc=d[,(C[.N]-min(L))/(max(H)-min(L))]))
+  #return(list(perc=d[,(C[.N]-min(L))/(max(H)-min(L))]))
+  return(list(perc=getPercentileCpp(d)))
 }
 
 getYtdPercentileAll <- function() {

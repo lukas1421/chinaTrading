@@ -6,11 +6,11 @@ computeWeekPercReturn <- function(symb) {
   d <- getDataPure(symb)
   friClose <-  d[D<m][.N,C]
   monOpen <- d[D>=m][1, O]
-  d<- d[D>=m]
-  high <- max(d$H)
-  low <- min(d$L)
-  last <- d[.N,C]
-  percentile <- (last-low)/(high-low)
+  d <- d[D>=m]
+  # high <- max(d$H)
+  # low <- min(d$L)
+  # last <- d[.N,C]
+  percentile <- getPercentileCpp(d)
   lastClose <- d[.N,C]
   return(list(percentile=percentile , weekreturn=(lastClose/friClose-1)))
 }
@@ -25,11 +25,6 @@ computeWeekendAll <- function() {
 
 #' compute cumulative wtd sharpe
 #' @export
-
-
-
-
-
 m1 <- function(symb) {
   m<- getMonOfWeek(Sys.Date())
   d <- getDataPure(symb)

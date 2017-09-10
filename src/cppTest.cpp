@@ -138,3 +138,45 @@ DataFrame getDayCumSharpeCpp(NumericVector x) {
   }
   return DataFrame::create(Named("chg")=x, Named("mean") = m, Named("sd")=sd, Named("sr")=sr);
 }
+
+//' take a data frame and get percentile
+//' @export
+//' @param x dataframe
+//[[Rcpp::export]]
+double getPercentileCpp(DataFrame x) {
+  NumericVector c = x["C"];
+  NumericVector h = x["H"];
+  NumericVector l = x["L"];
+
+  double ma = max(c);
+  double mi = min(l);
+  double last = c[c.length()-1];
+  return (last-mi)/(ma-mi);
+}
+
+//' calc sharpe
+//' @export
+//' @param x retList
+//[[Rcpp::export]]
+List calcSharpeCpp(NumericVector x) {
+  double m = mean(x);
+  NumericVector cumpro = cumprod((x+1));
+  double cumpro1 = cumpro[cumpro.length()-1];
+  double ma = max(x);
+  double mi = min(x);
+  double s = sd(x);
+  NumericVector upVec = x[x>m];
+  double ud = sd(upVec);
+  NumericVector downVec = x[x<m];
+  double dd = sd(downVec);
+
+
+  return List::create(Named("m")=m,
+                      Named("cum")=cumpro1,
+                      Named("max")=ma,
+                      Named("min") = mi,
+                      Named("sd")= s,
+                      Named("ud") = ud,
+                      Named("dd")= dd);
+}
+

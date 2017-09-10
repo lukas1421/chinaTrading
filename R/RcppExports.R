@@ -64,3 +64,17 @@ getDayCumSharpeCpp <- function(x) {
     .Call('_chinaTrading_getDayCumSharpeCpp', PACKAGE = 'chinaTrading', x)
 }
 
+#' take a data frame and get percentile
+#' @export
+#' @param x dataframe
+getPercentileCpp <- function(x) {
+    .Call('_chinaTrading_getPercentileCpp', PACKAGE = 'chinaTrading', x)
+}
+
+#' calc sharpe
+#' @export
+#' @param x retList
+calcSharpeCpp <- function(x) {
+    .Call('_chinaTrading_calcSharpeCpp', PACKAGE = 'chinaTrading', x)
+}
+
