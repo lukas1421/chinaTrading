@@ -29,3 +29,31 @@ getSD <- function(x) {
     .Call('_chinaTrading_getSD', PACKAGE = 'chinaTrading', x)
 }
 
+#' get ticker function
+#' @export
+#' @param s vector
+getTicker <- function(s) {
+    .Call('_chinaTrading_getTicker', PACKAGE = 'chinaTrading', s)
+}
+
+#' get one ticker(not vectorized)
+#' @export
+#' @param s one string
+getOneTicker <- function(s) {
+    .Call('_chinaTrading_getOneTicker', PACKAGE = 'chinaTrading', s)
+}
+
+#' identity function
+#' @export
+#' @param x vector
+getSum <- function(x) {
+    .Call('_chinaTrading_getSum', PACKAGE = 'chinaTrading', x)
+}
+
+#' get sumChg, sumChgSq, n, sr of a change series in list
+#' @export
+#' @param x numvec
+getSumChgC <- function(x) {
+    .Call('_chinaTrading_getSumChgC', PACKAGE = 'chinaTrading', x)
+}
+

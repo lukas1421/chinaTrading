@@ -1,3 +1,20 @@
+#test
+
+
+library(rbenchmark)
+library(stringr)
+
+s <- str_pad(floor(runif(1e5, 0,999999)),width=6,pad="0")
+s <- paste0("sz",s)
+
+concat1 <- function(symb) {
+  ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
+}
+
+rbenchmark::benchmark(concat1(s),getTicker(s))
+
+rbenchmark::benchmark(concat1(s))
+
 #test rcpp
 library(data.table)
 

@@ -81,15 +81,16 @@ getSumSumSq <- function(symb, dat) {
   d[, chgSq:= chg^2]
   #print(d)
   if(nrow(d)!=0){
-    sumRet <- d[, sum(chg,na.rm = T)]
-    sumRetSq <- d[,sum(chgSq,na.rm = T)]
-    n <- d[,.N]
-    m <- sumRet/n
-    sd <- sqrt((sumRetSq/n - m^2)*n/(n-1))
-    #print(sd)
-    sr <- m/sd*sqrt(240)
-    #print((list(sumRet=sumRet, sumRetSq=sumRetSq,N=n, mean=m, sd=sd, sr=sr)))
-    return(list(sumRet=sumRet, sumRetSq=sumRetSq,N=n, sr=sr))
+    return(d[!is.na(chg), getSumChgC(chg)])
+    # sumRet <- d[, sum(chg,na.rm = T)]
+    # sumRetSq <- d[,sum(chgSq,na.rm = T)]
+    # n <- d[,.N]
+    # m <- sumRet/n
+    # sd <- sqrt((sumRetSq/n - m^2)*n/(n-1))
+    # #print(sd)
+    # sr <- m/sd*sqrt(240)
+    # #print((list(sumRet=sumRet, sumRetSq=sumRetSq,N=n, mean=m, sd=sd, sr=sr)))
+    # return(list(sumRet=sumRet, sumRetSq=sumRetSq,N=n, sr=sr))
   }
   return()
 }
@@ -194,7 +195,7 @@ getIndexDayCumuSharpe <- function(dat) {
 #' @param d a date
 getMonOfWeek <- function(d) {
   w <- data.table::wday(d)-1
-  d-(w-1)
+  d-(w-1)-ifelse(w==0,7,0)
 }
 
 #' get day sharpe with data given in an env

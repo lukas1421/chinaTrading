@@ -49,12 +49,60 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// getTicker
+std::vector< std::string > getTicker(std::vector<std::string> s);
+RcppExport SEXP _chinaTrading_getTicker(SEXP sSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::vector<std::string> >::type s(sSEXP);
+    rcpp_result_gen = Rcpp::wrap(getTicker(s));
+    return rcpp_result_gen;
+END_RCPP
+}
+// getOneTicker
+std::string getOneTicker(std::string s);
+RcppExport SEXP _chinaTrading_getOneTicker(SEXP sSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type s(sSEXP);
+    rcpp_result_gen = Rcpp::wrap(getOneTicker(s));
+    return rcpp_result_gen;
+END_RCPP
+}
+// getSum
+double getSum(NumericVector x);
+RcppExport SEXP _chinaTrading_getSum(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(getSum(x));
+    return rcpp_result_gen;
+END_RCPP
+}
+// getSumChgC
+List getSumChgC(NumericVector x);
+RcppExport SEXP _chinaTrading_getSumChgC(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(getSumChgC(x));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_chinaTrading_timesThree", (DL_FUNC) &_chinaTrading_timesThree, 1},
     {"_chinaTrading_getMean", (DL_FUNC) &_chinaTrading_getMean, 1},
     {"_chinaTrading_getSharpe", (DL_FUNC) &_chinaTrading_getSharpe, 1},
     {"_chinaTrading_getSD", (DL_FUNC) &_chinaTrading_getSD, 1},
+    {"_chinaTrading_getTicker", (DL_FUNC) &_chinaTrading_getTicker, 1},
+    {"_chinaTrading_getOneTicker", (DL_FUNC) &_chinaTrading_getOneTicker, 1},
+    {"_chinaTrading_getSum", (DL_FUNC) &_chinaTrading_getSum, 1},
+    {"_chinaTrading_getSumChgC", (DL_FUNC) &_chinaTrading_getSumChgC, 1},
     {NULL, NULL, 0}
 };
 

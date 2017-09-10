@@ -1,4 +1,4 @@
-#Data processing
+#Data procuring
 
 
 #' general method to get stocks
@@ -7,7 +7,8 @@
 #' @param symb stock symbol sh510050
 getDataPure<- function(symb) {
   #print(paste0("getting data",symb))
-  ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
+  #ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
+  ticker <- getOneTicker(symb)
   d<- fread(paste0(getDayDataFolder(),ticker,".txt"),skip = 1,fill = T,select = c(1,2,3,4,5),col.names = c("D","O","H","L","C"))
   d <- d[!.N,]
   d[, D:=ymd(D)]
@@ -19,7 +20,7 @@ getDataPure<- function(symb) {
 #' @export
 #' @param symb stock symbol
 getDataPureD<- function(symb) {
-  ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
+  ticker <- getOneTicker(symb)
   d<- fread(paste0(getMinuteDataFolder(),ticker,".txt"),
             skip = 1,fill = T,select = c(1,2,3,4,5,6),col.names = c("D","T","O","H","L","C"))
   d <- d[!.N,]
@@ -35,7 +36,8 @@ getDataPureD<- function(symb) {
 getData <- function(symb) {
   print(paste0(" getting ",symb))
   #dataFolder <- "J:\\TDX\\T0002\\export\\"
-  ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
+  #ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
+  ticker<- getOneTicker(symb)
   #d<- fread(paste0(dataFolder,ticker,".txt"))
   d<- fread(paste0(getDayDataFolder(),ticker,".txt"),skip = 1,fill = T,showProgress = TRUE,col.names = c("D","O","H","L","C","V","A"))
   d <- d[!.N,]
