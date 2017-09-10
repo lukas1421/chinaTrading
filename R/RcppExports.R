@@ -57,3 +57,10 @@ getSumChgC <- function(x) {
     .Call('_chinaTrading_getSumChgC', PACKAGE = 'chinaTrading', x)
 }
 
+#' get cumu sharpe
+#' @export
+#' @param x numvec
+getDayCumSharpeCpp <- function(x) {
+    .Call('_chinaTrading_getDayCumSharpeCpp', PACKAGE = 'chinaTrading', x)
+}
+

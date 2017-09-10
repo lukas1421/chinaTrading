@@ -110,3 +110,31 @@ List getSumChgC(NumericVector x) {
                       Named("sr")=sr);
 }
 
+//' get cumu sharpe
+//' @export
+//' @param x numvec
+//[[Rcpp::export]]
+DataFrame getDayCumSharpeCpp(NumericVector x) {
+  NumericVector m;
+  NumericVector sd;
+  NumericVector sr;
+  NumericVector chgSq  = pow(x,2);
+
+  double runningSum = 0.0;
+  double runningSumSq = 0.0;
+  int runningCount = 0;
+
+  for(int i=0; i<x.size(); i++) {
+    runningSum += x[i];
+    runningSumSq += chgSq[i];
+    runningCount ++;
+
+    double meanSoFar = runningSum/runningCount;
+    double meanSumSq = runningSumSq/runningCount;
+    double sdSoFar = sqrt((meanSumSq-pow(meanSoFar,2))*runningCount/(runningCount-1));
+    m.push_back(meanSoFar);
+    sd.push_back(sdSoFar);
+    sr.push_back(meanSoFar/sdSoFar*sqrt(240));
+  }
+  return DataFrame::create(Named("chg")=x, Named("mean") = m, Named("sd")=sd, Named("sr")=sr);
+}

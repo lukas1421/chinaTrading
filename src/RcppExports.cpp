@@ -93,6 +93,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// getDayCumSharpeCpp
+DataFrame getDayCumSharpeCpp(NumericVector x);
+RcppExport SEXP _chinaTrading_getDayCumSharpeCpp(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(getDayCumSharpeCpp(x));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_chinaTrading_timesThree", (DL_FUNC) &_chinaTrading_timesThree, 1},
@@ -103,6 +114,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_chinaTrading_getOneTicker", (DL_FUNC) &_chinaTrading_getOneTicker, 1},
     {"_chinaTrading_getSum", (DL_FUNC) &_chinaTrading_getSum, 1},
     {"_chinaTrading_getSumChgC", (DL_FUNC) &_chinaTrading_getSumChgC, 1},
+    {"_chinaTrading_getDayCumSharpeCpp", (DL_FUNC) &_chinaTrading_getDayCumSharpeCpp, 1},
     {NULL, NULL, 0}
 };
 

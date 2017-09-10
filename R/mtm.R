@@ -176,7 +176,8 @@ getClosingPriceBeforeD <- function(dat,symb) {
 #' @param symb stock symbol
 getMinuteDataPure <- function(dat, symb) {
   tryCatch ({
-    ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
+    #ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
+    ticker <- getOneTicker(symb)
     if(exists(toupper(symb))) {
       print("exists")
       stock <- get(toupper(symb))
@@ -201,8 +202,8 @@ getMinuteDataPure <- function(dat, symb) {
 #' @param symb stock symbol
 getMinuteDataPureWithPrevClose <- function(dat, symb) {
   tryCatch ({
-    ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
-
+    #ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
+    ticker <- getOneTicker(symb)
     if(exists(toupper(symb))) {
       print("exists")
       stock <- get(toupper(symb))
@@ -213,10 +214,11 @@ getMinuteDataPureWithPrevClose <- function(dat, symb) {
       stock <- stock [!.N,]
     }
 
-    stockPrev  <- stock[D<dat, ][.N, ][,list(D,T,O,C)]
-    stock <- stock[D==dat,list(D,T,O,C)]
-    res<-rbindlist(list(stockPrev,stock),use.names = TRUE,fill = TRUE)
-    return(res)
+    # stockPrev  <- stock[D<dat, ][.N, ][,list(D,T,O,C)]
+    # stock <- stock[D==dat,list(D,T,O,C)]
+    # res<-rbindlist(list(stockPrev,stock),use.names = TRUE,fill = TRUE)
+    #return(res)
+    return(d[D<=dat][(.N-240):.N])
   }, error = function(err) {
     print(err)
     stock <- 0.0
@@ -229,7 +231,8 @@ getMinuteDataPureWithPrevClose <- function(dat, symb) {
 #' @param symb stock symbol
 getMinuteDataPureForAllDate <- function(symb) {
   tryCatch ({
-    ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
+    #ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
+    ticker <- getOneTicker(symb)
     stock <- fread(paste0(getMinuteDataFolder(),ticker, ".txt"),header = TRUE,skip = 1,fill = T,
                    col.names = c("D","T","O","C"),select = c(1,2,3,6))
     stock <- stock[-.N]
@@ -243,15 +246,18 @@ getMinuteDataPureForAllDate <- function(symb) {
 }
 
 #' get minute data for day
+#' @export
 #' @param dat date
 #' @param symb stock
 #' @param pos opening pos for that stock
 getMinuteDataForDay <- function(dat,symb,pos) {
   tryCatch ({
-    ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
+    #ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
+    ticker <- getOneTicker(symb)
     stock <- data.table()
     stock <- fread(paste0(getMinuteDataFolder(),ticker, ".txt"),header = TRUE,skip = 1,fill = T,
-                   showProgress = TRUE,col.names = c("D","T","O","H","L","C","V","A"))
+                   select = c(1,2,6),col.names = c("D","T","C"))
+                     #c("D","T","O","H","L","C","V","A"))
     stock <- stock [!.N,]
     stock [, D:=ymd(D)]
     ytdClose <- stock[D<dat,][.N,C]
@@ -259,10 +265,11 @@ getMinuteDataForDay <- function(dat,symb,pos) {
     #return(stock[D==dat,list(D,T,C, (C- ytdClose)*pos)])
     stock[, pnl:= (C - ytdClose)*pos]
     stock <- stock[D==dat,list(D,T,C, pnl)]
-    pnl <- stock$pnl
-    names(pnl) <- stock$T
-    print(pnl)
-    return(pnl)
+    #print(stock)
+    #pnl <- stock$pnl
+    #names(pnl) <- stock$T
+    #print(pnl)
+    return(stock[,  list(pnl), keyby=T])
 
   }, error = function(err) {
     print(err)

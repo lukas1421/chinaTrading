@@ -53,7 +53,6 @@ getMainboardFolder <- function(){
   } else if(Sys.getenv("USERNAME")=="Luke Shi") {
     mainDir <- "H:\\Data\\mainBoardR\\"
   }
-
   return(mainDir)
 }
 

@@ -11,9 +11,10 @@ getPercentileAll <- function() {
 }
 
 #' get wtd percentile
+#' @export
 #' @param symb stock symbol
 getWtdPercentile <- function(symb) {
-  weekBeginningDate <- ymd("2017-5-8")
+  weekBeginningDate <- getMonOfWeek()
   d <- getDataPure(symb)
   d <- d[D>= weekBeginningDate]
   if(nrow(d)>0) {
@@ -38,9 +39,11 @@ getWtdPercentileAll<- function(){
   return(d)
 }
 
-# get wtd percentile
+#' get wtd percentile
+#' @param symb stock symb
+#' @export
 getWtdMaxMin <- function(symb) {
-  m<-getMonOfWeek(Sys.Date()-1)
+  m<-getMonOfWeek(Sys.Date())
   print(m)
   d<- getDataPure(symb)
   d<- d[D>=m]
@@ -48,7 +51,7 @@ getWtdMaxMin <- function(symb) {
     d[, cummax := cummax(H)]
     d[, cummin := cummin(L)]
     print(d[D>=m])
-    as.list(d[.N, .(cummax,cummin,C,(C-cummin)/(cummax-cummin), (cummax+cummin)/2/C-1 )])
+    as.list(d[.N, .(cummax,cummin,C,perc=(C-cummin)/(cummax-cummin), potential=(cummax+cummin)/2/C-1 )])
   } else {
     return()
   }
@@ -58,7 +61,7 @@ getWtdMaxMin <- function(symb) {
 #' @export
 getWtdMaxMinAll <- function() {
   print("getting wtd max min all")
-  print(getTradingFolder())
+  #print(getTradingFolder())
   res<- fread(paste0(getTradingFolder(),"test.txt"),header = FALSE)
   res<- res[,(getWtdMaxMin(V1)),keyby=list(V1)]
   write.table(res, paste0(getTradingFolder(),"wtdMaxMin.txt"),quote = FALSE,sep = "\t", row.names = FALSE)
@@ -81,10 +84,10 @@ getYtdLowDate <- function(symb) {
 getYtdPercentile <- function(symb) {
   d <- getDataPure(symb)
   d <- d[D>ymd("20161231")]
-  d[, ytdMax:=cummax(H)]
-  d[, ytdMin:= cummin(L)]
-  return(list(perc=d[.N, (C-ytdMin)/(ytdMax-ytdMin)]))
-  #print(d)
+  # d[, ytdMax:=cummax(H)]
+  # d[, ytdMin:= cummin(L)]
+  # print(d[.N, (C-ytdMin)/(ytdMax-ytdMin)])
+  return(list(perc=d[,(C[.N]-min(L))/(max(H)-min(L))]))
 }
 
 getYtdPercentileAll <- function() {

@@ -10,14 +10,13 @@ getBenchMark <- function() {
   benchList<- c("sh000001","sz399006","sz399001","sh000300","sh000016","sh000905")
   benchNames <- c("主板","创","小","沪深","大","中证")
   h <- hash(benchList,benchNames)
-
   dt <- data.table(benchList)
   sapply(benchList,
          function(x) {
            d <- getDataPure(x)
            d[, eval(x):= C/shift(C,1)-1]
-           assign(x,d, envir = env)
-         })
+           assign(x,d, envir = env)})
+
   assign("b",dt,envir=env)
   d<- fread(paste0(getTradingFolder(),"test.txt"),header = FALSE)
   d<- d[, c(V2,getCorrelGen(V1,env)), keyby=list(V1)]
