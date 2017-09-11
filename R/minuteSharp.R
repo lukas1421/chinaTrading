@@ -77,13 +77,19 @@ getSumSumSq <- function(symb, dat) {
   d <- getDataPureD(symb)
   d <- d[D>=mon & D<=dat, ]
   d[, chg:= C/shift(C,1)-1]
-  d[1, chg:= C/O-1]
-  d[, chgSq:= chg^2]
   #print(d)
   if(nrow(d)!=0){
+
+    d[1, chg:= C/O-1]
+    d[, chgSq:= chg^2]
+    #print(d)
     return(d[!is.na(chg), getSumChgC(chg)])
   }
-  return()
+  # Named("sumRet")=sumChg,
+  # Named("sumRetSq")=sumChgSq,
+  # Named("N")=n,
+  # Named("sr")=sr);
+  return(data.table(sumRet=0,sumRetSq=0,N=0,sr=0))
 }
 
 #' get all sum and sum sq for a given date
