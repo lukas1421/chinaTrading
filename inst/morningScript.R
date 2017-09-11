@@ -22,8 +22,6 @@ local({
               paste0(getTradingFolder(),"sharpeOutput.txt"),quote = FALSE,sep = "\t",row.names = FALSE, col.names =FALSE)
 })
 
-
-
 # bench CAUTIOUS LONG EXECUTION
 getBenchMark()
 
@@ -37,12 +35,9 @@ getDivs()
 #
 saveToGit()
 
-
 #creating index for comparison, get bench
 #createIndex()
 #d<-getBenchMark()
-
-
 #' #' run daily tasks
 #' #' @export
 #' #Methods only:

@@ -66,7 +66,13 @@ getCorrel<- function(symb1, index,env) {
   #dt2[, eval(index):= C/shift(C,1)-1]
   dt3<-merge(dt1[,list(D,get(symb1))],dt2[,list(D,get(index))],by = "D")
   names(dt3) <- c("D",(eval(symb1)),(eval(index)))
-  return(dt3[D>ymd("20120101")][!is.infinite(get(symb1)), cor(get(symb1),get(index),use="complete.obs")])
+
+  tryCatch({
+    return(dt3[D>ymd("20170101")][!is.infinite(get(symb1)), cor(get(symb1),get(index),use="complete.obs")])
+  }, error = function(e) {
+    print(e)
+    return(0.0)
+  })
 }
 
 #' creating index
