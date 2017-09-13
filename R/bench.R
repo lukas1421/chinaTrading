@@ -50,7 +50,12 @@ getCorrelGen<-function(symb,env) {
   print(symb)
   dt <- get("b", envir=env)
   dt[, x:= getCorrel(symb,benchList,env), keyby=list(benchList)]
-  return(list(bench=dt[order(-x)][1]$benchList,correl=dt[order(-x)][1]$x))
+  #print(dt)
+  benchRes = dt[order(-x)][1]$benchList
+  correlRes = dt[order(-x)][1]$x
+  return(list(bench=benchRes,correl=correlRes))
+
+  #return(list(bench=ifelse(!is.na(benchRes),benchRes,0.0),correl=ifelse(!is.na(correlRes),correlRes,0.0)))
   #invisible()
 }
 
@@ -68,7 +73,8 @@ getCorrel<- function(symb1, index,env) {
   names(dt3) <- c("D",(eval(symb1)),(eval(index)))
 
   tryCatch({
-    return(dt3[D>ymd("20170101")][!is.infinite(get(symb1)), cor(get(symb1),get(index),use="complete.obs")])
+    corr <- dt3[D>ymd("20170101")][!is.infinite(get(symb1)), cor(get(symb1),get(index),use="complete.obs")]
+    return(ifelse(is.na(corr),0.0,corr))
   }, error = function(e) {
     print(e)
     return(0.0)
