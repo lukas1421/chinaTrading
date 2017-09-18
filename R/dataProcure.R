@@ -38,7 +38,7 @@ getData <- function(symb) {
   #ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
   ticker<- getOneTicker(symb)
   #d<- fread(paste0(dataFolder,ticker,".txt"))
-  d<- fread(paste0(getDayDataFolder(),ticker,".txt"),skip = 1,fill = T,showProgress = TRUE,col.names = c("D","O","H","L","C","V","A"))
+  d<- fread(paste0(getDayDataFolder(),ticker,".txt"),skip = 1,fill = T,col.names = c("D","O","H","L","C","V","A"))
   d <- d[!.N,]
   d[, D:=ymd(D)]
   d[, ma5:=rollapplyr(C,5,mean, fill=NA)]

@@ -64,6 +64,13 @@ getDayCumSharpeCpp <- function(x) {
     .Call('_chinaTrading_getDayCumSharpeCpp', PACKAGE = 'chinaTrading', x)
 }
 
+#' get cumu ytd sharpe
+#' @export
+#' @param x numvec
+getYtdCumSharpeCpp <- function(x) {
+    .Call('_chinaTrading_getYtdCumSharpeCpp', PACKAGE = 'chinaTrading', x)
+}
+
 #' take a data frame and get percentile
 #' @export
 #' @param x dataframe

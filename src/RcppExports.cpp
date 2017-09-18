@@ -104,6 +104,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// getYtdCumSharpeCpp
+DataFrame getYtdCumSharpeCpp(NumericVector x);
+RcppExport SEXP _chinaTrading_getYtdCumSharpeCpp(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(getYtdCumSharpeCpp(x));
+    return rcpp_result_gen;
+END_RCPP
+}
 // getPercentileCpp
 double getPercentileCpp(DataFrame x);
 RcppExport SEXP _chinaTrading_getPercentileCpp(SEXP xSEXP) {
@@ -137,6 +148,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_chinaTrading_getSum", (DL_FUNC) &_chinaTrading_getSum, 1},
     {"_chinaTrading_getSumChgC", (DL_FUNC) &_chinaTrading_getSumChgC, 1},
     {"_chinaTrading_getDayCumSharpeCpp", (DL_FUNC) &_chinaTrading_getDayCumSharpeCpp, 1},
+    {"_chinaTrading_getYtdCumSharpeCpp", (DL_FUNC) &_chinaTrading_getYtdCumSharpeCpp, 1},
     {"_chinaTrading_getPercentileCpp", (DL_FUNC) &_chinaTrading_getPercentileCpp, 1},
     {"_chinaTrading_calcSharpeCpp", (DL_FUNC) &_chinaTrading_calcSharpeCpp, 1},
     {NULL, NULL, 0}
