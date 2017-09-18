@@ -103,11 +103,18 @@ List getSumChgC(NumericVector x) {
   double sumChg = sum(x);
   double sumChgSq = sum(pow(x,2));
   int n = x.size();
-  double sr = sumChg/n/sqrt((sumChgSq/n-pow(sumChg/n,2))*n/(n-1))*sqrt(240);
-  return List::create(Named("sumRet")=sumChg,
+
+  if(sumChgSq != 0.0) {
+    double sr = sumChg/n/sqrt((sumChgSq/n-pow(sumChg/n,2))*n/(n-1))*sqrt(240);
+
+    return List::create(Named("sumRet")=sumChg,
                       Named("sumRetSq")=sumChgSq,
                       Named("N")=n,
                       Named("sr")=sr);
+  } else {
+    return List::create(Named("sumRet")=sumChg,Named("sumRetSq")=sumChgSq,
+                        Named("N")=n,Named("sr")=0.0);
+  }
 }
 
 //' get cumu sharpe
