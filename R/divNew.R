@@ -31,7 +31,7 @@ getDivs <- function() {
   res[, adjPrice := ((lastPrice - cashDiv/10)/(1+as.numeric(stockDiv)/10))]
   res<-res[!(!is.na(stockDivDate) & cashDivDate!=Sys.Date())]
   res<-res[!is.infinite(adjFactor) & !is.nan(adjFactor)]
-  res[, inList:=isInStockList(ticker), .(ticker) ]
+  res[, inList:=chinaTrading:::isInStockList(ticker), .(ticker) ]
   res<-res[inList==TRUE, ]
 
   write.table(res, paste0(getTradingFolder(),"div.txt"),quote = FALSE,sep = "\t")
