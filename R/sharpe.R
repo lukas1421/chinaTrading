@@ -38,8 +38,14 @@ compareAllSharpYtd <- function(dat) {
   d<- fread(paste0(getTradingFolder(),"test.txt"),header = FALSE)
   d<- d[, c(V2,calcSSSharpe(V1, dat)), keyby=list(V1)]
   d[, SR:= ifelse(is.na(SR),0,round(SR,1))]
-  write.table(d[, list(V1,SR)], paste0(getTradingFolder(),"sharpe.txt"),
-              quote = FALSE,sep = "\t",row.names = FALSE, col.names =FALSE)
+
+  if(lubridate::month(dat)==12 && lubridate::day(dat)==31) {
+    print(dat)
+    print(" writing to sharp txt")
+    write.table(d[, list(V1,SR)], paste0(getTradingFolder(),"sharpe.txt"),
+                quote = FALSE,sep = "\t",row.names = FALSE, col.names =FALSE)
+  }
+
   return(d)
 }
 
@@ -53,6 +59,7 @@ compareAllSharpYtdDate <- function(f,...) {
   d[, SR:= ifelse(is.na(SR),0,round(SR,1))]
   write.table(d[, list(V1,SR)], paste0(getTradingFolder(),"sharpe.txt"),
               quote = FALSE,sep = "\t",row.names = FALSE, col.names =FALSE)
+
   return(d)
 }
 

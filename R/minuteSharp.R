@@ -152,9 +152,6 @@ applyFunctionToAllStocks <- function(f,...) {
   d
 }
 
-
-
-
 #' get minute cumulative sharpe
 #' @export
 #' @param dat date
