@@ -198,18 +198,12 @@ getMonOfWeek <- function(d) {
 #' @param env environment from which to getdata
 getDaySharpeFromEnv <- function(symb,dat,env) {
   d <- get("d", envir = env)
-  #d[, chg:= C/shift(C,1)-1]
-  #d[1, chg:= (C/O)-1]
 
   d<-d[D==dat]
   d[1, chg:=(C/O)-1]
-  # amD <- d[T<1200]
-  # pmD <- d[T>1259]
+
   res <- mean(d[, chg])/sd(d[,chg])*sqrt(240)
-  # amRes <- mean(amD[, chg])/sd(amD[,chg])*sqrt(240)
-  # pmRes <- mean(pmD[, chg])/sd(pmD[,chg])*sqrt(240)
-  #print(res)
-  #list(res=res, am=amRes, pm=pmRes)
+
   res
 }
 

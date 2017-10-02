@@ -38,18 +38,37 @@ getFTSEData <- function() {
              }
            })
   }
+  res
+}
+
+#' ftse data to excel
+#' @export
+FTSEdataToExcel <- function(res) {
+
+  #print(res)
   wb <- XLConnect::loadWorkbook(paste0(getTradingFolder(),"new.xlsx"),create = TRUE)
   createSheet(wb,"Sheet1")
   XLConnect::writeWorksheet(wb,res,"Sheet1",startRow = 1,startCol = 1, header = T)
   XLConnect::saveWorkbook(wb)
+
+
 }
 
+
+#' update ftse weights
+#' @export
 updateFTSEWeights <- function() {
   res <- getFTSEData()
-  wb <- loadWorkbook(paste0(getTradingFolder(),"new.xlsx"),create = TRUE)
-  createSheet(wb,"Sheet1")
-  writeWorksheet(wb,res,"Sheet1",startRow = 1,startCol = 1, header = T)
-  saveWorkbook(wb)
+
+  d <- data.table::fread(paste0(getTradingFolder(),"tickerEnglish.txt")
+                         , sep = "\t",header = FALSE,col.names = c("English","Ticker"))
+
+  m <- merge(res, d, by.x="stock", by.y="English")
+
+  output<-m[, list(Ticker,weight)]
+  print(m[, sum(weight)])
+  write.table(output,paste0(getTradingFolder(),"FTSEA50Ticker.txt"),quote = FALSE,sep = "\t",row.names = FALSE,col.names = FALSE)
+  invisible()
 }
 
 #################################################################################################################################################################################

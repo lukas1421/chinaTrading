@@ -1,6 +1,8 @@
 #morning runs
 library(chinaTrading)
 getFTSEData()
+FTSEdataToExcel(getFTSEData())
+updateFTSEWeights()
 getFTSE50Index()
 getNAV()
 getXIN0UIndex()
@@ -18,7 +20,7 @@ getMAAll(20)
 local({
   srdYtd<-compareAllSharpYtd(lubridate::ymd("2016-12-31"))
   outputYtd<-srdYtd[order(-SR)][1:100][sd < 0.3][SR>2.8]
-  write.table(outputYtd[,list(V1,SR)],
+  write.table(outputYtd[,list(V1,SR0)],
               paste0(getTradingFolder(),"sharpeOutputYtd.txt"),quote = FALSE,sep = "\t",row.names = FALSE, col.names =FALSE)
 
   #
