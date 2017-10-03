@@ -63,11 +63,17 @@ updateFTSEWeights <- function() {
   d <- data.table::fread(paste0(getTradingFolder(),"tickerEnglish.txt")
                          , sep = "\t",header = FALSE,col.names = c("English","Ticker"))
 
-  m <- merge(res, d, by.x="stock", by.y="English")
+  m <- merge(res, d, by.x="stock", by.y="English", all.x = TRUE)
 
-  output<-m[, list(Ticker,weight)]
+  output <- m[, list(Ticker,weight)]
   print(m[, sum(weight)])
-  write.table(output,paste0(getTradingFolder(),"FTSEA50Ticker.txt"),quote = FALSE,sep = "\t",row.names = FALSE,col.names = FALSE)
+  if(!is.na(m[,sum(weight)])) {
+    write.table(output,paste0(getTradingFolder(),"FTSEA50Ticker.txt"),
+                quote = FALSE,sep = "\t",row.names = FALSE,col.names = FALSE)
+    print(" update successful ")
+  } else {
+    print(" update ticker English")
+  }
   invisible()
 }
 

@@ -1,6 +1,6 @@
 #morning runs
 library(chinaTrading)
-getFTSEData()
+#getFTSEData()
 FTSEdataToExcel(getFTSEData())
 updateFTSEWeights()
 getFTSE50Index()
