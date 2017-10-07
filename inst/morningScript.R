@@ -3,14 +3,8 @@ library(chinaTrading)
 #getFTSEData()
 FTSEdataToExcel(getFTSEData())
 updateFTSEWeights()
-getFTSE50Index()
-getNAV()
-getXIN0UIndex()
-getIndicies()
-getBOCRmbRate()
 updateTradeDateFTSEOpen()
 getSumSumSqAll(Sys.Date())
-
 # maxmin/ma/sharpe
 getWtdMaxMinAll()
 getMAAll(20)
@@ -54,6 +48,13 @@ getDivs()
 
 #
 saveToGit()
+
+#
+getNAV()
+getFTSE50Index()
+getXIN0UIndex()
+getIndicies()
+getBOCRmbRate()
 
 #creating index for comparison, get bench
 #createIndex()
