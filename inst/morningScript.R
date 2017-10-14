@@ -8,7 +8,6 @@ getSumSumSqAll(Sys.Date())
 # maxmin/ma/sharpe
 getWtdMaxMinAll()
 getMAAll(20)
-
 #sharpe
 #compareAllSharpYtd()
 local({
