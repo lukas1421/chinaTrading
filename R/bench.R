@@ -23,7 +23,8 @@ getBenchMark <- function() {
   names(d) <- c("Ticker","chn","index","correl")
   d[, indexName:= h[[index]], keyby=list(index)]
   d[, nameCorrel:= paste0(indexName, round(correl,1) )]
-  write.table(d, paste0(getTradingFolder(),"bench.txt"),quote = FALSE,sep = "\t", row.names = FALSE, col.names = FALSE)
+  write.table(d, paste0(getTradingFolder(),"bench.txt"),quote = FALSE,sep = "\t",
+              row.names = FALSE, col.names = FALSE)
   return(d)
 }
 

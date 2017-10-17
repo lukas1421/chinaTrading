@@ -28,7 +28,7 @@ NumericVector timesThree(NumericVector x) {
 //[[Rcpp::export]]
 double getMean(NumericVector x) {
   double res = 0.0;
-  for(int i = 0; i < x.size(); i++) {
+  for(unsigned int i = 0; i < x.size(); i++) {
     res += x[i];
   }
   return res/x.size();
@@ -41,13 +41,13 @@ double getMean(NumericVector x) {
 double getSharpe(NumericVector x) {
   double res = 0.0;
   double m = 0.0;
-  for(int i = 0; i < x.size(); i++) {
+  for(unsigned int i = 0; i < x.size(); i++) {
     res +=x[i];
   }
   m = res/x.size();
 
   double res2 = 0.0;
-  for(int i = 0; i < x.size(); i++) {
+  for(unsigned int i = 0; i < x.size(); i++) {
     res2+= pow((x[i]-m),2);
   }
   return sqrt(res2/(x.size()-1));
@@ -67,7 +67,7 @@ double getSD(NumericVector x) {
 //[[Rcpp::export]]
 std::vector< std::string > getTicker(std::vector<std::string> s) {
   std::vector<std::string> res;
-  for(int i = 0; i < s.size(); i++) {
+  for(unsigned int i = 0; i < s.size(); i++) {
     std::transform(s[i].begin(), s[i].end(),s[i].begin(),::toupper);
     res.push_back(s[i].substr(0,2)+"#"+s[i].substr(2,6));
     //(0,2) + "#" + s(i).substr(2, 6);
@@ -131,7 +131,7 @@ DataFrame getDayCumSharpeCpp(NumericVector x) {
   double runningSumSq = 0.0;
   int runningCount = 0;
 
-  for(int i=0; i<x.size(); i++) {
+  for(unsigned int i=0; i<x.size(); i++) {
     runningSum += x[i];
     runningSumSq += chgSq[i];
     runningCount ++;
@@ -160,7 +160,7 @@ DataFrame getYtdCumSharpeCpp(NumericVector x) {
   double runningSumSq = 0.0;
   int runningCount = 0;
 
-  for(int i=0; i<x.size(); i++) {
+  for(unsigned int i=0; i<x.size(); i++) {
     runningSum += x[i];
     runningSumSq += chgSq[i];
     runningCount ++;

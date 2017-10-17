@@ -11,7 +11,7 @@ getMA <- function(symb,numDays) {
     return(0.0)
   }
   dt[, eval(label):=rollmean(C,numDays,fill = NA, align = "right")]
-  print(dt[.N,get(eval(label))])
+  #print(dt[.N,get(eval(label))])
   return(dt[.N, get(eval(label))])
 }
 

@@ -6,7 +6,7 @@
 #' @param dat date on which to retrieve sharpe
 calcSSSharpe <- function(symb, dat) {
   sharpe <- calcSSSharpeDate(symb, dat)
-  print(paste0(" sharpe ", symb, " ", sharpe))
+  #print(paste0(" sharpe ", symb, " ", sharpe))
   sharpe
 }
 
@@ -43,8 +43,8 @@ compareAllSharpYtd <- function(dat) {
   d[, SR:= ifelse(is.na(SR),0,round(SR,1))]
 
   if(lubridate::month(dat)==12 && lubridate::day(dat)==31) {
-    print(dat)
-    print(" writing to sharp txt")
+    #print(dat)
+    #print(" writing to sharp txt")
     write.table(d[, list(V1,SR)], paste0(getTradingFolder(),"sharpe.txt"),
                 quote = FALSE,sep = "\t",row.names = FALSE, col.names =FALSE)
   }

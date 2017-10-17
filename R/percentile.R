@@ -45,7 +45,7 @@ getWtdPercentileAll<- function(){
 #' @export
 getWtdMaxMin <- function(symb) {
   m<-getMonOfWeek(Sys.Date())
-  print(m)
+  #print(m)
   d<- getDataPure(symb)
 
   if(nrow(d)==0) {
@@ -58,9 +58,8 @@ getWtdMaxMin <- function(symb) {
     d[, cummin := cummin(L)]
     print(d[D>=m])
     as.list(d[.N, .(cummax,cummin,C,perc=(C-cummin)/(cummax-cummin), potential=(cummax+cummin)/2/C-1 )])
-  } else {
-    return()
   }
+  return(0)
 }
 
 #' get week to date max and min for all stocks
