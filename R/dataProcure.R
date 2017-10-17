@@ -7,12 +7,20 @@
 getDataPure<- function(symb) {
   #print(paste0("getting data",symb))
   #ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
+
   ticker <- getOneTicker(symb)
-  d<- fread(paste0(getDayDataFolder(),ticker,".txt"),skip = 1,fill = T,select = c(1,2,3,4,5),
-            col.names = c("D","O","H","L","C"))
-  d <- d[!.N,]
-  d[, D:=ymd(D)]
-  return(d[,list(D,O,H,L,C)])
+
+  tryCatch({
+    d<- fread(paste0(getDayDataFolder(),ticker,".txt"),skip = 1,fill = T,select = c(1,2,3,4,5),
+              col.names = c("D","O","H","L","C"))
+
+    d <- d[!.N,]
+    d[, D:=ymd(D)]
+    return(d[,list(D,O,H,L,C)])
+
+  },
+  error=function(e) {return(data.table())})
+
 }
 
 
@@ -21,12 +29,16 @@ getDataPure<- function(symb) {
 #' @param symb stock symbol
 getDataPureD<- function(symb) {
   #ticker <-
+  tryCatch({
   d<- fread(paste0(getMinuteDataFolder(),getOneTicker(symb),".txt"),
             skip = 1,fill = T,select = c(1,2,3,4,5,6),key = "D",col.names = c("D","T","O","H","L","C"))
   d <- d[!.N,]
   d[, D:=ymd(D)]
   #d[, DT:=ymd_hm(paste(D,paste0(str_sub(T,1,str_length(T)-2),":",str_sub(T,str_length(T)-1))))]
   return(d[,list(D,T,O,H,L,C)])
+  }, error=function(e) {
+    return(data.table())
+  })
 }
 
 #' get data

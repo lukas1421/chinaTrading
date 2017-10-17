@@ -65,6 +65,10 @@ getCorrelGen<-function(symb,env) {
 #' @param env environment in which to retrieve index
 getCorrel<- function(symb1, index,env) {
   dt1<-getDataPure(symb1)
+
+  if(nrow(dt1)==0) {
+    return(0.0)
+  }
   dt1[, eval(symb1):= C/shift(C,1)-1 ]
   #dt2 <- getDataPure(index)
   dt2 <- get(index, env)

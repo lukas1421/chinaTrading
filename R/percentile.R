@@ -47,6 +47,11 @@ getWtdMaxMin <- function(symb) {
   m<-getMonOfWeek(Sys.Date())
   print(m)
   d<- getDataPure(symb)
+
+  if(nrow(d)==0) {
+    return()
+  }
+
   d<- d[D>=m]
   if(nrow(d) > 0) {
     d[, cummax := cummax(H)]

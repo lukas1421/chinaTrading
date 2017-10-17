@@ -10,10 +10,11 @@ getWtdMaxMinAll()
 getMAAll(20)
 #sharpe
 #compareAllSharpYtd()
+
 local({
   srdYtd<-compareAllSharpYtd(lubridate::ymd("2016-12-31"))
   outputYtd<-srdYtd[order(-SR)][1:100][sd < 0.3][SR>2.8]
-  write.table(outputYtd[,list(V1,SR0)],
+  write.table(outputYtd[,list(V1,SR)],
               paste0(getTradingFolder(),"sharpeOutputYtd.txt"),quote = FALSE,sep = "\t",row.names = FALSE, col.names =FALSE)
 
   #
@@ -28,8 +29,6 @@ local({
   outputMtd<-srdMtd[order(-SR)][1:100][sd < 0.3][SR>2.8]
   write.table(outputMtd[,list(V1,SR)],
               paste0(getTradingFolder(),"sharpeOutputMtd.txt"),quote = FALSE,sep = "\t",row.names = FALSE, col.names =FALSE)
-
-
 })
 
 

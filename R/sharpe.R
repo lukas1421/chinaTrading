@@ -17,6 +17,9 @@ calcSSSharpe <- function(symb, dat) {
 #' @param dat date on which to retrieve sharpe
 calcSSSharpeDate <- function(symb,dat) {
   d<-getDataPure(symb)
+  if(nrow(d)==0){
+    return(list(SR=0,mean=0,sd=0,ytdRtn=0,ytdPerc=0))
+  }
   d[,ret:=(C/shift(C,1)-1)]
   mean <- d[D>dat, mean(ret,na.rm=T)]
   sd <- d[D>dat, sd(ret,na.rm=T)]
