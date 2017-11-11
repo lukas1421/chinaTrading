@@ -31,6 +31,26 @@ getWtdPercentile <- function(symb) {
   }
 }
 
+#' get week trade vol percentile
+#' @param symb stock
+#' @export
+
+getWeekVolPercentile <- function(symb) {
+  d<-getDataVol(symb)
+  d <- d[D>=ymd("2016,10,10")]
+  d[, mon:=getMonOfWeek(D), keyby=list(D)]
+  d[, totalvol:=sum(A), keyby=list(mon)]
+  d[, meanvol:= mean(A), keyby=list(mon)]
+  last <- d[.N,meanvol ]
+  lastTotal <- d[.N, totalvol]
+  print(lastvol/100000000)
+  mx <- d[, max(meanvol)]
+  mn <- d[, min(meanvol)]
+  return((last-mn)/(mx-mn))
+}
+
+
+
 
 #get
 getWtdPercentileAll<- function(){

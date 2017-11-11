@@ -195,6 +195,7 @@ getIndexDayCumuSharpe <- function(dat) {
 
 #' get the monday of a given date
 #' @param d a date
+#' @export
 getMonOfWeek <- function(d) {
   w <- data.table::wday(d)-1
   d-(w-1)-ifelse(w==0,7,0)

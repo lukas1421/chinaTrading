@@ -18,6 +18,22 @@ getDataPure<- function(symb) {
   },error=function(e) {return(data.table())})
 }
 
+#' get data including vol traded and amount
+#' @param symb stock name
+#'@export
+getDataVol<- function(symb) {
+  #print(paste0("getting data",symb))
+  #ticker <- paste0(toupper(str_sub(symb,1,2)),"#",str_sub(symb,3))
+
+  ticker <- getOneTicker(symb)
+  tryCatch({
+    d<- fread(paste0(getDayDataFolder(),ticker,".txt"),skip = 1,fill = T,select = c(1,2,3,4,5,6,7),
+              col.names = c("D","O","H","L","C","V","A"))
+    d <- d[!.N,]
+    d[, D:=ymd(D)]
+    return(d[,list(D,O,H,L,C,V,A)])
+  },error=function(e) {return(data.table())})
+}
 
 #' get data
 #' @export
