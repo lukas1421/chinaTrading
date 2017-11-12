@@ -43,7 +43,7 @@ getWeekVolPercentile <- function(symb) {
   d[, meanvol:= mean(A), keyby=list(mon)]
   last <- d[.N,meanvol ]
   lastTotal <- d[.N, totalvol]
-  print(lastvol/100000000)
+  print(lastTotal/100000000)
   mx <- d[, max(meanvol)]
   mn <- d[, min(meanvol)]
   return((last-mn)/(mx-mn))
