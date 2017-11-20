@@ -8,11 +8,21 @@ getDivs <- function() {
   url <- getDivURLNew()
   a<-read_html(url)
   l<-html_nodes(a,"table")
-  divText <- data.table(html_table(l[[3]]))
 
-  if(ncol(divText)!=3) {
-    divText <- data.table(html_table(l[[4]]))
+
+  divText <- data.table(html_table(l[[2]]))
+
+  if(names(html_table(l[[2]]))[[3]]=="·Öºì·½°¸") {
+    print(" table is correct ")
+  } else {
+    divText <- data.table(html_table(l[[3]]))
+
+    if(ncol(divText)!=3) {
+      divText <- data.table(html_table(l[[4]]))
+    }
   }
+
+
 
   names(divText) <- c("ticker","chineseName","divs")
 
