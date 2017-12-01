@@ -34,6 +34,8 @@ loadRecurrentStocks <- function() {
 
   tr <- getTradingHistory()
 
+  tr[, FullTicker:= paste0(Exchage, str_pad(Ticker,6,side = "left", pad="0"))]
+
   recurList<-tr[, list(sum=sum(abs(Volume))), keyby=list(FullTicker)][sum>0,(FullTicker)]
 
   #stockActiveDays <- tr[ ,daysWithActivePosition(FullTicker), list(FullTicker)]
