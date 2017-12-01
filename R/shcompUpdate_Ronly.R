@@ -174,7 +174,7 @@ processShcomp <- function(indexDay,indexMin) {
   resMerged[, retPMCO:=log(C/O1300) ]
   resMerged[, retPMCOY:= shift(retPMCO,1)]
   resMerged[is.na(retPMCOY), retPMCOY:=0]
-  resMerged[, retPMCOYCat:= cut(retPMCOY, quantile(retPMCOY,na.rm = T),include.lowest = T)]
+  resMerged[, retPMCOYCat:= cut(retPMCOY, unique(quantile(retPMCOY,na.rm = T)),include.lowest = T)]
   resMerged[, retPMCL:= log(C/pmMin)]
   resMerged[, retPMHO:= log(pmMax/O1300)]
   resMerged[, pmRange:= log(pmMax/pmMin)]
