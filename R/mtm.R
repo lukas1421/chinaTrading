@@ -139,6 +139,7 @@ getMTMDelta <- function(dat) {
 getMTMForAll <-function(dat) {
   print(dat)
   tr <- getTradingHistory()
+  tr[, FullTicker:= paste0(Exchage, str_pad(Ticker,6,side = "left", pad="0"))]
   d<-tr[D<(dat), list(FullTicker,sum(Volume)),
         keyby=list(FullTicker)][V2!=0,][,list(ticker=FullTicker,open=V2,prev=getClosingPriceBeforeD(dat,FullTicker)),
                                         keyby=list(FullTicker)]
@@ -218,7 +219,7 @@ getMinuteDataPureWithPrevClose <- function(dat, symb) {
     # stock <- stock[D==dat,list(D,T,O,C)]
     # res<-rbindlist(list(stockPrev,stock),use.names = TRUE,fill = TRUE)
     #return(res)
-    return(d[D<=dat][(.N-240):.N])
+    return(stock[D<=dat][(.N-240):.N])
   }, error = function(err) {
     print(err)
     stock <- 0.0

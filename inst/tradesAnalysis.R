@@ -21,7 +21,7 @@ library(ggplot2)
 #   tradeDates[, w:= wday(D)-1]
 # }
 
-chinaTrading::loadRecurrentStocks()
+loadRecurrentStocks()
 
 tr <- getTradingHistory()
 tradeDates <- getTradingDates()
@@ -30,13 +30,15 @@ tradeDates <- getTradingDates()
 tr[, sum(`Unrealized PL`),keyby=list(Name)][order(-V1)][1:20]
 tr[, sum(`Unrealized PL`),keyby=list(Name)][order(V1)][1:20]
 
+tr[, FullTicker:= paste0(Exchage, str_pad(Ticker,6,side = "left", pad="0"))]
+
 #open position for a given date
-tr[D< ymd("2017-8-15"), list(FullTicker,sum(Volume)), keyby=list(FullTicker)][V2!=0]
-d<-tr[D< ymd("2017-8-11"), list(FullTicker,sum(Volume),getClosingPriceBeforeD(dat,FullTicker)), keyby=list(FullTicker)][V2!=0]
+tr[D< ymd("2017-12-2"), list(FullTicker,sum(Volume)), keyby=list(FullTicker)][V2!=0]
+d<-tr[D< ymd("2017-12-2"), list(FullTicker,sum(Volume),getClosingPriceBeforeD(Sys.Date(),FullTicker)), keyby=list(FullTicker)][V2!=0]
 
 
 # MTM
-yrMtm<-tradeDates[D>=ymd("2017-4-30"),getMTMForAll(D),keyby=list(D)]
+yrMtm<-tradeDates[D>=ymd("2017-11-27"),getMTMForAll(D),keyby=list(D)]
 yrMtm[, w:= wday(D)-1]
 yrMtm[, list(fullSum=sum(Full,na.rm = T),amSum=sum(AM,na.rm = T),pmSum=sum(PM,na.rm = T)),]
 yrMtm[, list(fullSum=sum(Full,na.rm = T),amSum=sum(AM,na.rm = T),pmSum=sum(PM,na.rm = T)),keyby=list(w)]
