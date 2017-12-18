@@ -134,13 +134,21 @@ processShcomp <- function(indexDay,indexMin) {
 
   res2[, amMax:=max(unlist(mget(paste0("H",amTime)))), keyby=list(D)]
   res2[, amMaxT1:= as.numeric(amTime[which.max(unlist(mget(paste0("H",amTime))))]), keyby=list(D)]
+  res2[, amMaxT1D:= convertTimeToDecimal(amMaxT1)]
+
   res2[, amMin:=min(unlist(mget(paste0("L",amTime)))), keyby=list(D)]
   res2[, amMinT1:=as.numeric(amTime[which.min(unlist(mget(paste0("L",amTime))))]), keyby=list(D)]
+  res2[, amMinT1D:= convertTimeToDecimal(amMinT1)]
 
   res2[, pmMax:=max(unlist(mget(paste0("H",pmTime)))), keyby=list(D)]
   res2[, pmMaxT1:=as.numeric(pmTime[which.max(unlist(mget(paste0("H",pmTime))))]), keyby=list(D)]
+  res2[, pmMaxT1D:= convertTimeToDecimal(pmMaxT1)]
+
+
   res2[, pmMin:=min(unlist(mget(paste0("L",pmTime)))), keyby=list(D)]
   res2[, pmMinT1 := as.numeric(pmTime[which.min(unlist(mget(paste0("L",pmTime))))]), keyby=list(D)]
+  res2[, pmMinT1D:= convertTimeToDecimal(pmMinT1)]
+
 
 
   # MERGE ########################################################################################
