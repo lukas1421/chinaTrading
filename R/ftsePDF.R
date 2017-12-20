@@ -56,8 +56,10 @@ FTSEdataToExcel <- function(res) {
 
 
 #' update ftse weights
+#' using the new.xlsx file
 #' @export
 updateFTSEWeights <- function() {
+
   res <- getFTSEData()
 
   d <- data.table::fread(paste0(getTradingFolder(),"tickerEnglish.txt")
@@ -66,13 +68,14 @@ updateFTSEWeights <- function() {
   m <- merge(res, d, by.x="stock", by.y="English", all.x = TRUE)
 
   output <- m[, list(Ticker,weight)]
-  print(m[, sum(weight)])
-  if(!is.na(m[,sum(weight)])) {
+
+  if(!is.na(m[,sum(weight)]) && nrow(output[is.na(Ticker)]) == 0  ) {
     write.table(output,paste0(getTradingFolder(),"FTSEA50Ticker.txt"),
                 quote = FALSE,sep = "\t",row.names = FALSE,col.names = FALSE)
+    print(m[, sum(weight)])
     print(" update successful ")
   } else {
-    print(" update ticker English")
+    print(" update unsuccessful, change constituents")
   }
   invisible()
 }
