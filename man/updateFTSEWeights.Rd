@@ -2,10 +2,12 @@
 % Please edit documentation in R/ftsePDF.R
 \name{updateFTSEWeights}
 \alias{updateFTSEWeights}
-\title{update ftse weights}
+\title{update ftse weights
+using the new.xlsx file}
 \usage{
 updateFTSEWeights()
 }
 \description{
 update ftse weights
+using the new.xlsx file
 }

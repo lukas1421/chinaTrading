@@ -18,14 +18,14 @@ local({
               paste0(getTradingFolder(),"sharpeOutputYtd.txt"),quote = FALSE,sep = "\t",row.names = FALSE, col.names =FALSE)
 
   #
-  srdQtd<-compareAllSharpYtd(lubridate::ymd("2017-9-30"))
+  srdQtd<-compareAllSharpYtd(lubridate::ymd("2016-12-31"))
   outputQtd<-srdQtd[order(-SR)][1:100][sd < 0.3][SR>2.8]
   write.table(outputQtd[,list(V1,SR)],
               paste0(getTradingFolder(),"sharpeOutputQtd.txt"),quote = FALSE,sep = "\t",row.names = FALSE, col.names =FALSE)
 
 
   #mtd
-  srdMtd<-compareAllSharpYtd(lubridate::ymd("2017-9-30"))
+  srdMtd<-compareAllSharpYtd(lubridate::ymd("2017-12-31"))
   outputMtd<-srdMtd[order(-SR)][1:100][sd < 0.3][SR>2.8]
   write.table(outputMtd[,list(V1,SR)],
               paste0(getTradingFolder(),"sharpeOutputMtd.txt"),quote = FALSE,sep = "\t",row.names = FALSE, col.names =FALSE)
