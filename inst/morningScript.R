@@ -9,7 +9,7 @@ getSumSumSqAll(Sys.Date())
 getWtdMaxMinAll()
 getMAAll(20)
 #sharpe
-#compareAllSharpYtd()
+compareAllSharpYtd(lubridate::ymd("2017-12-31"))
 
 local({
   srdYtd<-compareAllSharpYtd(lubridate::ymd("2016-12-31"))
