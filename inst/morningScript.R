@@ -7,7 +7,8 @@ updateTradeDateFTSEOpen()
 getSumSumSqAll(Sys.Date())
 # maxmin/ma/sharpe
 getWtdMaxMinAll()
-getMAAll(20)
+getMAAll20()
+getMAAll60()
 #sharpe
 compareAllSharpYtd(lubridate::ymd("2017-12-31"))
 
