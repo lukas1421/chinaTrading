@@ -5,7 +5,7 @@ FTSEdataToExcel(getFTSEData())
 updateFTSEWeights()
 updateTradeDateFTSEOpen()
 getSumSumSqAll(Sys.Date())
-# maxmin/ma/sharpe
+#maxmin/ma/sharpe
 getWtdMaxMinAll()
 getMAAll20()
 getMAAll60()
