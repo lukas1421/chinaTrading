@@ -1,8 +1,12 @@
 #morning runs
 library(chinaTrading)
 #getFTSEData()
-FTSEdataToExcel(getFTSEData())
-updateFTSEWeights()
+local({
+  res <- getFTSEData()
+  FTSEdataToExcel(res)
+  updateFTSEWeights(res)
+})
+
 updateTradeDateFTSEOpen()
 getSumSumSqAll(Sys.Date())
 #maxmin/ma/sharpe
@@ -88,3 +92,5 @@ getBOCRmbRate()
 #' computeSharp <- function() {
 #'   compareAllSharpYtd()
 #' }
+
+print(" TASK DONE")

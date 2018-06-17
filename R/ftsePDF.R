@@ -58,9 +58,9 @@ FTSEdataToExcel <- function(res) {
 #' update ftse weights
 #' using the new.xlsx file
 #' @export
-updateFTSEWeights <- function() {
+updateFTSEWeights <- function(res) {
 
-  res <- getFTSEData()
+  #res <- getFTSEData()
 
   d <- data.table::fread(paste0(getTradingFolder(),"tickerEnglish.txt")
                          , sep = "\t",header = FALSE,col.names = c("English","Ticker"))

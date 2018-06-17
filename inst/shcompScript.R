@@ -125,3 +125,11 @@ resMerged[, percentileYCat:=cut(percentileY, breaks = quantile(percentileY,na.rm
 resMerged[, weekday:= wday(D)-1]
 print(resMerged)
 resMerged
+
+###
+indexDay <- generateIndexDay()
+indexM <- generateIndexMin()
+index942 <- indexM[T <= 942, .(max(H),T[which(H==max(H))][1], min(L),T[which(L==min(L))][1]), keyby=list(D)]
+indexDay[, CC:=C/shift(C,1)-1]
+indexDay[, CO:=C/O-1]
+

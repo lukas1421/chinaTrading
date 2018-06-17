@@ -83,7 +83,7 @@ generateIndexMin <- function() {
   res <- data.table()
   tmp <- data.table()
 
-  for(i in 1999:2017) {
+  for(i in 1999:2018) {
     #assign(paste0("f",i),fread(paste0(mainDir,"SH000001_", i,".csv")))
     #assign(tmp,fread(paste0(mainDir,"SH000001_", i,".csv")))
     tmp <- fread(paste0(getMainboardFolder(),"SH000001_", i,".csv"))
