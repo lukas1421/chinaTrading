@@ -1,6 +1,7 @@
 #morning runs
 library(chinaTrading)
 #getFTSEData()
+
 local({
   res <- getFTSEData()
   FTSEdataToExcel(res)

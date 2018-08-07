@@ -5,7 +5,7 @@
 \title{update ftse weights
 using the new.xlsx file}
 \usage{
-updateFTSEWeights()
+updateFTSEWeights(res)
 }
 \description{
 update ftse weights
