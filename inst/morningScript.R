@@ -14,6 +14,7 @@ getSumSumSqAll(Sys.Date())
 getWtdMaxMinAll()
 getMAAll20()
 getMAAll60()
+getPMCHY()
 getHistHighDate()
 #sharpe
 compareAllSharpYtd(lubridate::ymd("2017-12-31"))
