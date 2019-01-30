@@ -18,12 +18,25 @@ if(Sys.getenv("USERNAME")=="LUke") {
 
 #' generating index
 fillData000001()
+
 indexDay <- generateIndexDay()
+indexDay[, yr:= year(D)]
+indexDay[,yrOpen:=.SD[1L][,O],keyby=list(yr)]
+indexDay[,yrOpenDay:=.SD[1L][,D] ,keyby=list(yr)]
+indexDay[, mo:= paste0(year(D),ifelse(month(D)<10,"0",""),month(D))]
+indexDay[, moOpen:=.SD[1L][,O] ,keyby=list(mo)]
+indexDay[, moOpenDay:=.SD[1L][,D] ,keyby=list(mo)]
+
+indexDay[, prevC:=shift(C,1)]
+indexDay[, ytdDev:= (prevC/yrOpen-1)]
+indexDay[, mtdDev:= (prevC/moOpen-1)]
+indexDay <- indexDay[D>ymd("1998-12-31")]
+
 indexM <- generateIndexMin()
 resMerged <- processShcomp(indexDay,indexM)
 
-graphShcomp(indexDay)
-graphShcompD(indexM)
+#graphShcomp(indexDay)
+#graphShcompD(indexM)
 
 res <- data.table()
 tmp <- data.table()
@@ -127,9 +140,19 @@ print(resMerged)
 resMerged
 
 ###
-indexDay <- generateIndexDay()
-indexM <- generateIndexMin()
-index942 <- indexM[T <= 942, .(max(H),T[which(H==max(H))][1], min(L),T[which(L==min(L))][1]), keyby=list(D)]
-indexDay[, CC:=C/shift(C,1)-1]
-indexDay[, CO:=C/O-1]
+#indexDay <- generateIndexDay()
+#indexM <- generateIndexMin()
+#index942 <- indexM[T <= 942, .(max(H),T[which(H==max(H))][1], min(L),T[which(L==min(L))][1]), keyby=list(D)]
+#indexDay[, CC:=C/shift(C,1)-1]
+#indexDay[, CO:=C/O-1]
+
+
+
+
+####
+
+n <- data.table(time,t)
+
+for(i in c(932:959,1000:1059,1100:1130,1300:1359,1400:1459)) {print(i); a <- summary(indexM[T==i,  ][, lm(retToClose~percAbove)]); t <- a$coefficients[2,3]; n<-rbind(n, list(i,t)); print(n)}
+
 
