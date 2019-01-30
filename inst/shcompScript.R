@@ -54,6 +54,7 @@ for (v in c("O","H","L","C")) {
 
 
 #tradeTime <- c(931:959,1000:1059,1100:1130,1300:1359,1400:1459,1500)
+first20 <- c(931:950)
 amTime <- c(931:959,1000:1059,1100:1130)
 pmTime <- c(1300:1359,1400:1459,1500)
 tradeTime <- c(amTime, pmTime)
@@ -63,6 +64,8 @@ res2[, dayMax:=max(unlist(mget(paste0("H",tradeTime)))), keyby=list(D)]
 res2[, dayMaxT1:=as.numeric(tradeTime[which.max(unlist(mget(paste0("H",tradeTime))))]), keyby=list(D)]
 res2[, dayMin:=min(unlist(mget(paste0("L",tradeTime)))), keyby=list(D)]
 res2[, dayMinT1:=as.numeric(tradeTime[which.min(unlist(mget(paste0("L",tradeTime))))]), keyby=list(D)]
+
+res2[, first20AboveO:=sum(mget(paste0("C",first20))>O931)/20,keyby=list(D)]
 
 res2[, amMax:=max(unlist(mget(paste0("H",amTime)))), keyby=list(D)]
 res2[, amMaxT1:= as.numeric(amTime[which.max(unlist(mget(paste0("H",amTime))))]), keyby=list(D)]
@@ -145,10 +148,6 @@ resMerged
 #index942 <- indexM[T <= 942, .(max(H),T[which(H==max(H))][1], min(L),T[which(L==min(L))][1]), keyby=list(D)]
 #indexDay[, CC:=C/shift(C,1)-1]
 #indexDay[, CO:=C/O-1]
-
-
-
-
 ####
 
 n <- data.table(time,t)
