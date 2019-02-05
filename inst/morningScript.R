@@ -9,8 +9,8 @@ local({
 })
 
 updateTradeDateFTSEOpen()
-getPMCHY()
 
+getPMCHY()
 getSumSumSqAll(Sys.Date())
 #maxmin/ma/sharpe
 getWtdMaxMinAll()

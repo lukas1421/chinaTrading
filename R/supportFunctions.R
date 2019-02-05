@@ -15,7 +15,8 @@
 #' get working directory
 #' @export
 getTradingFolder <- function() {
-  return(paste0("C:\\Users\\",Sys.getenv("USERNAME"),"\\Desktop\\Trading\\"))
+    return("/home/l/Desktop/Trading/")
+    #return(paste0("C:\\Users\\",Sys.getenv("USERNAME"),"\\Desktop\\Trading\\"))
 }
 
 
