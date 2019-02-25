@@ -44,14 +44,11 @@ getFTSEData <- function() {
 #' ftse data to excel
 #' @export
 FTSEdataToExcel <- function(res) {
-
   #print(res)
   wb <- XLConnect::loadWorkbook(paste0(getTradingFolder(),"new.xlsx"),create = TRUE)
   createSheet(wb,"Sheet1")
   XLConnect::writeWorksheet(wb,res,"Sheet1",startRow = 1,startCol = 1, header = T)
   XLConnect::saveWorkbook(wb)
-
-
 }
 
 

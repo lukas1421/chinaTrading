@@ -8,9 +8,15 @@ local({
   updateFTSEWeights(res)
 })
 
+
+
+
+
+
+
+
 #not in use
 updateTradeDateFTSEOpen()
-
 getPMCHY()
 
 getSumSumSqAll(Sys.Date())
