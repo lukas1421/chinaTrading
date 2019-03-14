@@ -10,11 +10,6 @@ local({
 
 
 
-
-
-
-
-
 #not in use
 updateTradeDateFTSEOpen()
 getPMCHY()

@@ -9,8 +9,8 @@
 #' @export
 getFTSEData <- function() {
 
-  download.file("https://www.ftse.com/analytics/factsheets/Home/DownloadConstituentsWeights/?indexdetails=XINA50"
-                , destfile = paste0(getTradingFolder(),"res.pdf"), mode="wb")
+  #download.file("https://www.ftse.com/analytics/factsheets/Home/DownloadConstituentsWeights/?indexdetails=XINA50"
+  #              , destfile = paste0(getTradingFolder(),"res.pdf"), mode="wb")
 
   toc <- pdf_text(paste0(getTradingFolder(),"res.pdf"))
 
@@ -40,6 +40,50 @@ getFTSEData <- function() {
   }
   res
 }
+
+#' directly process, no download
+#' @importFrom pdftools pdf_text
+#' @import data.table
+#' @import stringr
+#' @import XLConnect
+#' @import rvest
+#' @importFrom utils download.file tail write.table
+#' @importFrom stats cor cov quantile sd var
+#' @export
+getFTSEDataNoDownload <- function() {
+
+  #download.file("https://www.ftse.com/analytics/factsheets/Home/DownloadConstituentsWeights/?indexdetails=XINA50"
+  #              , destfile = paste0(getTradingFolder(),"res.pdf"), mode="wb")
+
+  toc <- pdf_text(paste0(getTradingFolder(),"res.pdf"))
+
+  #print(toc)
+  t1<-str_split(toc[1],"\n")
+
+  res <- data.table(rep(0,50),rep(0,50))
+  names(res) <- c("stock","weight")
+
+  j<-1
+
+  for(i in seq(7,24,1)) {
+    lapply(str_split(str_trim(str_split(t1[[1]][i],"CHINA")[[1]],"right"), "\\s\\s+"),
+           function(x) {
+             if(str_trim(x, side="left")[[1]] !="") {
+               if(length(str_trim(x, side="left")) == 2) {
+                 res$stock[j] <<- str_trim(toupper(str_replace(str_trim(x, side="left")[[1]],"\\(.*\\)","")))
+                 res$weight[j] <<- as.numeric(str_trim(x, side="left")[[2]])
+                 j <<- j+1
+               } else if (length(str_trim(x, side="left")) == 3) {
+                 res$stock[j] <<- str_trim(toupper(str_replace(str_trim(x, side="left")[2],"\\(.*\\)","")))
+                 res$weight[j] <<- as.numeric(str_trim(x, side="left")[3])
+                 j <<- j+1
+               }
+             }
+           })
+  }
+  res
+}
+
 
 #' ftse data to excel
 #' @export
