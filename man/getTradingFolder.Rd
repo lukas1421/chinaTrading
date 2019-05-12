@@ -5,7 +5,7 @@
 \title{#' get monday of week
 #' @importFrom lubridate is.Date
 getMondayOfWeek <- function(dat) {
-  weekdayl <- list("æ˜ŸæœŸä¸€"=1,"æ˜ŸæœŸäºŒ"=2,"æ˜ŸæœŸä¸‰"=3,"æ˜ŸæœŸå››"=4,"æ˜ŸæœŸäº”"=5,"æ˜ŸæœŸå…­"=6,"æ˜ŸæœŸæ—¥"=7 )
+  weekdayl <- list("ÐÇÆÚÒ»"=1,"ÐÇÆÚ¶þ"=2,"ÐÇÆÚÈý"=3,"ÐÇÆÚËÄ"=4,"ÐÇÆÚÎå"=5,"ÐÇÆÚÁù"=6,"ÐÇÆÚÈÕ"=7 )
   if(is.Date(dat)) {
     return(dat-weekdayl[[weekdays(dat)]]+1)
   }
@@ -19,7 +19,7 @@ getTradingFolder()
 #' get monday of week
 #' @importFrom lubridate is.Date
 getMondayOfWeek <- function(dat) {
-  weekdayl <- list("æ˜ŸæœŸä¸€"=1,"æ˜ŸæœŸäºŒ"=2,"æ˜ŸæœŸä¸‰"=3,"æ˜ŸæœŸå››"=4,"æ˜ŸæœŸäº”"=5,"æ˜ŸæœŸå…­"=6,"æ˜ŸæœŸæ—¥"=7 )
+  weekdayl <- list("ÐÇÆÚÒ»"=1,"ÐÇÆÚ¶þ"=2,"ÐÇÆÚÈý"=3,"ÐÇÆÚËÄ"=4,"ÐÇÆÚÎå"=5,"ÐÇÆÚÁù"=6,"ÐÇÆÚÈÕ"=7 )
   if(is.Date(dat)) {
     return(dat-weekdayl[[weekdays(dat)]]+1)
   }

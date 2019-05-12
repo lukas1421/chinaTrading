@@ -9,8 +9,8 @@
 #' @export
 getFTSEData <- function() {
 
-  #download.file("https://www.ftse.com/analytics/factsheets/Home/DownloadConstituentsWeights/?indexdetails=XINA50"
-  #              , destfile = paste0(getTradingFolder(),"res.pdf"), mode="wb")
+  download.file("https://www.ftse.com/analytics/factsheets/Home/DownloadConstituentsWeights/?indexdetails=XINA50"
+                , destfile = paste0(getTradingFolder(),"res.pdf"),method = "curl",  mode="wb",cacheOK = F)
 
   toc <- pdf_text(paste0(getTradingFolder(),"res.pdf"))
 
@@ -117,6 +117,11 @@ updateFTSEWeights <- function(res) {
     print(" update successful ")
   } else {
     print(" update unsuccessful, change constituents")
+    print("added:")
+    print(paste(m[is.na(Ticker),c(stock,weight)]))
+    m1 <- merge(res, d, by.x="stock", by.y="English", all.y = TRUE)
+    print("deleted:")
+    print(paste(m1[is.na(weight),c(stock,Ticker)]))
   }
   invisible()
 }
@@ -214,42 +219,42 @@ getSHCOMP <- function() {
 #getSHCOMP()
 
 
-###########################################################################################################################################
-#' get BOC rmb rate
-#' @export
-getBOCRmbRate<- function(){
-  a <- read_html("http://www.boc.cn/sourcedb/whpj")
-  a <- html_nodes(a, "tr")
-  a <- html_text(a)
-  a <-iconv(a,"utf-8","gb2312")
-
-  a<-str_split(str_trim(a[str_detect(a,"美元")]),"\\s+")
-  a[[1]] <- NULL
-  a <- data.table(matrix(unlist(a),nrow = length(a),byrow = T))
-  #names(a) <- c("货币名称","现汇买入价"," 现钞买入价","现汇卖出价","现钞卖出价","中行折算价","发布日期","发布时间")
-  names(a) <- c("currency","Buy wire"," Buy cash","Sell wire","Sell Cash","BOC","Date","Time")
-  #a[, BOC:=as.numeric(BOC)/100]
-  print(as.numeric(a$BOC)/100)
-  print(a)
-}
+#' ###########################################################################################################################################
+#' #' get BOC rmb rate
+#' #' @export
+#' getBOCRmbRate<- function(){
+#'   a <- read_html("http://www.boc.cn/sourcedb/whpj")
+#'   a <- html_nodes(a, "tr")
+#'   a <- html_text(a)
+#'   a <-iconv(a,"utf-8","gb2312")
+#'
+#'   a<-str_split(str_trim(a[str_detect(a,"美元")]),"\\s+")
+#'   a[[1]] <- NULL
+#'   a <- data.table(matrix(unlist(a),nrow = length(a),byrow = T))
+#'   #names(a) <- c("货币名称","现汇买入价"," 现钞买入价","现汇卖出价","现钞卖出价","中行折算价","发布日期","发布时间")
+#'   names(a) <- c("currency","Buy wire"," Buy cash","Sell wire","Sell Cash","BOC","Date","Time")
+#'   #a[, BOC:=as.numeric(BOC)/100]
+#'   print(as.numeric(a$BOC)/100)
+#'   print(a)
+#' }
 
 #getBOCRmbRate()
-###########################################################################################################################################
-#' get BOC hkd rate
-#' @export
-getBOCHKDRate<- function(){
-  a <- read_html("http://www.boc.cn/sourcedb/whpj")
-  a <- html_nodes(a, "tr")
-  a <- html_text(a)
-  a <-iconv(a,"utf-8","gb2312")
-
-  a<-str_split(str_trim(a[str_detect(a,"港币")]),"\\s+")
-  a[[1]] <- NULL
-  a <- data.table(matrix(unlist(a),nrow = length(a),byrow = T))
-  #names(a) <- c("货币名称","现汇买入价"," 现钞买入价","现汇卖出价","现钞卖出价","中行折算价","发布日期","发布时间")
-  names(a) <- c("currency","Buy wire"," Buy cash","Sell wire","Sell Cash","BOC","Date","Time")
-  #a[, BOC:=as.numeric(BOC)/100]
-  print(as.numeric(a$BOC)/100)
-  print(a)
-}
+#' ###########################################################################################################################################
+#' #' get BOC hkd rate
+#' #' @export
+#' getBOCHKDRate<- function(){
+#'   a <- read_html("http://www.boc.cn/sourcedb/whpj")
+#'   a <- html_nodes(a, "tr")
+#'   a <- html_text(a)
+#'   a <-iconv(a,"utf-8","gb2312")
+#'
+#'   a<-str_split(str_trim(a[str_detect(a,"港币")]),"\\s+")
+#'   a[[1]] <- NULL
+#'   a <- data.table(matrix(unlist(a),nrow = length(a),byrow = T))
+#'   #names(a) <- c("货币名称","现汇买入价"," 现钞买入价","现汇卖出价","现钞卖出价","中行折算价","发布日期","发布时间")
+#'   names(a) <- c("currency","Buy wire"," Buy cash","Sell wire","Sell Cash","BOC","Date","Time")
+#'   #a[, BOC:=as.numeric(BOC)/100]
+#'   print(as.numeric(a$BOC)/100)
+#'   print(a)
+#' }
 

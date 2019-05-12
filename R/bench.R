@@ -8,7 +8,8 @@
 getBenchMark <- function() {
   env <- new.env(parent = emptyenv())
   benchList<- c("sh000001","sz399006","sz399001","sh000300","sh000016","sh000905")
-  benchNames <- c("主板","创","小","沪深","大","中证")
+  #benchNames <- c("主板","创","小","沪深","大","中证")
+  benchNames <- c()
   h <- hash(benchList,benchNames)
   dt <- data.table(benchList)
   sapply(benchList,
@@ -36,7 +37,8 @@ getBenchMark <- function() {
 
 fromBenchToBenchlist <- function() {
   benchList<- c("sh000001","sz399006","sz399001","sh000300","sh000016","sh000905")
-  benchNames <- c("主板","创","小","沪深","大","中证")
+  #benchNames <- c("主板","创","小","沪深","大","中证")
+  benchNames <- c()
   benchDt <- data.table(benchList=benchList, benchNames=benchNames)
   #print(benchDt)
   env <- new.env()

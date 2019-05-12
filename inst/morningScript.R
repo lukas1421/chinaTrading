@@ -3,7 +3,11 @@ library(chinaTrading)
 #getFTSEData()
 
 local({
-  res <- getFTSEData()
+  #res <- getFTSEData()
+  system("proxychains wget --output-document ~/Desktop/Trading/res.pdf  https://www.ftse.com/analytics/factsheets/Home/DownloadConstituentsWeights/?indexdetails=XINA50")
+  #system("cd ~/Downloads && ls | grep 'XINA50' | tail -1 | xargs -I {} mv {} res.pdf")
+  #system("mv ~/Downloads/res.pdf ~/Desktop/Trading")
+  res <- getFTSEDataNoDownload()
   FTSEdataToExcel(res)
   updateFTSEWeights(res)
 })
